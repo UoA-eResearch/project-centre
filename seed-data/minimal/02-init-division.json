@@ -1,0 +1,42 @@
+[
+  {
+    "name": "division 1",
+    "code": "div1",
+    "institutionCode": "inst1"
+  },
+  {
+    "name": "division 2",
+    "code": "div2",
+    "institutionCode": "inst1"
+  },
+  {
+    "name": "division 3",
+    "code": "div3",
+    "institutionCode": "inst1"
+  },
+  {
+    "name": "division 10",
+    "code": "div10",
+    "institutionCode": "inst1"
+  },
+  {
+    "name": "division 101",
+    "code": "div101",
+    "parentCode": "div10"
+  },
+  {
+    "name": "division 102",
+    "code": "div102",
+    "parentCode": "div10"
+  },
+  {
+    "name": "division 1011",
+    "code": "div1011",
+    "parentCode": "div101"
+  },
+  {
+    "name": "division 1012",
+    "code": "div1012",
+    "parentCode": "div101"
+  }
+]
