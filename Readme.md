@@ -7,11 +7,10 @@ A lean and mean service to manage research projects for the Centre for eResearch
  - Java 8
  - maven (version >= 3)
 
-## TODOs
+## Big TODOs
 
  - more documentation
  - Exception handling
- - create seed data
  - write unit & integration tests
  
 ## Development
@@ -35,9 +34,28 @@ Google code style for Java is used:
     # we use the 'dev' profile for development
     mvn  spring-boot:run  -Dspring.profiles.active="dev"
     
+### Run tests
+
+#### Integration tests 
+
+    mvn -Dintegration-tests.skip=false clean integration-test
+    
 ### Authentication design
 
 TODO: details
+
+### Schema notes
+
+#### Identity
+
+Every Person can be associated with one or multiple Identities. Identities are usually per service. The internal *project-centre* user of a Person
+is also modeled as Identity.
+
+#### Division
+
+Compared to v1 of the project database, we removed the institutionId, departmentId & divisionId fields from the Person object and replaced it with
+a 'affiliation' map which contains the id of the division as key and the id of the role as value. Every Division contains its direct parent, it's 
+top-level Division (for example a faculty), and its institutionId ( modeled using advice from: http://novyden.blogspot.co.nz/2008/01/managing-hierarchical-data-tree-in.html )
 
 ### Init with seed data
 

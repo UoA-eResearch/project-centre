@@ -70,7 +70,7 @@ public class DivisionControllerIT {
 
     assertThat(divs.length, equalTo(8));
 
-    assertThat(divs[7].getParent().getParent().getCode(), equalTo("div10"));
+    assertThat(divs[7].getParent().getParent().getParent().getCode(), equalTo("div3"));
 
   }
 
