@@ -66,43 +66,32 @@ The data is loaded using a CommandLineRunner class (SeedDataImporter), which sup
     
 Seed levels:
 
-#### 1
-
- - DivisionalRole
- - Faculty
- - Institution
- - Kpi
- - KpiCategory
- - PersonRole
- - PersonStatus
- - ProjectActionType
- - ProjectStatus
- - ProjectType
- - ResearchOutputType
- 
-#### 1
-
- - Division
- 
-#### 2
-
- - Person
- 
-#### 3
-
- - PersonProperty
- 
-#### 4
-
- - Project
- 
-#### 5
-
- - ProjectProperty
- - ProjectAction
- - ProjectKpi
- - ResearchOutput
- - ExternalReference
+ - 1
+     - DivisionalRole
+     - Faculty
+     - Institution
+     - Kpi
+     - KpiCategory
+     - PersonRole
+     - PersonStatus
+     - ProjectActionType
+     - ProjectStatus
+     - ProjectType
+     - ResearchOutputType
+ - 2
+     - Division
+ - 3 
+     - Person
+ - 3
+     - PersonProperty
+ - 4
+     - Project
+ - 5
+     - ProjectProperty
+     - ProjectAction
+     - ProjectKpi
+     - ResearchOutput
+     - ExternalReference
 
 
 
