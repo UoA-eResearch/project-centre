@@ -1,0 +1,8 @@
+[
+  {"kpiId": 0, "name":"throughput"},
+  {"kpiId": 0, "name":"cpucores"},
+  {"kpiId": 0, "name":"memory"},
+  {"kpiId": 0, "name":"optimization"},
+  {"kpiId": 0, "name":"diskspace"},
+  {"kpiId": 0, "name":"gpu"}
+]

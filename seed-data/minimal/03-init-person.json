@@ -1,0 +1,13 @@
+[
+  {
+    "fullName": "First1 Last1",
+    "preferredName": "PrefF1 PrefL1",
+    "email": "email1@auckland.ac.nz",
+    "phone": "ext 123",
+    "pictureUrl": "http://nowhere",
+    "startDate": "2015-01-01",
+    "notes": "Note 1",
+    "status": "Active",
+    "lastModified": "2015-01-02"
+  }
+]

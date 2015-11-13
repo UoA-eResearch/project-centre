@@ -81,7 +81,7 @@ public class PersonAugmentor {
 
 //			Integer instRoleId = p.getInstitutionalRoleId();
 //			if (instRoleId != null) {
-//				InstitutionalRole instRole = this.institutionalRoleService.findOne(instRoleId);
+//				DivisionalRole instRole = this.institutionalRoleService.findOne(instRoleId);
 //				p.setInstitutionalRole((instRole == null) ? null : instRole.getName());
 //			}
     }

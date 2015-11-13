@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
@@ -13,11 +16,12 @@ import java.io.IOException;
  */
 public class DivisionJsonSerializer extends JsonSerializer<Division> {
 
+  @Autowired
+  private InstitutionRepository instRepo;
 
   @Override
   public void serialize(Division value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 
-    //TODO: maybe add institution details here as well, should only be a one-time lookup cost
     jgen.writeStartObject();
     addDivision(value, jgen);
     jgen.writeEndObject();
@@ -31,7 +35,11 @@ public class DivisionJsonSerializer extends JsonSerializer<Division> {
     int level = value.getLevel();
     jgen.writeNumberField("level", level);
     jgen.writeNumberField("institutionId", value.getInstitutionId());
-    jgen.writeStringField("institutionCode", value.getInstitutionCode());
+    String instCode = value.getInstitutionCode();
+    if ( instCode == null ) {
+      instCode = instRepo.findOne(value.getInstitutionId()).getCode();
+    }
+    jgen.writeStringField("institutionCode", instCode);
     int topId = value.getTop().getId();
     jgen.writeNumberField("topId", value.getTop().getId());
     if (level != 0) {

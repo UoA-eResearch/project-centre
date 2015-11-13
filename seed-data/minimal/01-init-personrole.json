@@ -1,0 +1,12 @@
+[
+  {"name": "Project Owner"},
+  {"name": "Supervisor"},
+  {"name": "Project Team Member"},
+  {"name": "Contact Person"},
+  {"name": "Pending"},
+  {"name": "Primary Advisor"},
+  {"name": "Support"},
+  {"name": "CeR Contact"},
+  {"name": "Primary Reviewer"},
+  {"name": "Reviewer"}
+]

@@ -26,13 +26,19 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
   @Autowired
   private InstitutionRepository instRepo;
 
+  /*
+  This is only used when deserializing without JPA in TestCases.
+   */
   private Division assembleDivision(JsonNode node) {
 
-    Division div = new Division();
+    Division div = null;
     JsonNode id = node.get("id");
     if ( id != null ) {
-      div.setId(id.asInt());
+      div = new Division(id.asInt());
+    } else {
+      div = new Division();
     }
+
 
     JsonNode code= node.get("code");
     if ( code != null ) {

@@ -1,0 +1,5 @@
+[
+  {"number": 1, "type": "div1", "title": "KPI 1 for division 1", "measures": "something or other 1"},
+  {"number": 2, "type": "inst1", "title": "KPI 2 for institution 1", "measures": "something or other 2"},
+  {"number": 1, "type": "proj1", "title": "KPI 1 for project 1", "measures": "something or other 3"}
+]

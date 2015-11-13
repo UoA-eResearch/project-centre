@@ -1,0 +1,13 @@
+[
+  {"name": "Open"},
+  {"name": "Reopened"},
+  {"name": "Suspended"},
+  {"name": "Closed"},
+  {"name": "Incomplete"},
+  {"name": "Open-Not Public"},
+  {"name": "Pending"},
+  {"name": "Withdrawn"},
+  {"name": "Rejected"},
+  {"name": "Received"},
+  {"name": "Marked for closure"}
+]

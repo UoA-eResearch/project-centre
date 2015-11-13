@@ -1,6 +1,6 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.InstitutionalRole;
+import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
 import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionalRoleRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
@@ -11,30 +11,30 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InstitutionalRoleService extends BaseService<InstitutionalRole> {
+public class InstitutionalRoleService extends BaseService<DivisionalRole> {
 
   @Autowired
   private InstitutionalRoleRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
   @Cacheable(value = "InstitutionalRoleCache", key = "#id")
-  public InstitutionalRole findOne(Integer id) {
+  public DivisionalRole findOne(Integer id) {
     return repo.findOne(id);
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public Iterable<InstitutionalRole> findAll() {
+  public Iterable<DivisionalRole> findAll() {
     return repo.findAll();
   }
 
   @PreAuthorize(Authz.ADMIN)
-  public InstitutionalRole create(InstitutionalRole entity) {
+  public DivisionalRole create(DivisionalRole entity) {
     return repo.save(entity);
   }
 
   @PreAuthorize(Authz.ADMIN)
   @CacheEvict(value = "InstitutionalRoleCache", key = "#entity.getId()")
-  public InstitutionalRole update(InstitutionalRole entity) throws Exception {
+  public DivisionalRole update(DivisionalRole entity) throws Exception {
     return repo.save(entity);
   }
 

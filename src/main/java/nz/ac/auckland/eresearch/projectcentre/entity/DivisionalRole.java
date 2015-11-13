@@ -4,6 +4,7 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,18 +13,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "institutional_role")
-public class InstitutionalRole implements Serializable, HasId {
+public class DivisionalRole implements Serializable, HasId {
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+  @Column(unique = true)
   private String name;
 
-  public InstitutionalRole() {
+  public DivisionalRole() {
   }
 
-  public InstitutionalRole(String name) {
+  public DivisionalRole(String name) {
     super();
     this.name = name;
   }
