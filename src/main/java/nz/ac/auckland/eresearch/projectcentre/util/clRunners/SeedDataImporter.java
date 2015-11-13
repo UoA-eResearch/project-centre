@@ -162,15 +162,16 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   @Override
   public void run(String... args) throws Exception {
+
     int seedLevel = Integer.MAX_VALUE;
     String seedLocation = this.defaultSeed;
     if ( args.length > 0 ) {
       for ( String arg : args ) {
-        if ( arg.startsWith("--seed-location=") ) {
-          seedLocation = arg.substring(16);
-        } else if ( arg.startsWith("--seed-level=")) {
-          String value = arg.substring(14);
-          seedLevel = Integer.parseInt(arg);
+        if ( arg.startsWith("seed-location=") ) {
+          seedLocation = arg.substring(14);
+        } else if ( arg.startsWith("seed-level=")) {
+          String value = arg.substring(11);
+          seedLevel = Integer.parseInt(value);
         }
       }
 

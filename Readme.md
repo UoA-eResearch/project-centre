@@ -57,8 +57,52 @@ Compared to v1 of the project database, we removed the institutionId, department
 a 'affiliation' map which contains the id of the division as key and the id of the role as value. Every Division contains its direct parent, it's 
 top-level Division (for example a faculty), and its institutionId ( modeled using advice from: http://novyden.blogspot.co.nz/2008/01/managing-hierarchical-data-tree-in.html )
 
-### Init with seed data
+### Seed data
 
+For development and testing, *project-centre* can be pre-loaded with sets of seed data using json files (check out seed-data/minimal for an example).
+The data is loaded using a CommandLineRunner class (SeedDataImporter), which supports also loading only certain levels of data:
+
+    mvn spring-boot:run -Dspring.profiles.active="dev" -Drun.arguments="seed-level=2,seed-location=seed-data/minimal"
+    
+Seed levels:
+
+#### 1
+
+ - DivisionalRole
+ - Faculty
+ - Institution
+ - Kpi
+ - KpiCategory
+ - PersonRole
+ - PersonStatus
+ - ProjectActionType
+ - ProjectStatus
+ - ProjectType
+ - ResearchOutputType
+ 
+#### 1
+
+ - Division
+ 
+#### 2
+
+ - Person
+ 
+#### 3
+
+ - PersonProperty
+ 
+#### 4
+
+ - Project
+ 
+#### 5
+
+ - ProjectProperty
+ - ProjectAction
+ - ProjectKpi
+ - ResearchOutput
+ - ExternalReference
 
 
 
