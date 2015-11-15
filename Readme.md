@@ -31,8 +31,18 @@ Google code style for Java is used:
 
     git clone xxx
     cd project-centre
+    
+#### Run using maven
+
     # we use the 'dev' profile for development
     mvn  spring-boot:run  -Dspring.profiles.active="dev"
+    
+#### Run using java
+
+    # we use the 'dev' profile for development
+    mvn clean package
+    java -Dspring.profiles.active="dev" -jar target/projects_centre.jar
+    
     
 ### Run tests
 
