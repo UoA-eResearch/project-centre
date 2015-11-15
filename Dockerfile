@@ -33,8 +33,6 @@ RUN \
     tar xvzf apache-maven-3.3.3-bin.tar.gz &&\
     rm apache-maven-3.3.3-bin.tar.gz
 
-
-
 RUN \
  echo "===> cloning project-centre repo" && \
  cd /opt && \
