@@ -45,6 +45,6 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
 
   @Override
   public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-    throw new RuntimeException("Id and Class permissions are not supperted by " + this.getClass().toString());
+    throw new RuntimeException("Id and Class permissions are not supported by " + this.getClass().toString());
   }
 }
