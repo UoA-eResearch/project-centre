@@ -52,6 +52,12 @@ Google code style for Java is used:
     
 ### Authentication design
 
+Initial admin user can be configured in *application-[profile].properties* file:
+
+    admin.username=admin
+    admin.password=abcdefg
+
+
 TODO: details
 
 ### Schema notes
