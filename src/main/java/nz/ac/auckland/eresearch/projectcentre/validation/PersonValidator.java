@@ -24,12 +24,11 @@ public class PersonValidator implements Validator {
   @Override
   public void validate(Object person, Errors errors) {
     Person p = (Person) person;
-    String[] notEmpty = {"email", "fullName", "institutionalRoleId", "institutionId",
-            "phone", "startDate"};
+    String[] notEmpty = {"email", "fullName", "phone", "startDate"};
     new RejectEmptyValidator(Person.class, notEmpty).validate(person, errors);
     if (!errors.hasErrors()) {
       this.validateEmail(p, errors);
-    }
+   }
   }
 
   private void validateEmail(Person person, Errors errors) {

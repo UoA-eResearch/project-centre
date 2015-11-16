@@ -2,7 +2,12 @@ package nz.ac.auckland.eresearch.projectcentre.entity;
 
 import com.google.common.collect.Maps;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
+import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonDeserializer;
+import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonSerializer;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -18,6 +23,8 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "person")
+@JsonDeserialize(using = PersonJsonDeserializer.class)
+@JsonSerialize(using = PersonJsonSerializer.class)
 public class Person implements Serializable, HasId {
   private static final long serialVersionUID = 1L;
 
@@ -142,7 +149,6 @@ public class Person implements Serializable, HasId {
     this.statusId = statusId;
   }
 
-
   public String getStatus() {
     return status;
   }
@@ -151,4 +157,8 @@ public class Person implements Serializable, HasId {
     this.status = status;
   }
 
+  public void addAffiliation(int divId, Integer divRoleId) {
+    //TODO: maybe put in a validity check here?
+    getAffiliations().put(divId, divRoleId);
+  }
 }

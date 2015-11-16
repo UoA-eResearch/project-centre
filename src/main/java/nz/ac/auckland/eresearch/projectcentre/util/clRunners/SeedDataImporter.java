@@ -23,6 +23,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
+import nz.ac.auckland.eresearch.projectcentre.util.json.JsonDeserializationHelper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
-import org.springframework.data.repository.core.CrudInvoker;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -61,24 +59,10 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   private String defaultSeed;
 
   @Autowired
-  private ObjectMapper om;
-
-  private Repositories repositories = null;
+  private JsonDeserializationHelper jsonHelper;
 
   @Autowired
-  public SeedDataImporter(WebApplicationContext appContext) {
-    repositories = new Repositories(appContext);
-  }
-
-  private CrudInvoker getCrudInvoker(Object entity) {
-    CrudInvoker inv = repositories.getCrudInvoker(entity.getClass());
-    return inv;
-  }
-
-  private Object save(Object entity) {
-    return getCrudInvoker(entity).invokeSave(entity);
-  }
-
+  private ObjectMapper om;
 
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
@@ -102,7 +86,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
         for ( JsonNode node : list ) {
           T value = (T) (om.treeToValue(node, classHolder.getClass()));
           log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
-          save(value);
+          jsonHelper.save(value);
         }
       }
     }

@@ -73,6 +73,11 @@ Compared to v1 of the project database, we removed the institutionId, department
 a 'affiliation' map which contains the id of the division as key and the id of the role as value. Every Division contains its direct parent, it's 
 top-level Division (for example a faculty), and its institutionId ( modeled using advice from: http://novyden.blogspot.co.nz/2008/01/managing-hierarchical-data-tree-in.html )
 
+#### JsonDeserialization
+
+Some fields are both represented as integers (internal db id) and Strings (codes, e.g. for divisions, institutions, ...). In those cases, if 
+JSON is uploaded and both fields are present, the integer value takes precedence and the string one will be ignored.
+
 ### Seed data
 
 For development and testing, *project-centre* can be pre-loaded with sets of seed data using json files (check out seed-data/minimal for an example).
