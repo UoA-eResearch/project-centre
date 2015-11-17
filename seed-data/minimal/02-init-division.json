@@ -12,7 +12,7 @@
   {
     "name": "division 21",
     "code": "div21",
-    "institutionCode": "inst1"
+    "parentCode": "div2"
   },
   {
     "name": "division 3",

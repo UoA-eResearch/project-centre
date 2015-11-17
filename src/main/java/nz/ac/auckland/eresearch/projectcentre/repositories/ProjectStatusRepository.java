@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * Created by markus on 9/11/15.
  */
 public interface ProjectStatusRepository extends CrudRepository<ProjectStatus, Integer> {
+  ProjectStatus findByName(String s);
 }

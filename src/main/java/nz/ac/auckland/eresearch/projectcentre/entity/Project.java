@@ -3,9 +3,13 @@ package nz.ac.auckland.eresearch.projectcentre.entity;
 import com.google.common.collect.Lists;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
+import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonDeserializer;
+import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonSerializer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +24,8 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "project")
+@JsonDeserialize(using = ProjectJsonDeserializer.class)
+@JsonSerialize(using = ProjectJsonSerializer.class)
 public class Project implements Serializable, HasId, HasProjectId {
   private static final long serialVersionUID = 1L;
 

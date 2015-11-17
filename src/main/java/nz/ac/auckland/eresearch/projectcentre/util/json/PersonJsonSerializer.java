@@ -9,7 +9,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionalRoleRepository;
+import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
   @Autowired
   private DivisionRepository divRepo;
   @Autowired
-  private InstitutionalRoleRepository divroleRepo;
+  private DivisionalRoleRepository divroleRepo;
   @Autowired
   private PersonStatusRepository perstatRepo;
 

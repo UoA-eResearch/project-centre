@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by markus on 9/11/15.
  */
-public interface InstitutionalRoleRepository extends CrudRepository<DivisionalRole, Integer> {
+public interface DivisionalRoleRepository extends CrudRepository<DivisionalRole, Integer> {
 
   public DivisionalRole findByName(String name);
 }

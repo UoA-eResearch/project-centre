@@ -18,11 +18,10 @@ RUN \
     DEBIAN_FRONTEND=noninteractive  apt-get install -y --force-yes oracle-java8-installer oracle-java8-set-default git && \
     \
     \
-    echo "===> clean up..."
-#    echo "===> clean up..."  && \
-#    rm -rf /var/cache/oracle-jdk8-installer  && \
-#    apt-get clean  && \
-#    rm -rf /var/lib/apt/lists/*
+    echo "===> clean up..."  && \
+    rm -rf /var/cache/oracle-jdk8-installer  && \
+    apt-get clean  && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN cd /opt
 

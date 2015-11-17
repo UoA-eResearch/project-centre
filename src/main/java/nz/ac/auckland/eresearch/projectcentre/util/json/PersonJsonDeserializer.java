@@ -15,7 +15,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.PersonStatus;
 import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityInvalidException;
 import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionalRoleRepository;
+import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
   @Autowired
   private DivisionRepository divrepo;
   @Autowired
-  private InstitutionalRoleRepository divrolerepo;
+  private DivisionalRoleRepository divrolerepo;
   @Autowired
   private ObjectMapper om;
 

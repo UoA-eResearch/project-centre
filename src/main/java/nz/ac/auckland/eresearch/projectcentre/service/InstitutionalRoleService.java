@@ -1,7 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
-import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionalRoleRepository;
+import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class InstitutionalRoleService extends BaseService<DivisionalRole> {
 
   @Autowired
-  private InstitutionalRoleRepository repo;
+  private DivisionalRoleRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
   @Cacheable(value = "InstitutionalRoleCache", key = "#id")
