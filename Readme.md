@@ -27,6 +27,10 @@ Google code style for Java is used:
  - XML checkstyle check file: https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml => develop/google_checks.xml
  - checkstyle integration as a git hook: https://gist.github.com/davetron5000/37350 also interesting: https://www.link-intersystems.com/blog/2014/12/07/a-git-checkstyle-pre-receive-hook/
 
+### Git history
+
+Use rebase when pulling, we don't want a dirty git history.
+
 ### Getting started
 
     git clone xxx
