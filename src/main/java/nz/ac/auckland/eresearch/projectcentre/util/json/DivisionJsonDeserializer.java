@@ -33,36 +33,36 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
     Division div = null;
     JsonNode id = node.get("id");
-    if ( id != null ) {
+    if (id != null) {
       div = new Division(id.asInt());
     } else {
       div = new Division();
     }
 
 
-    JsonNode code= node.get("code");
-    if ( code != null ) {
+    JsonNode code = node.get("code");
+    if (code != null) {
       div.setCode(code.asText());
     }
 
     JsonNode instId = node.get("institutionId");
-    if ( instId != null ) {
+    if (instId != null) {
       div.setInstitutionId(instId.asInt());
     }
 
     JsonNode instCode = node.get("institutionCode");
-    if ( instCode != null ) {
+    if (instCode != null) {
       div.setInstitutionCode(instCode.asText());
     }
 
     JsonNode top = node.get("top");
-    if ( top != null ) {
+    if (top != null) {
       Division topDiv = assembleDivision(top);
       div.setTop(topDiv);
     }
 
     JsonNode parent = node.get("parent");
-    if ( parent != null ) {
+    if (parent != null) {
       setParent(div, node);
     }
 
@@ -85,11 +85,11 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
         parentNode = node.get("parent");
         if (parentNode != null) {
           // rest assured test framework creates it's own object mapper, which doesn't auto-wire
-          if ( divRepo == null ) {
+          if (divRepo == null) {
             parent = assembleDivision(parentNode);
           } else {
             JsonNode tempNode = parentNode.get("id");
-            if (tempNode != null ) {
+            if (tempNode != null) {
               int tempId = tempNode.asInt();
               parent = divRepo.findOne(tempId);
             }

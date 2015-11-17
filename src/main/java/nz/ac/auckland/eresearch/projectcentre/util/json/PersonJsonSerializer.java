@@ -37,7 +37,7 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
       jgen.writeNumberField("id", p.getId());
     }
 
-    if (p.getEmail() != null ) {
+    if (p.getEmail() != null) {
       jgen.writeStringField("email", p.getEmail());
     }
 
@@ -45,11 +45,11 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
       jgen.writeStringField("fullName", p.getFullName());
     }
 
-    if (p.getPreferredName() != null ) {
+    if (p.getPreferredName() != null) {
       jgen.writeStringField("preferredName", p.getPreferredName());
     }
 
-    if (p.getNotes() != null ) {
+    if (p.getNotes() != null) {
       jgen.writeStringField("notes", p.getNotes());
     }
 
@@ -57,19 +57,19 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
       jgen.writeStringField("phone", p.getPhone());
     }
 
-    if (p.getPictureUrl() != null ) {
+    if (p.getPictureUrl() != null) {
       jgen.writeStringField("pictureUrl", p.getPictureUrl());
     }
 
-    if (p.getStartDate() != null ) {
+    if (p.getStartDate() != null) {
       jgen.writeStringField("startDate", p.getStartDate());
     }
 
-    if (p.getEndDate() != null ) {
+    if (p.getEndDate() != null) {
       jgen.writeStringField("endDate", p.getEndDate());
     }
 
-    if (p.getStatusId() != null ) {
+    if (p.getStatusId() != null) {
       jgen.writeStringField("status", perstatRepo.findOne(p.getStatusId()).getName());
     }
 

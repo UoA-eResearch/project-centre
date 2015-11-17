@@ -36,7 +36,7 @@ public class DivisionJsonSerializer extends JsonSerializer<Division> {
     jgen.writeNumberField("level", level);
     jgen.writeNumberField("institutionId", value.getInstitutionId());
     String instCode = value.getInstitutionCode();
-    if ( instCode == null ) {
+    if (instCode == null) {
       instCode = instRepo.findOne(value.getInstitutionId()).getCode();
     }
     jgen.writeStringField("institutionCode", instCode);

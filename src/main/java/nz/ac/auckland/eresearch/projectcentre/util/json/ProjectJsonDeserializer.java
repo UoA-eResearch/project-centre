@@ -51,17 +51,17 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
     // id
     JsonNode temp = node.get("id");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setId(temp.asInt());
     }
 
     // statusId
     temp = node.get("statusId");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setStatusId(temp.asInt());
     } else {
       temp = node.get("status");
-      if ( temp != null ) {
+      if (temp != null) {
         ProjectStatus stat = projstatrepo.findByName(temp.asText());
         p.setStatusId(stat.getId());
       }
@@ -69,11 +69,11 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
     // type
     temp = node.get("typeId");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setTypeId(temp.asInt());
     } else {
       temp = node.get("type");
-      if ( temp != null ) {
+      if (temp != null) {
         ProjectType type = projtyperepo.findByName(temp.asText());
         p.setTypeId(type.getId());
       }
@@ -81,69 +81,69 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
     // description
     temp = node.get("description");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setDescription(temp.asText());
     }
 
     // endDate
     temp = node.get("endDate");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setEndDate(node.asText());
     }
 
     // startDate
     temp = node.get("startDate");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setStartDate(node.asText());
     }
 
     // notes
     temp = node.get("notes");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setNotes(temp.asText());
     }
 
     // title
     temp = node.get("title");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setTitle(temp.asText());
     }
 
     // code
     temp = node.get("code");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setCode(temp.asText());
     }
 
     // nextReviewDate
     temp = node.get("nextReviewDate");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setNextReviewDate(temp.asText());
     }
 
     // requirements
     temp = node.get("requirements");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setRequirements(temp.asText());
     }
 
     // requirements
     temp = node.get("todo");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setTodo(temp.asText());
     }
 
     // affiliations
     temp = node.get("divisionIds");
-    if ( temp == null ) {
+    if (temp == null) {
       temp = node.get("divisions");
     }
-    if ( temp != null ) {
-      List<Object> divisions = om.convertValue(temp,List.class);
+    if (temp != null) {
+      List<Object> divisions = om.convertValue(temp, List.class);
       List<Integer> divisionIds = Lists.newArrayList();
-      for ( Object div : divisions ) {
+      for (Object div : divisions) {
         Integer divId = -1;
-        if ( div instanceof Integer ) {
+        if (div instanceof Integer) {
           divId = (Integer) div;
         } else {
           try {
@@ -156,7 +156,7 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
             }
             divId = d.getId();
           } catch (ClassCastException cce) {
-            throw new JsonEntityInvalidException("Can't parse divisions/divisionIds field: "+div);
+            throw new JsonEntityInvalidException("Can't parse divisions/divisionIds field: " + div);
           }
         }
         divisionIds.add(divId);

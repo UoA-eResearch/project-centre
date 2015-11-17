@@ -49,94 +49,94 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
 
     // id
     JsonNode temp = node.get("id");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setId(temp.asInt());
     }
 
     // email
     temp = node.get("email");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setEmail(temp.asText());
     }
 
     // full name
     temp = node.get("fullName");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setFullName(temp.asText());
     }
 
     // preferred name
     temp = node.get("preferredName");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setPreferredName(temp.asText());
     }
 
     // notes
     temp = node.get("notes");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setNotes(temp.asText());
     }
 
     // phone
     temp = node.get("phone");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setPhone(temp.asText());
     }
 
     // picture url
     temp = node.get("pictureUrl");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setPictureUrl(temp.asText());
     }
 
     // startdate
     temp = node.get("startDate");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setStartDate(temp.asText());
     }
 
     // enddate
     temp = node.get("endDate");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setEndDate(temp.asText());
     }
 
     // status
     temp = node.get("statusId");
-    if ( temp != null ) {
+    if (temp != null) {
       p.setStatusId(temp.asInt());
     } else {
       temp = node.get("status");
-      if ( temp != null ) {
+      if (temp != null) {
         PersonStatus status = perstatrepo.findByName(temp.asText());
         p.setStatusId(status.getId());
-        if ( status == null ) {
-          throw new JsonEntityNotFoundException("No person status named: "+temp.asText());
+        if (status == null) {
+          throw new JsonEntityNotFoundException("No person status named: " + temp.asText());
         }
       }
     }
 
     // affiliations
     temp = node.get("affiliations");
-    if ( temp != null ) {
+    if (temp != null) {
       Map<String, Object> affiliations = om.convertValue(temp, Map.class);
-      for ( String div : affiliations.keySet() ) {
+      for (String div : affiliations.keySet()) {
         int divId = -1;
         try {
           divId = Integer.parseInt(div);
         } catch (NumberFormatException nfe) {
           // means we'll try the string as code
           Division d = divrepo.findByCode(div);
-          if ( d == null ) {
-            throw new JsonEntityNotFoundException("No division with id/code: "+div);
+          if (d == null) {
+            throw new JsonEntityNotFoundException("No division with id/code: " + div);
           }
           divId = d.getId();
         }
 
         Object value = affiliations.get(div);
         Integer divRoleId = -1;
-        if ( value instanceof Integer ) {
-          divRoleId = (Integer)value;
+        if (value instanceof Integer) {
+          divRoleId = (Integer) value;
         } else {
           try {
             try {
@@ -144,8 +144,8 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
             } catch (NumberFormatException nfe) {
               // means we'll try the string as name
               DivisionalRole dr = divrolerepo.findByName((String) value);
-              if ( dr == null ) {
-                throw new JsonEntityNotFoundException("No divisional role with id/code: "+value);
+              if (dr == null) {
+                throw new JsonEntityNotFoundException("No divisional role with id/code: " + value);
               }
               divRoleId = dr.getId();
             }

@@ -1,12 +1,32 @@
 [
-  {"name": "Book"},
-  {"name": "Conference Proceedings"},
-  {"name": "Grant"},
-  {"name": "Journal Article"},
-  {"name": "Patent"},
-  {"name": "Poster"},
-  {"name": "Software Package"},
-  {"name": "Thesis"},
-  {"name": "Other"},
-  {"name": "Talk"}
+  {
+    "name": "Book"
+  },
+  {
+    "name": "Conference Proceedings"
+  },
+  {
+    "name": "Grant"
+  },
+  {
+    "name": "Journal Article"
+  },
+  {
+    "name": "Patent"
+  },
+  {
+    "name": "Poster"
+  },
+  {
+    "name": "Software Package"
+  },
+  {
+    "name": "Thesis"
+  },
+  {
+    "name": "Other"
+  },
+  {
+    "name": "Talk"
+  }
 ]

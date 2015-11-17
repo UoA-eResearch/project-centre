@@ -67,23 +67,23 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
     //workaround for type erasure at compile time
-    T classHolder  =  type.getConstructor().newInstance();
+    T classHolder = type.getConstructor().newInstance();
 
     String name = type.getCanonicalName();
     Path start = Paths.get(folder);
     int maxDepth = 1;
     try (Stream<Path> stream = Files.find(start, maxDepth, (path, attr) ->
-        String.valueOf(path).toLowerCase().contains("init-"+type.getSimpleName().toLowerCase()+".json"))) {
+            String.valueOf(path).toLowerCase().contains("init-" + type.getSimpleName().toLowerCase() + ".json"))) {
 
       List<File> files = stream
               .sorted()
               .map(p -> p.toFile())
               .collect(Collectors.toList());
 
-      for ( File file : files ) {
+      for (File file : files) {
         log.debug("Reading: {}", file);
-        JsonNode list = (JsonNode)(om.readValue(file, JsonNode.class));
-        for ( JsonNode node : list ) {
+        JsonNode list = (JsonNode) (om.readValue(file, JsonNode.class));
+        for (JsonNode node : list) {
           T value = (T) (om.treeToValue(node, classHolder.getClass()));
           log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
           jsonHelper.save(value);
@@ -95,7 +95,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   public void addSeedData(String seedLocation, int seedLevel) throws Exception {
 
-    if ( seedLevel > 0 ) {
+    if (seedLevel > 0) {
       addData(DivisionalRole.class, seedLocation);
       addData(Facility.class, seedLocation);
       addData(Institution.class, seedLocation);
@@ -109,23 +109,23 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
       addData(ResearchOutputType.class, seedLocation);
     }
 
-    if ( seedLevel > 1 ) {
+    if (seedLevel > 1) {
       addData(Division.class, seedLocation);
     }
 
-    if ( seedLevel > 2 ) {
+    if (seedLevel > 2) {
       addData(Person.class, seedLocation);
     }
 
-    if ( seedLevel > 3 ) {
+    if (seedLevel > 3) {
       addData(PersonProperty.class, seedLocation);
     }
 
-    if ( seedLevel > 4 ) {
+    if (seedLevel > 4) {
       addData(Project.class, seedLocation);
     }
 
-    if ( seedLevel > 5 ) {
+    if (seedLevel > 5) {
       addData(ProjectProperty.class, seedLocation);
       addData(ProjectAction.class, seedLocation);
       //addData(ProjectFacility.class, seedLocation);
@@ -133,7 +133,6 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
       addData(ResearchOutput.class, seedLocation);
       addData(ExternalReference.class, seedLocation);
     }
-
 
 
   }
@@ -149,11 +148,11 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
     int seedLevel = Integer.MAX_VALUE;
     String seedLocation = this.defaultSeed;
-    if ( args.length > 0 ) {
-      for ( String arg : args ) {
-        if ( arg.startsWith("seed-location=") ) {
+    if (args.length > 0) {
+      for (String arg : args) {
+        if (arg.startsWith("seed-location=")) {
           seedLocation = arg.substring(14);
-        } else if ( arg.startsWith("seed-level=")) {
+        } else if (arg.startsWith("seed-level=")) {
           String value = arg.substring(11);
           seedLevel = Integer.parseInt(value);
         }

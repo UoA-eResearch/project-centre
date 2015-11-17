@@ -62,7 +62,7 @@ public class Division implements IHierarchyElement {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
-  public Division(){
+  public Division() {
   }
 
   public Division(int id) {

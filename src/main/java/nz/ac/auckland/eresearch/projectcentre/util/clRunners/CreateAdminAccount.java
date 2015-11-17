@@ -52,32 +52,32 @@ public class CreateAdminAccount implements CommandLineRunner, Ordered {
 
 
   private void createAdminAccount() {
-          String email = "m.binsteiner@auckland.ac.nz";
-      Person p = null;
-      List<Person> persons = personRepo.findByEmail(email);
-      if (persons == null || persons.size() < 1) {
-        p = new Person();
-        p.setFullName("Markus Binsteiner");
-        p.setEmail(email);
-        p = personRepo.save(p);
+    String email = "m.binsteiner@auckland.ac.nz";
+    Person p = null;
+    List<Person> persons = personRepo.findByEmail(email);
+    if (persons == null || persons.size() < 1) {
+      p = new Person();
+      p.setFullName("Markus Binsteiner");
+      p.setEmail(email);
+      p = personRepo.save(p);
 
-        AuthzRole authzRole = new AuthzRole();
-        authzRole.setPersonId(p.getId());
-        authzRole.setRoleName("ROLE_ADMIN");
-        authzroleRepo.save(authzRole);
+      AuthzRole authzRole = new AuthzRole();
+      authzRole.setPersonId(p.getId());
+      authzRole.setRoleName("ROLE_ADMIN");
+      authzroleRepo.save(authzRole);
 
 
-      } else {
-        p = persons.get(0);
-      }
+    } else {
+      p = persons.get(0);
+    }
 
-      Identity id = new Identity(p.getId(), adminUsername, UserDao.PROJECT_DB_SERVICE_NAME);
-      id.setToken(encoder.encode(adminPassword));
-      id.setExpires(LocalDateTime.now().plusYears(10));
-      idRepo.save(id);
-      personRepo.findAll().forEach(
-              (per) -> System.out.println(per.getFullName())
-      );
+    Identity id = new Identity(p.getId(), adminUsername, UserDao.PROJECT_DB_SERVICE_NAME);
+    id.setToken(encoder.encode(adminPassword));
+    id.setExpires(LocalDateTime.now().plusYears(10));
+    idRepo.save(id);
+    personRepo.findAll().forEach(
+            (per) -> System.out.println(per.getFullName())
+    );
   }
 
   @Override

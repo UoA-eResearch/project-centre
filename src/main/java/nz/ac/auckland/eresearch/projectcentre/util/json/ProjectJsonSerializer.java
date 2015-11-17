@@ -40,7 +40,7 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
       jgen.writeNumberField("id", p.getId());
     }
 
-    if (p.getStatusId() != null ) {
+    if (p.getStatusId() != null) {
       jgen.writeStringField("status", projstatrepo.findOne(p.getStatusId()).getName());
     }
 
@@ -48,31 +48,31 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
       jgen.writeStringField("type", projtyperepo.findOne(p.getTypeId()).getName());
     }
 
-    if (p.getDescription() != null ) {
+    if (p.getDescription() != null) {
       jgen.writeStringField("description", p.getDescription());
     }
 
-    if (p.getNotes() != null ) {
+    if (p.getNotes() != null) {
       jgen.writeStringField("notes", p.getNotes());
     }
 
-    if (p.getStartDate() != null ) {
+    if (p.getStartDate() != null) {
       jgen.writeStringField("startDate", p.getStartDate());
     }
 
-    if (p.getEndDate() != null ) {
+    if (p.getEndDate() != null) {
       jgen.writeStringField("endDate", p.getEndDate());
     }
 
-    if (p.getTitle() != null ) {
+    if (p.getTitle() != null) {
       jgen.writeStringField("title", p.getTitle());
     }
 
-    if (p.getCode() != null ) {
+    if (p.getCode() != null) {
       jgen.writeStringField("code", p.getCode());
     }
 
-    if (p.getNextReviewDate() != null ) {
+    if (p.getNextReviewDate() != null) {
       jgen.writeStringField("nextReviewDate", p.getNextReviewDate());
     }
 
@@ -86,7 +86,7 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
 
     if (p.getDivisionIds().size() > 0) {
       jgen.writeArrayFieldStart("divisions");
-      for ( Integer id : p.getDivisionIds() ) {
+      for (Integer id : p.getDivisionIds()) {
         Division div = divRepo.findOne(id);
         jgen.writeString(div.getCode());
 //        om.writeValue(jgen, div); // we could do this too

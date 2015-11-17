@@ -9,7 +9,7 @@
     "notes": "Note 1",
     "status": "Active"
   },
-    {
+  {
     "fullName": "First2 Last2",
     "email": "email2@auckland.ac.nz",
     "phone": "ext 234",
@@ -18,7 +18,7 @@
     "notes": "Note 2",
     "status": "Active"
   },
-    {
+  {
     "fullName": "First3 Last3",
     "preferredName": "PrefF3 PrefL3",
     "email": "email3@auckland.ac.nz",
@@ -27,7 +27,9 @@
     "startDate": "2015-01-03",
     "notes": "Note 3",
     "status": "Active",
-      "affiliations": {"div1": "Intern"}
+    "affiliations": {
+      "div1": "Intern"
+    }
   },
   {
     "fullName": "First4 Last4",
@@ -38,9 +40,9 @@
     "startDate": "2015-01-04",
     "notes": "Note 4",
     "status": "Active",
-      "affiliations": {
-        "div2": "Intern",
-        "div3211": "Staff or Post Doc"
-      }
+    "affiliations": {
+      "div2": "Intern",
+      "div3211": "Staff or Post Doc"
+    }
   }
 ]

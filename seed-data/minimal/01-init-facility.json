@@ -1,5 +1,11 @@
 [
-  {"name": "facility1"},
-  {"name": "facility2"},
-  {"name": "facility3"}
+  {
+    "name": "facility1"
+  },
+  {
+    "name": "facility2"
+  },
+  {
+    "name": "facility3"
+  }
 ]

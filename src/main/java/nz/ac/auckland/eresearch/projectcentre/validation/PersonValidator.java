@@ -28,7 +28,7 @@ public class PersonValidator implements Validator {
     new RejectEmptyValidator(Person.class, notEmpty).validate(person, errors);
     if (!errors.hasErrors()) {
       this.validateEmail(p, errors);
-   }
+    }
   }
 
   private void validateEmail(Person person, Errors errors) {
