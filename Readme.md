@@ -25,7 +25,7 @@ Google code style for Java is used:
  - XML style file for Intellij Idea: https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml
  - Also, checking the style part of the build cycle (not fully configured yet though): https://github.com/checkstyle/checkstyle
  - XML checkstyle check file: https://raw.githubusercontent.com/checkstyle/checkstyle/master/src/main/resources/google_checks.xml => develop/google_checks.xml
- 
+ - checkstyle integration as a git hook: https://gist.github.com/davetron5000/37350
 
 ### Getting started
 
