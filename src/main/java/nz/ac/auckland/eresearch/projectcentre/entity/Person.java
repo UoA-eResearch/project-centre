@@ -11,6 +11,7 @@ import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonSerializer;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Map;
 
 import javax.persistence.ElementCollection;
@@ -37,13 +38,13 @@ public class Person implements Serializable, HasId {
 
   private Integer statusId;
   private String email;
-  private String endDate;
+  private LocalDate endDate;
   private String fullName;
   private String notes;
   private String phone;
   private String pictureUrl;
   private String preferredName;
-  private String startDate;
+  private LocalDate startDate;
   private Timestamp lastModified;
 
   /* To make life easier for clients who would need to resolve ids anyway */
@@ -77,11 +78,11 @@ public class Person implements Serializable, HasId {
     this.email = email;
   }
 
-  public String getEndDate() {
+  public LocalDate getEndDate() {
     return this.endDate;
   }
 
-  public void setEndDate(String endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
@@ -133,11 +134,11 @@ public class Person implements Serializable, HasId {
     this.preferredName = preferredName;
   }
 
-  public String getStartDate() {
+  public LocalDate getStartDate() {
     return this.startDate;
   }
 
-  public void setStartDate(String startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 

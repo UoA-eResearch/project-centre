@@ -23,7 +23,9 @@ import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectTypeRepository
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by markus on 16/11/15.
@@ -87,14 +89,16 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
     // endDate
     temp = node.get("endDate");
-    if (temp != null) {
-      p.setEndDate(node.asText());
+    Optional<String> text = JsonHelpers.checkNodeExistsAndNotEmptyString(temp);
+    if (text.isPresent()) {
+      p.setEndDate(LocalDate.parse(text.get()));
     }
 
     // startDate
     temp = node.get("startDate");
-    if (temp != null) {
-      p.setStartDate(node.asText());
+    text = JsonHelpers.checkNodeExistsAndNotEmptyString(temp);
+    if (text.isPresent()) {
+      p.setStartDate(LocalDate.parse(text.get()));
     }
 
     // notes
@@ -117,8 +121,9 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
     // nextReviewDate
     temp = node.get("nextReviewDate");
-    if (temp != null) {
-      p.setNextReviewDate(temp.asText());
+    text = JsonHelpers.checkNodeExistsAndNotEmptyString(temp);
+    if (text.isPresent()) {
+      p.setNextReviewDate(LocalDate.parse(text.get()));
     }
 
     // requirements

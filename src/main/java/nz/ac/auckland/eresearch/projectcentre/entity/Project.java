@@ -12,6 +12,7 @@ import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonSerializer;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
@@ -38,13 +39,13 @@ public class Project implements Serializable, HasId, HasProjectId {
   private Integer statusId;
   private Integer typeId;
   private String description;
-  private String endDate;
+  private LocalDate endDate;
   private String title;
-  private String nextReviewDate;
+  private LocalDate nextReviewDate;
   private String notes;
   private String code;
   private String requirements;
-  private String startDate;
+  private LocalDate startDate;
   private String todo;
 
   /* To make life easier for clients who would need to resolve ids anyway */
@@ -61,9 +62,9 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
   public Project(String code, String description,
-                 String endDate,
-                 String nextReviewDate, String notes, String requirements,
-                 String startDate, Integer statusId, String title, Integer typeId, String todo) {
+                 LocalDate endDate,
+                 LocalDate nextReviewDate, String notes, String requirements,
+                 LocalDate startDate, Integer statusId, String title, Integer typeId, String todo) {
     super();
     this.description = description;
     this.endDate = endDate;
@@ -109,11 +110,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
 
-  public String getEndDate() {
+  public LocalDate getEndDate() {
     return this.endDate;
   }
 
-  public void setEndDate(String endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
@@ -125,11 +126,11 @@ public class Project implements Serializable, HasId, HasProjectId {
     this.title = title;
   }
 
-  public String getNextReviewDate() {
+  public LocalDate getNextReviewDate() {
     return this.nextReviewDate;
   }
 
-  public void setNextReviewDate(String nextReviewDate) {
+  public void setNextReviewDate(LocalDate nextReviewDate) {
     this.nextReviewDate = nextReviewDate;
   }
 
@@ -165,11 +166,11 @@ public class Project implements Serializable, HasId, HasProjectId {
     this.requirements = requirements;
   }
 
-  public String getStartDate() {
+  public LocalDate getStartDate() {
     return this.startDate;
   }
 
-  public void setStartDate(String startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 

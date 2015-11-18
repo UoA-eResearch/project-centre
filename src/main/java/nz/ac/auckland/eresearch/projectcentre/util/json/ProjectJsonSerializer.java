@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by markus on 11/11/15.
@@ -63,11 +64,11 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
     }
 
     if (p.getStartDate() != null) {
-      jgen.writeStringField("startDate", p.getStartDate());
+      jgen.writeStringField("startDate", p.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     if (p.getEndDate() != null) {
-      jgen.writeStringField("endDate", p.getEndDate());
+      jgen.writeStringField("endDate", p.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     if (p.getTitle() != null) {
@@ -79,7 +80,7 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
     }
 
     if (p.getNextReviewDate() != null) {
-      jgen.writeStringField("nextReviewDate", p.getNextReviewDate());
+      jgen.writeStringField("nextReviewDate", p.getNextReviewDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     if (p.getRequirements() != null) {

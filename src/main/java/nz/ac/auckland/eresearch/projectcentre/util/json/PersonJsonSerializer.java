@@ -15,6 +15,7 @@ import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by markus on 11/11/15.
@@ -62,11 +63,11 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
     }
 
     if (p.getStartDate() != null) {
-      jgen.writeStringField("startDate", p.getStartDate());
+      jgen.writeStringField("startDate", p.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     if (p.getEndDate() != null) {
-      jgen.writeStringField("endDate", p.getEndDate());
+      jgen.writeStringField("endDate", p.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     if (p.getStatusId() != null) {

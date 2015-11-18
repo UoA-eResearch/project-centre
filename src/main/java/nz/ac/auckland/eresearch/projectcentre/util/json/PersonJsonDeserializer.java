@@ -21,7 +21,9 @@ import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by markus on 16/11/15.
@@ -91,14 +93,16 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
 
     // startdate
     temp = node.get("startDate");
-    if (temp != null) {
-      p.setStartDate(temp.asText());
+    Optional<String> text = JsonHelpers.checkNodeExistsAndNotEmptyString(temp);
+    if (text.isPresent()) {
+      p.setStartDate(LocalDate.parse(text.get()));
     }
 
     // enddate
     temp = node.get("endDate");
-    if (temp != null) {
-      p.setEndDate(temp.asText());
+    text = JsonHelpers.checkNodeExistsAndNotEmptyString(temp);
+    if (text.isPresent()) {
+      p.setEndDate(LocalDate.parse(text.get()));
     }
 
     // status
