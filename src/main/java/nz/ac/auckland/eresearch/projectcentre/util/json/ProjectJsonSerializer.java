@@ -97,7 +97,7 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
         Division div = divRepo.findOne(id);
         if (div == null) {
           // this is a serious issue, would point to some sort of db corruption
-          log.error("Could not find division with id '{}' for project '{}", id, p.getId());
+          log.error("Could not find division with id '{}' for project '{}'", id, p.getId());
           throw new JsonEntityNotFoundException("No division with id " + id + " found. Please contact an administrator.");
         }
         jgen.writeString(div.getCode());
