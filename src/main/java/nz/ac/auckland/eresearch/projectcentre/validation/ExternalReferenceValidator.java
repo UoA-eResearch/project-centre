@@ -1,20 +1,20 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.ExternalReference;
-import nz.ac.auckland.eresearch.projectcentre.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
+
 @Component
 public class ExternalReferenceValidator implements Validator {
 
   @Autowired
   ValidationUtil validationUtil;
-  @Autowired
-  DateUtil dateUtil;
+
 
   @Override
   public boolean supports(Class<?> clazz) {
@@ -29,7 +29,7 @@ public class ExternalReferenceValidator implements Validator {
     if (!errors.hasErrors()) {
       this.validationUtil.validateProjectId(er.getProjectId(), errors);
     }
-    er.setDate(dateUtil.getCurrentDate());
+    er.setDate(LocalDate.now());
   }
 
 }

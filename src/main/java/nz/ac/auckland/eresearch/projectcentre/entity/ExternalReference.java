@@ -4,12 +4,14 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "external_reference")
@@ -19,9 +21,10 @@ public class ExternalReference implements Serializable, HasId, HasProjectId {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+  @NotNull
   private Integer projectId;
   private String description;
-  private String date;
+  private LocalDate date;
   private String uri;
 
   public ExternalReference() {
@@ -67,11 +70,11 @@ public class ExternalReference implements Serializable, HasId, HasProjectId {
     this.projectId = projectId;
   }
 
-  public String getDate() {
+  public LocalDate getDate() {
     return this.date;
   }
 
-  public void setDate(String date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 

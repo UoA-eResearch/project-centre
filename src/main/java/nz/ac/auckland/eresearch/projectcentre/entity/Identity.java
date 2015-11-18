@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by markus on 9/11/15.
@@ -19,9 +21,13 @@ public class Identity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
-
+  @NotNull
   private Integer personId;
+  @NotNull
+  @Size(min = 1)
   private String username;
+  @NotNull
+  @Size(min = 1)
   private String service;
 
   private Timestamp created;

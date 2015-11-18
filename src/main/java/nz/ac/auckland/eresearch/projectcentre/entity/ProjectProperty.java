@@ -11,7 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "project_properties")
@@ -22,13 +23,13 @@ public class ProjectProperty implements Serializable, HasId, HasProjectId {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   private Integer facilityId;
+  @NotNull
   private Integer projectId;
+  @NotNull
+  @Size(min = 1)
   private String propname;
   private String propvalue;
   private Timestamp timestamp;
-
-  @Transient
-  private String facilityName;
 
   public ProjectProperty() {
   }
@@ -89,14 +90,6 @@ public class ProjectProperty implements Serializable, HasId, HasProjectId {
 
   public void setTimestamp(Timestamp timestamp) {
     this.timestamp = timestamp;
-  }
-
-  public String getFacilityName() {
-    return facilityName;
-  }
-
-  public void setFacilityName(String facilityName) {
-    this.facilityName = facilityName;
   }
 
 }

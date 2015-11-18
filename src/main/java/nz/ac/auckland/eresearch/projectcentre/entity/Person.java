@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sun.istack.internal.NotNull;
 
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonDeserializer;
@@ -14,13 +15,14 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "person")
@@ -37,8 +39,11 @@ public class Person implements Serializable, HasId {
   private Map<Integer, Integer> affiliations = Maps.newHashMap();
 
   private Integer statusId;
+  @Column(unique = true)
   private String email;
   private LocalDate endDate;
+  @NotNull
+  @Size(min = 1)
   private String fullName;
   private String notes;
   private String phone;
@@ -46,10 +51,6 @@ public class Person implements Serializable, HasId {
   private String preferredName;
   private LocalDate startDate;
   private Timestamp lastModified;
-
-  /* To make life easier for clients who would need to resolve ids anyway */
-  @Transient
-  private String status;
 
   public Person() {
   }
@@ -148,14 +149,6 @@ public class Person implements Serializable, HasId {
 
   public void setStatusId(Integer statusId) {
     this.statusId = statusId;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
   }
 
   public void addAffiliation(int divId, Integer divRoleId) {

@@ -95,10 +95,10 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
       jgen.writeArrayFieldStart("divisions");
       for (Integer id : p.getDivisionIds()) {
         Division div = divRepo.findOne(id);
-        if ( div == null ) {
+        if (div == null) {
           // this is a serious issue, would point to some sort of db corruption
           log.error("Could not find division with id '{}' for project '{}", id, p.getId());
-          throw new JsonEntityNotFoundException("No division with id "+id+" found. Please contact an administrator.");
+          throw new JsonEntityNotFoundException("No division with id " + id + " found. Please contact an administrator.");
         }
         jgen.writeString(div.getCode());
 //        om.writeValue(jgen, div); // we could do this too

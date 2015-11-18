@@ -28,7 +28,7 @@ public class JsonDeserializationHelper {
 
   private <T> CrudRepository<T, Serializable> getCrudRepository(T cls) {
     Object inv = repositories.getRepositoryFor(cls.getClass());
-    return (CrudRepository<T, Serializable>)inv;
+    return (CrudRepository<T, Serializable>) inv;
 
   }
 

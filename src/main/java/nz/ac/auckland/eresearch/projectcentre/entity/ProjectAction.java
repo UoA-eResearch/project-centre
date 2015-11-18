@@ -4,35 +4,37 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "project_action")
 public class ProjectAction implements Serializable, HasId, HasProjectId {
   private static final long serialVersionUID = 1L;
-  @Transient
-  String actionType;
-  @Transient
-  String personFullName;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+  @NotNull
   private Integer actionTypeId;
-  private String date;
+  @NotNull
+  private LocalDate date;
   private String notes;
+  @NotNull
   private Integer personId;
+  @NotNull
   private Integer projectId;
 
   public ProjectAction() {
   }
 
-  public ProjectAction(Integer actionTypeId, String date, String notes,
+  public ProjectAction(Integer actionTypeId, LocalDate date, String notes,
                        int personId, Integer projectId) {
     super();
     this.actionTypeId = actionTypeId;
@@ -58,11 +60,11 @@ public class ProjectAction implements Serializable, HasId, HasProjectId {
     this.actionTypeId = actionTypeId;
   }
 
-  public String getDate() {
+  public LocalDate getDate() {
     return this.date;
   }
 
-  public void setDate(String date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
@@ -88,22 +90,6 @@ public class ProjectAction implements Serializable, HasId, HasProjectId {
 
   public void setProjectId(Integer projectId) {
     this.projectId = projectId;
-  }
-
-  public String getActionType() {
-    return actionType;
-  }
-
-  public void setActionType(String actionType) {
-    this.actionType = actionType;
-  }
-
-  public String getPersonFullName() {
-    return personFullName;
-  }
-
-  public void setPersonFullName(String personFullName) {
-    this.personFullName = personFullName;
   }
 
 }

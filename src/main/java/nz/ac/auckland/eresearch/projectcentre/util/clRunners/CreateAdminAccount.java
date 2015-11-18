@@ -38,7 +38,7 @@ public class CreateAdminAccount implements CommandLineRunner, Ordered {
   private String adminUsername;
   @Value("${admin.password}")
   private String adminPassword;
-  @Value("${admin.email:no@ema.il}" )
+  @Value("${admin.email:no@ema.il}")
   private String adminEmail;
 
   @Autowired

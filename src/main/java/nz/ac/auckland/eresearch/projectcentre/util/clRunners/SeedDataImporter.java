@@ -151,7 +151,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
 
     boolean already_contains_data = instrepo.findAll().iterator().hasNext();
-    if ( already_contains_data ) {
+    if (already_contains_data) {
       log.debug("There already seems to be data in the db, skipping seeding of data.");
       return;
     }

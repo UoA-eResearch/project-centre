@@ -8,12 +8,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.Institution;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by markus on 10/11/15.
@@ -29,7 +31,7 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
   /*
   This is only used when deserializing without JPA in TestCases.
    */
-  private Division assembleDivision(JsonNode node) {
+  private Division assembleDivision(JsonNode node) throws JsonEntityNotFoundException {
 
     Division div = null;
     JsonNode id = node.get("id");
@@ -51,8 +53,13 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
     }
 
     JsonNode instCode = node.get("institutionCode");
-    if (instCode != null) {
-      div.setInstitutionCode(instCode.asText());
+    Optional<String> instCodeString = JsonHelpers.checkNodeExistsAndNotEmptyString(instCode);
+    if (instCodeString.isPresent()) {
+      Institution i = instRepo.findByCode(instCodeString.get());
+      if (i == null) {
+        throw new JsonEntityNotFoundException("Could not find institution for code: " + instCodeString.get());
+      }
+      div.setInstitutionId(i.getId());
     }
 
     JsonNode top = node.get("top");
@@ -70,7 +77,7 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
   }
 
-  private Division setParent(Division div, JsonNode node) {
+  private Division setParent(Division div, JsonNode node) throws JsonEntityNotFoundException {
 
     Division parent = null;
 
@@ -100,8 +107,6 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
     if (parent != null) {
       div.setParent(parent);
-      div.setParentCode(parent.getCode());
-      div.setParentId(parent.getId());
     }
 
     return parent;

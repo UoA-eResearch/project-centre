@@ -1,5 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
+import com.sun.istack.internal.NotNull;
+
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 
 import java.io.Serializable;
@@ -10,16 +12,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "institutional_role")
+@Table(name = "divisional_role")
 public class DivisionalRole implements Serializable, HasId {
+
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   @Column(unique = true)
+  @NotNull
+  @Size(min = 1)
   private String name;
 
   public DivisionalRole() {

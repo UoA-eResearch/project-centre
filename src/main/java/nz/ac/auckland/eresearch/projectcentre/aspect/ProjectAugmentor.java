@@ -1,11 +1,5 @@
 package nz.ac.auckland.eresearch.projectcentre.aspect;
 
-import com.google.common.collect.Lists;
-
-import nz.ac.auckland.eresearch.projectcentre.entity.Division;
-import nz.ac.auckland.eresearch.projectcentre.entity.Project;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
 import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
 import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
@@ -14,8 +8,6 @@ import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Aspect
 @Component
@@ -51,41 +43,41 @@ public class ProjectAugmentor {
 //    return projects;
 //  }
 
-  private void augmentProjects(List<Project> projects) {
-    if (projects != null) {
-      for (Project p : projects) {
-        this.augmentProject(p);
-      }
-    }
-  }
+//  private void augmentProjects(List<Project> projects) {
+//    if (projects != null) {
+//      for (Project p : projects) {
+//        this.augmentProject(p);
+//      }
+//    }
+//  }
 
-  private void augmentProject(Project p) {
-    if (p != null) {
-
-
-      List<Integer> divIds = p.getDivisionIds();
-      if (divIds != null && divIds.size() > 0) {
-        List<String> divStrings = Lists.newArrayList();
-        for (Integer divId : divIds) {
-          Division div = this.divisionService.findOne(divId);
-          divStrings.add(div.getName());
-        }
-        p.setDivisions(divStrings);
-      }
-
-
-      Integer statusId = p.getStatusId();
-      if (statusId != null) {
-        ProjectStatus stat = this.projectStatusService.findOne(statusId);
-        p.setStatus((stat == null) ? null : stat.getName());
-      }
-
-      Integer typeId = p.getTypeId();
-      if (typeId != null) {
-        ProjectType type = this.projectTypeService.findOne(typeId);
-        p.setType((type == null) ? null : type.getName());
-      }
-    }
-  }
+//  private void augmentProject(Project p) {
+//    if (p != null) {
+//
+//
+//      List<Integer> divIds = p.getDivisionIds();
+//      if (divIds != null && divIds.size() > 0) {
+//        List<String> divStrings = Lists.newArrayList();
+//        for (Integer divId : divIds) {
+//          Division div = this.divisionService.findOne(divId);
+//          divStrings.add(div.getName());
+//        }
+//        p.setDivisions(divStrings);
+//      }
+//
+//
+//      Integer statusId = p.getStatusId();
+//      if (statusId != null) {
+//        ProjectStatus stat = this.projectStatusService.findOne(statusId);
+//        p.setStatus((stat == null) ? null : stat.getName());
+//      }
+//
+//      Integer typeId = p.getTypeId();
+//      if (typeId != null) {
+//        ProjectType type = this.projectTypeService.findOne(typeId);
+//        p.setType((type == null) ? null : type.getName());
+//      }
+//    }
+//  }
 
 }

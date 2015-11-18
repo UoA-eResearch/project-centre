@@ -2,12 +2,13 @@ package nz.ac.auckland.eresearch.projectcentre.validation;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectAction;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectActionService;
-import nz.ac.auckland.eresearch.projectcentre.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.time.LocalDate;
 
 @Component
 public class ProjectActionValidator implements Validator {
@@ -16,8 +17,6 @@ public class ProjectActionValidator implements Validator {
   ProjectActionService projectActionService;
   @Autowired
   ValidationUtil validationUtil;
-  @Autowired
-  DateUtil dateUtil;
 
   @Override
   public boolean supports(Class<?> clazz) {
@@ -34,7 +33,7 @@ public class ProjectActionValidator implements Validator {
       this.validationUtil.validatePersonId(pa.getPersonId(), errors);
       this.validateActionTypeId(pa.getActionTypeId(), errors);
     }
-    pa.setDate(dateUtil.getCurrentDate());
+    pa.setDate(LocalDate.now());
   }
 
   public void validateActionTypeId(Integer actionTypeId, Errors errors) {

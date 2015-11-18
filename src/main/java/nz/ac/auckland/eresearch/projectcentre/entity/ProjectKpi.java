@@ -4,6 +4,7 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,14 +32,14 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
   private Integer kpiCategoryId;
   private Integer personId;
   private Integer projectId;
-  private String date;
+  private LocalDate date;
   private String notes;
   private Float value;
 
   public ProjectKpi() {
   }
 
-  public ProjectKpi(Integer kpiCategoryId, String date, Integer kpiId,
+  public ProjectKpi(Integer kpiCategoryId, LocalDate date, Integer kpiId,
                     String notes, int personId, Integer projectId, float value) {
     super();
     this.date = date;
@@ -65,11 +66,11 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
     this.kpiCategoryId = kpiCategoryId;
   }
 
-  public String getDate() {
+  public LocalDate getDate() {
     return this.date;
   }
 
-  public void setDate(String date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 

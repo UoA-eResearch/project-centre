@@ -3,6 +3,7 @@ package nz.ac.auckland.eresearch.projectcentre.controller;
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.entity.PersonProject;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectFacility;
+import nz.ac.auckland.eresearch.projectcentre.repositories.PersonRepository;
 import nz.ac.auckland.eresearch.projectcentre.service.FacilityService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectActionService;
@@ -36,6 +37,8 @@ public class ProjectWrapperController {
   @Autowired
   PersonProjectService personProjectService;
   @Autowired
+  PersonRepository personRepo;
+  @Autowired
   ResearchOutputService researchOutputService;
   @Autowired
   ProjectActionService projectActionService;
@@ -66,7 +69,9 @@ public class ProjectWrapperController {
     Iterable<PersonProject> pps = this.personProjectService.findByProjectId(projectId);
     if (pps != null) {
       for (PersonProject pp : pps) {
-        persons.add(pp.getPerson());
+        Integer pid = pp.getPersonId();
+        Person persTemp = personRepo.findOne(pid);
+        persons.add(persTemp);
       }
     }
     pw.setPersons(persons);

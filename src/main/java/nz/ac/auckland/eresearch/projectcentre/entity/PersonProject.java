@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "person_project")
@@ -21,17 +21,12 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   private String notes;
+  @NotNull
   private Integer personId;
+  @NotNull
   private Integer personRoleId;
+  @NotNull
   private Integer projectId;
-
-  /* To make life easier for clients who would need to resolve projects and persons anyway */
-  @Transient
-  private Person person;
-  @Transient
-  private Project project;
-  @Transient
-  private String personRole;
 
   public PersonProject() {
   }
@@ -85,28 +80,5 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
     this.projectId = projectId;
   }
 
-  public Person getPerson() {
-    return person;
-  }
-
-  public void setPerson(Person person) {
-    this.person = person;
-  }
-
-  public Project getProject() {
-    return project;
-  }
-
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
-  public String getPersonRole() {
-    return personRole;
-  }
-
-  public void setPersonRole(String personRole) {
-    this.personRole = personRole;
-  }
 
 }

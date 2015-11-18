@@ -20,46 +20,41 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by markus on 10/11/15. <p> Implemented using the pattern found here:
  * http://novyden.blogspot.co.nz/2008/01/managing-hierarchical-data-tree-in.html
  */
 @Entity
-@Table(name = "division_table")
+@Table(name = "division")
 @EntityListeners({HierarchyListener.class})
 @JsonDeserialize(using = DivisionJsonDeserializer.class)
 @JsonSerialize(using = DivisionJsonSerializer.class)
 public class Division implements IHierarchyElement {
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "PARENT_ID")
+  @JoinColumn(name = "parent_div_id")
   private Division parent;
   @Basic(optional = false)
-  @Column(name = "LEVEL", nullable = false)
+  @Column(name = "level", nullable = false)
   private Short level;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "TOP_ID")
+  @JoinColumn(name = "top_div_id")
   @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
   private Division top;
 
   private String name;
+
   @Column(unique = true)
+  @NotNull
+  @Size(min = 1)
   private String code;
 
+  @NotNull
   private Integer institutionId;
 
-  // parentCode is just a convenience field, parent field itself will always have precedence
-  @Transient
-  private String parentCode;
-
-  // parentId is just a convenience field, parent field itself will always have precedence
-  @Transient
-  private Integer parentId;
-  // institutionCode is just a convenience field, id will always have precedence
-  @Transient
-  private String institutionCode;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
@@ -69,30 +64,6 @@ public class Division implements IHierarchyElement {
 
   public Division(int id) {
     setId(id);
-  }
-
-  public Integer getParentId() {
-    return parentId;
-  }
-
-  public void setParentId(Integer parentId) {
-    this.parentId = parentId;
-  }
-
-  public String getInstitutionCode() {
-    return institutionCode;
-  }
-
-  public void setInstitutionCode(String institutionCode) {
-    this.institutionCode = institutionCode;
-  }
-
-  public String getParentCode() {
-    return parentCode;
-  }
-
-  public void setParentCode(String parentCode) {
-    this.parentCode = parentCode;
   }
 
   public Integer getId() {

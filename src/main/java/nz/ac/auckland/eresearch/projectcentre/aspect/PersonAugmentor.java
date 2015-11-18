@@ -1,7 +1,6 @@
 package nz.ac.auckland.eresearch.projectcentre.aspect;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
-import nz.ac.auckland.eresearch.projectcentre.entity.PersonStatus;
 import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
 import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.InstitutionalRoleService;
@@ -73,11 +72,11 @@ public class PersonAugmentor {
 //				p.setDepartment((dep == null) ? null : dep.getName());
 //			}
 
-      Integer statusId = p.getStatusId();
-      if (statusId != null) {
-        PersonStatus status = this.personStatusService.findOne(statusId);
-        p.setStatus((status == null) ? null : status.getName());
-      }
+//      Integer statusId = p.getStatusId();
+//      if (statusId != null) {
+//        PersonStatus status = this.personStatusService.findOne(statusId);
+//        p.setStatus((status == null) ? null : status.getName());
+//      }
 
 //			Integer instRoleId = p.getInstitutionalRoleId();
 //			if (instRoleId != null) {

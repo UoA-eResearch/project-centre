@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "institution")
@@ -20,7 +22,11 @@ public class Institution implements Serializable, HasId {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   @Column(unique = true)
+  @NotNull
+  @Size(min = 1)
   private String code;
+  @NotNull
+  @Size(min = 1)
   private String name;
 
   public Institution() {

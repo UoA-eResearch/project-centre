@@ -4,13 +4,14 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "research_output")
@@ -21,22 +22,20 @@ public class ResearchOutput implements Serializable, HasId, HasProjectId {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
   private Integer personId;
+  @NotNull
   private Integer projectId;
+  @NotNull
   private Integer typeId;
-  private String date;
+  private LocalDate date;
   private String description;
   private String uri;
   private String doi;
 
-  @Transient
-  private String type;
-  @Transient
-  private String personFullName;
 
   public ResearchOutput() {
   }
 
-  public ResearchOutput(String date, String description, String doi,
+  public ResearchOutput(LocalDate date, String description, String doi,
                         String uri, byte pending, Integer personId, Integer projectId,
                         Integer typeId) {
     super();
@@ -57,11 +56,11 @@ public class ResearchOutput implements Serializable, HasId, HasProjectId {
     this.id = id;
   }
 
-  public String getDate() {
+  public LocalDate getDate() {
     return this.date;
   }
 
-  public void setDate(String date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
@@ -113,20 +112,5 @@ public class ResearchOutput implements Serializable, HasId, HasProjectId {
     this.typeId = typeId;
   }
 
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
-
-  public String getPersonFullName() {
-    return personFullName;
-  }
-
-  public void setPersonFullName(String personFullName) {
-    this.personFullName = personFullName;
-  }
 
 }

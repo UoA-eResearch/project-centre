@@ -15,13 +15,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "project")
@@ -36,27 +38,25 @@ public class Project implements Serializable, HasId, HasProjectId {
 
   @ElementCollection
   private List<Integer> divisionIds = Lists.newArrayList();
+  @NotNull
   private Integer statusId;
+  @NotNull
   private Integer typeId;
   private String description;
   private LocalDate endDate;
+  @NotNull
   private String title;
+  @NotNull // probably good to force that
   private LocalDate nextReviewDate;
   private String notes;
+  @Column(unique = true)
+  @NotNull
+  @Size(min = 1)
   private String code;
   private String requirements;
+  @NotNull
   private LocalDate startDate;
   private String todo;
-
-  /* To make life easier for clients who would need to resolve ids anyway */
-  @Transient
-  private List<String> divisions;
-  @Transient
-  private List<String> institutions;
-  @Transient
-  private String status;
-  @Transient
-  private String type;
 
   public Project() {
   }
@@ -190,38 +190,6 @@ public class Project implements Serializable, HasId, HasProjectId {
     this.todo = todo;
   }
 
-
-  public List<String> getDivision() {
-    return divisions;
-  }
-
-  public void setDivisions(List<String> divisions) {
-    this.divisions = divisions;
-  }
-
-  public List<String> getInstitutions() {
-    return institutions;
-  }
-
-  public void setInstitutions(List<String> institutions) {
-    this.institutions = institutions;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 
 }
  

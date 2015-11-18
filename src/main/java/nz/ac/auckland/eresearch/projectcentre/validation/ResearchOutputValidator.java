@@ -3,20 +3,19 @@ package nz.ac.auckland.eresearch.projectcentre.validation;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
 import nz.ac.auckland.eresearch.projectcentre.service.ResearchOutputTypeService;
-import nz.ac.auckland.eresearch.projectcentre.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
+
 @Component
 public class ResearchOutputValidator implements Validator {
 
   @Autowired
   ValidationUtil validationUtil;
-  @Autowired
-  DateUtil dateUtil;
   @Autowired
   ResearchOutputTypeService service;
 
@@ -35,7 +34,7 @@ public class ResearchOutputValidator implements Validator {
       this.validationUtil.validatePersonId(ro.getPersonId(), errors);
       this.validateResearchOutputTypeId(ro.getTypeId(), errors);
     }
-    ro.setDate(dateUtil.getCurrentDate());
+    ro.setDate(LocalDate.now());
   }
 
   public void validateResearchOutputTypeId(Integer id, Errors errors) {

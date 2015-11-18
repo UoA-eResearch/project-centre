@@ -5,20 +5,19 @@ import nz.ac.auckland.eresearch.projectcentre.entity.KpiCategory;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectKpi;
 import nz.ac.auckland.eresearch.projectcentre.service.KpiCategoryService;
 import nz.ac.auckland.eresearch.projectcentre.service.KpiService;
-import nz.ac.auckland.eresearch.projectcentre.util.DateUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.LocalDate;
+
 @Component
 public class ProjectKpiValidator implements Validator {
 
   @Autowired
   ValidationUtil validationUtil;
-  @Autowired
-  DateUtil dateUtil;
   @Autowired
   KpiService kpiService;
   @Autowired
@@ -42,7 +41,7 @@ public class ProjectKpiValidator implements Validator {
         this.validateKpiId(pk.getKpiCategoryId(), errors);
       }
     }
-    pk.setDate(dateUtil.getCurrentDate());
+    pk.setDate(LocalDate.now());
 
   }
 
