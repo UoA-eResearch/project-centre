@@ -49,11 +49,10 @@ public class UserDao {
         throw new RuntimeException("More than one users with username: " + username + ". Please contact an administrator.");
       }
 
-      int idid = ids.get(0).getId();
+      int idid = ids.get(0).getPersonId();
 
       Person p = personrepo.findOne(idid);
 
-      System.out.println(p.toString());
       Collection<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
       List<AuthzRole> aRoles = authzrolerepo.findByPersonId(idid);
       for (AuthzRole a : aRoles) {

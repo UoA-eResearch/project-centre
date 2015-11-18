@@ -38,9 +38,9 @@
     "requirements": "proj req 3",
     "todo": "proj todo 3",
     "divisions": [
-      1,
-      2,
-      3
+      "div1",
+      "div2",
+      "div3"
     ]
   },
   {

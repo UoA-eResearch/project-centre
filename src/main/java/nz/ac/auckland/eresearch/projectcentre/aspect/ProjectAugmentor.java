@@ -11,8 +11,6 @@ import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,26 +30,26 @@ public class ProjectAugmentor {
   @Autowired
   private ProjectTypeService projectTypeService;
 
-  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findOne(*)) && args(id)")
-  public Project augmentProjectFindOne(ProceedingJoinPoint method, Integer id) throws Throwable {
-    Project p = (Project) method.proceed(new Object[]{id});
-    this.augmentProject(p);
-    return p;
-  }
-
-  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findByCode(*)) && args(code)")
-  public List<Project> augmentProjectFindByTitle(ProceedingJoinPoint method, String code) throws Throwable {
-    List<Project> projects = (List<Project>) method.proceed(new Object[]{code});
-    this.augmentProjects(projects);
-    return projects;
-  }
-
-  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findAll())")
-  public List<Project> augmentProjectFindAll(ProceedingJoinPoint method) throws Throwable {
-    List<Project> projects = (List<Project>) method.proceed();
-    this.augmentProjects(projects);
-    return projects;
-  }
+//  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findOne(*)) && args(id)")
+//  public Project augmentProjectFindOne(ProceedingJoinPoint method, Integer id) throws Throwable {
+//    Project p = (Project) method.proceed(new Object[]{id});
+//    this.augmentProject(p);
+//    return p;
+//  }
+//
+//  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findByCode(*)) && args(code)")
+//  public List<Project> augmentProjectFindByTitle(ProceedingJoinPoint method, String code) throws Throwable {
+//    List<Project> projects = (List<Project>) method.proceed(new Object[]{code});
+//    this.augmentProjects(projects);
+//    return projects;
+//  }
+//
+//  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.repositories.ProjectRepository.findAll())")
+//  public List<Project> augmentProjectFindAll(ProceedingJoinPoint method) throws Throwable {
+//    List<Project> projects = (List<Project>) method.proceed();
+//    this.augmentProjects(projects);
+//    return projects;
+//  }
 
   private void augmentProjects(List<Project> projects) {
     if (projects != null) {

@@ -8,10 +8,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectStatusRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectTypeRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
@@ -20,6 +23,9 @@ import java.io.IOException;
  * Created by markus on 11/11/15.
  */
 public class ProjectJsonSerializer extends JsonSerializer<Project> {
+
+  private Logger log = LoggerFactory.getLogger(ProjectJsonSerializer.class);
+
 
   @Autowired
   private DivisionRepository divRepo;
@@ -88,6 +94,11 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
       jgen.writeArrayFieldStart("divisions");
       for (Integer id : p.getDivisionIds()) {
         Division div = divRepo.findOne(id);
+        if ( div == null ) {
+          // this is a serious issue, would point to some sort of db corruption
+          log.error("Could not find division with id '{}' for project '{}", id, p.getId());
+          throw new JsonEntityNotFoundException("No division with id "+id+" found. Please contact an administrator.");
+        }
         jgen.writeString(div.getCode());
 //        om.writeValue(jgen, div); // we could do this too
       }
