@@ -3,7 +3,7 @@ package nz.ac.auckland.eresearch.projectcentre.util.json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.core.CrudInvoker;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,17 +26,18 @@ public class JsonDeserializationHelper {
     repositories = new Repositories(appContext);
   }
 
-  private <T> CrudInvoker getCrudInvoker(Class<T> cls) {
-    CrudInvoker<T> inv = repositories.getCrudInvoker(cls);
-    return inv;
+  private <T> CrudRepository<T, Serializable> getCrudRepository(T cls) {
+    Object inv = repositories.getRepositoryFor(cls.getClass());
+    return (CrudRepository<T, Serializable>)inv;
+
   }
 
-  public Object save(Object entity) {
-    return getCrudInvoker(entity.getClass()).invokeSave(entity);
+  public <T> T save(T entity) {
+    return getCrudRepository(entity).save(entity);
   }
 
   public <T> T findOne(Class<T> cls, Serializable id) {
-    return (T) getCrudInvoker(cls).invokeFindOne(id);
+    return (T) getCrudRepository(cls).findOne(id);
   }
 
 

@@ -29,11 +29,11 @@ Google code style for Java is used:
 
 ### Git history
 
-Use rebase when pulling, we don't want a dirty git history.
+Use rebase when pulling if possible, we don't want a dirty git history.
 
 ### Getting started
 
-    git clone xxx
+    git clone https://github.com/UoA-eResearch/project-centre.git
     cd project-centre
     
 #### Run using maven

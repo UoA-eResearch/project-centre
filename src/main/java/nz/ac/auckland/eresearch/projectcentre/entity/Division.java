@@ -51,12 +51,14 @@ public class Division implements IHierarchyElement {
   private Integer institutionId;
 
   // parentCode is just a convenience field, parent field itself will always have precedence
+  @Transient
   private String parentCode;
 
   // parentId is just a convenience field, parent field itself will always have precedence
   @Transient
   private Integer parentId;
   // institutionCode is just a convenience field, id will always have precedence
+  @Transient
   private String institutionCode;
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

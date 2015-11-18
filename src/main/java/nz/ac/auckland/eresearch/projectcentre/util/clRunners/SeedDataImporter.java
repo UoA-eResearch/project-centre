@@ -23,6 +23,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
+import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.json.JsonDeserializationHelper;
 
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ import java.util.stream.Stream;
  * Created by markus on 12/11/15.
  */
 @Component
-@Profile({"dev", "test"})
+@Profile({"dev", "test", "mysql"})
 public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   private Logger log = LoggerFactory.getLogger(SeedDataImporter.class);
@@ -60,6 +61,8 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   @Autowired
   private JsonDeserializationHelper jsonHelper;
+  @Autowired
+  private InstitutionRepository instrepo; // just to check whether the db already contains values
 
   @Autowired
   private ObjectMapper om;
@@ -145,6 +148,13 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   @Override
   public void run(String... args) throws Exception {
+
+
+    boolean already_contains_data = instrepo.findAll().iterator().hasNext();
+    if ( already_contains_data ) {
+      log.debug("There already seems to be data in the db, skipping seeding of data.");
+      return;
+    }
 
     int seedLevel = Integer.MAX_VALUE;
     String seedLocation = this.defaultSeed;

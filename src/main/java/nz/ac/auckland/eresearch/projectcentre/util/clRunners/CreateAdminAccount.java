@@ -12,6 +12,8 @@ import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.UserDao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -21,19 +23,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by markus on 12/11/15.
  */
 @Component
-@Profile({"dev", "test"})
+@Profile({"dev", "test", "mysql"})
 public class CreateAdminAccount implements CommandLineRunner, Ordered {
+
+  private Logger log = LoggerFactory.getLogger(CreateAdminAccount.class);
+
 
   @Value("${admin.username}")
   private String adminUsername;
   @Value("${admin.password}")
   private String adminPassword;
+  @Value("${admin.email:no@ema.il}" )
+  private String adminEmail;
 
   @Autowired
   private ObjectMapper om;
@@ -52,24 +58,25 @@ public class CreateAdminAccount implements CommandLineRunner, Ordered {
 
 
   private void createAdminAccount() {
-    String email = "m.binsteiner@auckland.ac.nz";
-    Person p = null;
-    List<Person> persons = personRepo.findByEmail(email);
-    if (persons == null || persons.size() < 1) {
-      p = new Person();
-      p.setFullName("Markus Binsteiner");
-      p.setEmail(email);
-      p = personRepo.save(p);
 
-      AuthzRole authzRole = new AuthzRole();
-      authzRole.setPersonId(p.getId());
-      authzRole.setRoleName("ROLE_ADMIN");
-      authzroleRepo.save(authzRole);
-
-
-    } else {
-      p = persons.get(0);
+    boolean already_contains_data = personRepo.findAll().iterator().hasNext();
+    if (already_contains_data) {
+      log.debug("There already seems to be a person object in the db, skipping the creation of the admin user.");
+      return;
     }
+
+    String email = adminEmail;
+
+    Person p = null;
+    p = new Person();
+    p.setFullName("Admin");
+    p.setEmail(email);
+    p = personRepo.save(p);
+
+    AuthzRole authzRole = new AuthzRole();
+    authzRole.setPersonId(p.getId());
+    authzRole.setRoleName("ROLE_ADMIN");
+    authzroleRepo.save(authzRole);
 
     Identity id = new Identity(p.getId(), adminUsername, UserDao.PROJECT_DB_SERVICE_NAME);
     id.setToken(encoder.encode(adminPassword));
