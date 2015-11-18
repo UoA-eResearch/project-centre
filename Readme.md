@@ -77,10 +77,20 @@ Compared to v1 of the project database, we removed the institutionId, department
 a 'affiliation' map which contains the id of the division as key and the id of the role as value. Every Division contains its direct parent, it's 
 top-level Division (for example a faculty), and its institutionId ( modeled using advice from: http://novyden.blogspot.co.nz/2008/01/managing-hierarchical-data-tree-in.html )
 
-#### JsonDeserialization
+#### Example sql queries
 
-Some fields are both represented as integers (internal db id) and Strings (codes, e.g. for divisions, institutions, ...). In those cases, if 
-JSON is uploaded and both fields are present, the integer value takes precedence and the string one will be ignored.
+Example sql queries can be found under develop/example_sql_queries
+
+### JsonDeserialization
+
+We have a few very simple objects (like PersonStatus, etc..) that basically only contain an id and a unique name/code (in order
+ to be able to change the name/code without having to change it in all the references too). If those objects are members of 
+ other classes we don't serialize the ids, but only the code/names. That makes for a much nicer REST API user experience.
+ If an object like this is created/uploaded, the user can choose between the 'internal' db id (if she knows it), or the code.
+ 
+ Persons are deserialized with the affiliations inlined as a map with the (human readable) division codes as keys, and the (again,
+ human readable) role names as a value). As stated before, when creating a Person object, either ids or code/names can be used
+ and will be properly de-serialized at the backend.
 
 ### Seed data
 
