@@ -1,11 +1,9 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
-import nz.ac.auckland.eresearch.projectcentre.entity.Institution;
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
 import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
-import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectService;
 
@@ -17,21 +15,12 @@ import org.springframework.validation.Errors;
 public class ValidationUtil {
 
   @Autowired
-  InstitutionService institutionService;
-  @Autowired
   DivisionService divisionService;
   @Autowired
   ProjectService projectService;
   @Autowired
   PersonService personService;
 
-  public void validateInstitutionId(Integer institutionId, Errors errors) {
-    Institution institution = institutionService.findOne(institutionId);
-    if (institution != null) {
-      return;
-    }
-    errors.rejectValue("institutionId", "institution.id.invalid");
-  }
 
   public void validateDivisionId(Integer divisionId, Errors errors) {
     Division division = divisionService.findOne(divisionId);

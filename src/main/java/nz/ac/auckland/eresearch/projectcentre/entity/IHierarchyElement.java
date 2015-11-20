@@ -7,11 +7,6 @@ public interface IHierarchyElement {
 
   IHierarchyElement getParent();
 
-  Short getLevel();
+  Integer getId();
 
-  void setLevel(Short level);
-
-  IHierarchyElement getTop();
-
-  void setTop(IHierarchyElement top);
 }

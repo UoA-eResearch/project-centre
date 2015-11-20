@@ -1,7 +1,6 @@
 package nz.ac.auckland.eresearch.projectcentre.aspect;
 
 import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
-import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
 
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectAugmentor {
 
-  @Autowired
-  private InstitutionService institutionService;
   @Autowired
   private DivisionService divisionService;
   @Autowired

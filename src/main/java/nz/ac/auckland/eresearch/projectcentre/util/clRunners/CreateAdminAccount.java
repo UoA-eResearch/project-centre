@@ -8,7 +8,6 @@ import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.repositories.AuthzRoleRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.IdentityRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository;
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.UserDao;
 
@@ -43,8 +42,6 @@ public class CreateAdminAccount implements CommandLineRunner, Ordered {
 
   @Autowired
   private ObjectMapper om;
-  @Autowired
-  private InstitutionRepository instRepo;
   @Autowired
   private DivisionRepository divRepo;
   @Autowired

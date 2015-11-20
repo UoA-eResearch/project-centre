@@ -1,7 +1,6 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
-import nz.ac.auckland.eresearch.projectcentre.service.InstitutionService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import java.util.List;
 @Component
 public class ProjectValidator implements Validator {
 
-  @Autowired
-  InstitutionService instService;
   @Autowired
   ProjectService projectService;
   @Autowired

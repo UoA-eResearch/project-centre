@@ -23,9 +23,7 @@ public class DivisionValidator implements Validator {
     Division d = (Division) division;
     String[] notEmpty = {"name", "code"};
     new RejectEmptyValidator(Division.class, notEmpty).validate(division, errors);
-    if (!errors.hasErrors()) {
-      this.validationUtil.validateInstitutionId(d.getInstitutionId(), errors);
-    }
+
   }
 
 }

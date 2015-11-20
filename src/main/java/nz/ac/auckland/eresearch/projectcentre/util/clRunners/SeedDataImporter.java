@@ -7,7 +7,6 @@ import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
 import nz.ac.auckland.eresearch.projectcentre.entity.ExternalReference;
 import nz.ac.auckland.eresearch.projectcentre.entity.Facility;
-import nz.ac.auckland.eresearch.projectcentre.entity.Institution;
 import nz.ac.auckland.eresearch.projectcentre.entity.Kpi;
 import nz.ac.auckland.eresearch.projectcentre.entity.KpiCategory;
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
@@ -23,7 +22,8 @@ import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
-import nz.ac.auckland.eresearch.projectcentre.repositories.InstitutionRepository;
+import nz.ac.auckland.eresearch.projectcentre.listeners.DivisionShadowTableHelper;
+import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.json.JsonDeserializationHelper;
 
 import org.slf4j.Logger;
@@ -62,7 +62,9 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   @Autowired
   private JsonDeserializationHelper jsonHelper;
   @Autowired
-  private InstitutionRepository instrepo; // just to check whether the db already contains values
+  private DivisionRepository divrepo;
+  @Autowired
+  private DivisionShadowTableHelper shadow;
 
   @Autowired
   private ObjectMapper om;
@@ -101,7 +103,6 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
     if (seedLevel > 0) {
       addData(DivisionalRole.class, seedLocation);
       addData(Facility.class, seedLocation);
-      addData(Institution.class, seedLocation);
       addData(Kpi.class, seedLocation);
       addData(KpiCategory.class, seedLocation);
       addData(PersonRole.class, seedLocation);
@@ -114,6 +115,12 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
     if (seedLevel > 1) {
       addData(Division.class, seedLocation);
+
+      List<Division> all = divrepo.findAll();
+      for ( Division d : all ) {
+        shadow.updateDivisionChildren(d);
+      }
+
     }
 
     if (seedLevel > 2) {
@@ -150,7 +157,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   public void run(String... args) throws Exception {
 
 
-    boolean already_contains_data = instrepo.findAll().iterator().hasNext();
+    boolean already_contains_data = divrepo.findAll().iterator().hasNext();
     if (already_contains_data) {
       log.debug("There already seems to be data in the db, skipping seeding of data.");
       return;

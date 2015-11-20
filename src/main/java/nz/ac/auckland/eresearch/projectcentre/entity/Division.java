@@ -1,18 +1,20 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import nz.ac.auckland.eresearch.projectcentre.listeners.HierarchyListener;
 import nz.ac.auckland.eresearch.projectcentre.util.json.DivisionJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.DivisionJsonSerializer;
 
-import javax.persistence.Basic;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,21 +31,13 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "division")
-@EntityListeners({HierarchyListener.class})
 @JsonDeserialize(using = DivisionJsonDeserializer.class)
 @JsonSerialize(using = DivisionJsonSerializer.class)
 public class Division implements IHierarchyElement {
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "parent_div_id")
+  @JoinColumn(name = "parent_id")
   private Division parent;
-  @Basic(optional = false)
-  @Column(name = "level", nullable = false)
-  private Short level;
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "top_div_id")
-  @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
-  private Division top;
 
   private String name;
 
@@ -52,12 +46,16 @@ public class Division implements IHierarchyElement {
   @Size(min = 1)
   private String code;
 
-  @NotNull
-  private Integer institutionId;
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+
+
+  // note: this is really only here to automatically populate a pre-processed table that stores
+  // all childs of a division, to make it easier to do custom sql queries
+  // so, don't use any of the associated getters/setters
+  @ElementCollection
+  private Set<Integer> childIds = Sets.newHashSet();
 
   public Division() {
   }
@@ -90,16 +88,6 @@ public class Division implements IHierarchyElement {
     this.code = code;
   }
 
-
-  public Integer getInstitutionId() {
-    return institutionId;
-  }
-
-  public void setInstitutionId(Integer institutionId) {
-    this.institutionId = institutionId;
-  }
-
-
   public Division getParent() {
     return parent;
   }
@@ -108,23 +96,11 @@ public class Division implements IHierarchyElement {
     this.parent = parent;
   }
 
-
-  public Short getLevel() {
-    return level;
+  public Set<Integer> getChildIds() {
+    return childIds;
   }
 
-  public void setLevel(Short theLevel) {
-    level = theLevel;
+  public void setChildIds(Set<Integer> childIds) {
+    this.childIds = childIds;
   }
-
-
-  public Division getTop() {
-    return top;
-  }
-
-  public void setTop(IHierarchyElement theTop) {
-    top = (Division) theTop;
-  }
-
-
 }

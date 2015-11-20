@@ -1,6 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.listeners.DivisionShadowTableHelper;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
@@ -10,13 +11,14 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class DivisionService extends BaseService<Division> {
 
   @Autowired
   private DivisionRepository repo;
+
+  @Autowired
+  private DivisionShadowTableHelper shadow;
 
   @PreAuthorize(Authz.AUTHENTICATED)
   @Cacheable(value = "DivisionCache", key = "#id")
@@ -27,11 +29,6 @@ public class DivisionService extends BaseService<Division> {
   @PreAuthorize(Authz.AUTHENTICATED)
   public Iterable<Division> findAll() {
     return repo.findAll();
-  }
-
-  @PreAuthorize(Authz.AUTHENTICATED)
-  public List<Division> findByInstitutionId(Integer id) {
-    return repo.findByInstitutionId(id);
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
@@ -48,7 +45,9 @@ public class DivisionService extends BaseService<Division> {
   @PreAuthorize(Authz.ADMIN)
   @CacheEvict(value = "DivisionCache", key = "#entity.getId()")
   public Division update(Division entity) throws Exception {
-    return repo.save(entity);
+    Division div = repo.saveAndFlush(entity);
+//    shadow.updateDivisionChildren(div);
+    return div;
   }
 
   @PreAuthorize(Authz.ADMIN)
