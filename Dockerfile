@@ -44,5 +44,5 @@ RUN \
 
 EXPOSE 8080
 WORKDIR /opt/project-centre/
-CMD ["/opt/apache-maven-3.3.3/bin/mvn", "spring-boot:run", "-Dspring.profiles.active=dev", "-Drun.arguments=/opt/project-centre/seed-location=seed-data/minimal" ]
+CMD ["/opt/apache-maven-3.3.3/bin/mvn", "spring-boot:run", "-Dspring.profiles.active=dev,minimal,h2", "-Drun.arguments=/opt/project-centre/seed-location=seed-data/minimal" ]
 #CMD ["java", "-Dspring.profiles.active=dev", "-Drun.arguments=seed-location=/opt/project-centre/seed-data/minimal", "-Xms512m", "-Xmx1g", "-jar", "projects_centre.jar"]
