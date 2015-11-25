@@ -68,7 +68,7 @@ public class JsonHelpers {
     return (T) getCrudRepository(cls).findOne(id);
   }
 
-  public <T> List<T> readJsonFromFile(Class<T> type, String folder, String filename_matcher) throws Exception {
+  public <T> List<T> readJsonFromFile(Class<T> type, String folder, String filename_matcher, boolean persistStraightAway) throws Exception {
 
     //workaround for type erasure at compile time
     T classHolder = type.getConstructor().newInstance();
@@ -92,6 +92,9 @@ public class JsonHelpers {
           T value = (T) (om.treeToValue(node, classHolder.getClass()));
           log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
           result.add(value);
+          if (persistStraightAway) {
+            save(value);
+          }
         }
       }
       return result;

@@ -41,7 +41,7 @@ public class DivisionService extends BaseService<Division> {
   @PreAuthorize(Authz.AUTHENTICATED)
   public Division findById(Integer id) {
     return repo.findOne(id);
-  }
+ }
 
   @PreAuthorize(Authz.ADMIN)
   public Division create(Division entity) {
