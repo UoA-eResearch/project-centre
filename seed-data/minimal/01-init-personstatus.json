@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Active"
+  },
+  {
+    "name": "Closed"
+  },
+  {
+    "name": "Suspended"
+  },
+  {
+    "name": "Pending"
+  },
+  {
+    "name": "Marked for deletion"
+  },
+  {
+    "name": "Incomplete"
+  },
+  {
+    "name": "Marked for closure"
+  }
+]

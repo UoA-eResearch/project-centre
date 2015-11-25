@@ -5,6 +5,7 @@ import com.jayway.restassured.RestAssured;
 
 import nz.ac.auckland.eresearch.projectcentre.Application;
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.util.json.JsonHelpers;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.net.URL;
+import java.util.List;
 
 import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,6 +40,9 @@ public class DivisionControllerIT {
 
   @Autowired
   private ObjectMapper om;
+
+  @Autowired
+  private JsonHelpers jsonHelpers;
 
   private URL base;
   private TestRestTemplate template;
@@ -76,6 +81,8 @@ public class DivisionControllerIT {
 
   @Test
   public void testCreate() throws Exception {
+
+    List<Division> divs = jsonHelpers.readJsonFromFile(Division.class, "seed-data/tests", "create-division.json");
 
   }
 

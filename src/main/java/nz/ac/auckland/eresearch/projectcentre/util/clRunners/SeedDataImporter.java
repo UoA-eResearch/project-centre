@@ -24,7 +24,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
 import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
 import nz.ac.auckland.eresearch.projectcentre.listeners.DivisionShadowTableHelper;
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.util.json.JsonDeserializationHelper;
+import nz.ac.auckland.eresearch.projectcentre.util.json.JsonHelpers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   private String defaultSeed;
 
   @Autowired
-  private JsonDeserializationHelper jsonHelper;
+  private JsonHelpers jsonHelper;
   @Autowired
   private DivisionRepository divrepo;
   @Autowired
@@ -71,29 +71,10 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
-    //workaround for type erasure at compile time
-    T classHolder = type.getConstructor().newInstance();
-
-    String name = type.getCanonicalName();
-    Path start = Paths.get(folder);
-    int maxDepth = 1;
-    try (Stream<Path> stream = Files.find(start, maxDepth, (path, attr) ->
-            String.valueOf(path).toLowerCase().contains("init-" + type.getSimpleName().toLowerCase() + ".json"))) {
-
-      List<File> files = stream
-              .sorted()
-              .map(p -> p.toFile())
-              .collect(Collectors.toList());
-
-      for (File file : files) {
-        log.debug("Reading: {}", file);
-        JsonNode list = (JsonNode) (om.readValue(file, JsonNode.class));
-        for (JsonNode node : list) {
-          T value = (T) (om.treeToValue(node, classHolder.getClass()));
-          log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
-          jsonHelper.save(value);
-        }
-      }
+    List<T> objects = jsonHelper.readJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json");
+    for (T value : objects) {
+      log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
+      jsonHelper.save(value);
     }
   }
 
