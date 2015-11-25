@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.*;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@ActiveProfiles("test")
+@ActiveProfiles("test,h2,minimal,dev")
 public class DivisionControllerIT {
 
   @Autowired
