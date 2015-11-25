@@ -1,6 +1,5 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
-import com.sun.istack.internal.NotNull;
 
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 
@@ -12,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity

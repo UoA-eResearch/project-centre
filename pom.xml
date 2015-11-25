@@ -29,6 +29,7 @@
         <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
         <sevntu.checkstyle.plugin.version>1.17.0</sevntu.checkstyle.plugin.version>
         <checkstyle.file.path>develop/google_checks.xml</checkstyle.file.path>
+        <start-class>nz.ac.auckland.eresearch.projectcentre.Application</start-class>
     </properties>
 
     <build>

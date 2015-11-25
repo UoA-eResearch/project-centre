@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
  * Created by markus on 12/11/15.
  */
 @Component
-@Profile({"dev", "test", "mysql"})
+@Profile({"dev"})
 public class CreateAdminAccount implements CommandLineRunner, Ordered {
 
   private Logger log = LoggerFactory.getLogger(CreateAdminAccount.class);

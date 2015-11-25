@@ -47,6 +47,23 @@ Use rebase when pulling if possible, we don't want a dirty git history.
     mvn clean package
     java -Dspring.profiles.active="dev" -jar target/projects_centre.jar
     
+#### Profiles
+
+We use spring profiles to mix & match application startup environments. Startup jobs are run via CommandLineRunners, 
+located under the .../projectcentre/util/clRunners package.
+
+Currently available:
+
+ - mysql: using mysql as backend (configure mysql details in application-mysql.properties)
+ - h2: using h2 as backend
+ - dev: create admin account if not already exists on startup
+ - ldap: if database not populated yet, import data from the seed-data/ldap folder as well as division data from UoA LDAP
+ - mimimal: if database not populated yet, import data from teh seed-data/minimal folder
+ 
+So, if you want to develop using a mysql db (that is not populated yet), using seed-data from LDAP, issue:
+
+    mvn clean spring-boot:run -Dspring.profiles.active="myqsl,ldap,dev" 
+
     
 ### Run tests
 

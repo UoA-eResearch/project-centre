@@ -23,4 +23,5 @@ application-prod.properties
 application-mysql.properties
 application-ldap.properties
 
+seed-data/uoa_hierarchy.xlsx
 

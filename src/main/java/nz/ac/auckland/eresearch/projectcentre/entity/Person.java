@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sun.istack.internal.NotNull;
 
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonDeserializer;
@@ -22,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
