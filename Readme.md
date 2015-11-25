@@ -38,14 +38,14 @@ Use rebase when pulling if possible, we don't want a dirty git history.
     
 #### Run using maven
 
-    # we use the 'dev' profile for development
-    mvn  spring-boot:run  -Dspring.profiles.active="dev"
+    # we can use the 'dev', 'h2' & 'minimal' profiles (see below) for development
+    mvn  spring-boot:run  -Dspring.profiles.active="dev,h2,minimal"
     
 #### Run using java
 
     # we use the 'dev' profile for development
     mvn clean package
-    java -Dspring.profiles.active="dev" -jar target/projects_centre.jar
+    java -Dspring.profiles.active="dev,h2,minimal" -jar target/projects_centre.jar
     
 #### Profiles
 
