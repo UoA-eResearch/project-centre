@@ -62,7 +62,45 @@ Currently available:
  
 So, if you want to develop using a mysql db (that is not populated yet), using seed-data from LDAP, issue:
 
-    mvn clean spring-boot:run -Dspring.profiles.active="myqsl,ldap,dev" 
+    mvn clean spring-boot:run -Dspring.profiles.active="mysql,ldap,dev" 
+
+    
+### Test using commandline client
+
+*proji* ( https://github.com/UoA-eResearch/proji ) is the a default implementation of a commandline client that can talk
+to the project-centre REST interface.
+
+Install using:
+
+    pip install proji
+    
+Configure authentication in the file $HOME/.proji.conf:
+
+    [default]
+    url = http://localhost:8080/api
+    username = admin
+    token = abcdefg
+
+(sync with the application-xxx.properties files of your server if necessary)
+
+Then use like:
+
+    proji -h
+    
+For example, list all persons:
+
+    proji list_person
+    
+Or, only display the fields you are interested in:
+
+    proji -o id,fullName,affiliations list_person
+    
+    
+Or, only display two persons:
+ 
+    proji get_person 913 014 
+
+    
 
     
 ### Run tests
