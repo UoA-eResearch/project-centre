@@ -71,11 +71,8 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
-    List<T> objects = jsonHelper.readJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json");
-    for (T value : objects) {
-      log.debug("Persisting value of {}: {}", type.getSimpleName(), value);
-      jsonHelper.save(value);
-    }
+    List<T> objects = jsonHelper.readJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json", true);
+
   }
 
 

@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.*;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest({"server.port=0"})
-@ActiveProfiles("test,h2,minimal,dev")
+@ActiveProfiles("test,mysql,minimal,dev")
 public class DivisionControllerIT {
 
   @Autowired
@@ -82,7 +82,7 @@ public class DivisionControllerIT {
   @Test
   public void testCreate() throws Exception {
 
-    List<Division> divs = jsonHelpers.readJsonFromFile(Division.class, "seed-data/tests", "create-division.json");
+    List<Division> divs = jsonHelpers.readJsonFromFile(Division.class, "seed-data/tests", "create-division.json", false);
 
   }
 
