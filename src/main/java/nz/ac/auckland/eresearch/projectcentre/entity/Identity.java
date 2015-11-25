@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -15,7 +16,8 @@ import javax.validation.constraints.Size;
  * Created by markus on 9/11/15.
  */
 @Entity
-@Table(name = "identity")
+@Table(name = "identity",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"service", "username"}))
 public class Identity {
 
   @Id
