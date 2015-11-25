@@ -21,6 +21,7 @@ import nz.ac.auckland.eresearch.projectcentre.exceptions.LdapQueryException;
 
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.security.GeneralSecurityException;
@@ -34,6 +35,7 @@ import javax.net.SocketFactory;
  * Created by markus on 23/11/15.
  */
 @Component
+@Profile("ldap")
 public class UoALdap {
 
   public static final List<String> DEFAULT_ATTRIBUTE_LIST = Lists.newArrayList("dn", "givenName", "department", "sn", "mail", "memberOf");
