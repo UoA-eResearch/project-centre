@@ -1,0 +1,27 @@
+spring.datasource.url=jdbc:mysql://localhost/project_centre
+spring.datasource.username=username
+spring.datasource.password=password
+spring.datasource.driverClassName=com.mysql.jdbc.Driver
+spring.datasource.testOnBorrow=true
+spring.datasource.validationQuery=SELECT 1
+spring.datasource.initialSize=10
+spring.datasource.maxActive=10
+spring.datasource.maxIdle=10
+
+#spring.jpa.hibernate.ddl_auto=none
+#spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.DefaultNamingStrategy
+#spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+#spring.jpa.show-sql=false
+
+
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.DefaultNamingStrategy
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.show-sql=false
+
+spring.jackson.serialization.indent_output=true
+
+logging.level.org.springframework=WARN
+logging.level.nz.ac.auckland.eresearch=DEBUG
+#logging.level.org.springframework.security.authentication=DEBUG
+#logging.level.org.springframework.security.web.authentication.preauth=DEBUG

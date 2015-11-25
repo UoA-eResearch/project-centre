@@ -1,0 +1,8 @@
+
+seed.location=seed-data/ldap
+hierarchyfile.location=seed-data/uoa_hierarchy.xlsx
+
+uoa.ldap.username=username
+uoa.ldap.password=password
+uoa.ldap.hostname=uoa.auckland.ac.nz
+uoa.ldap.port=636

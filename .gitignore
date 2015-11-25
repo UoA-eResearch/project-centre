@@ -20,5 +20,7 @@ target
 *.iml
 
 application-prod.properties
+application-mysql.properties
+application-ldap.properties
 
 
