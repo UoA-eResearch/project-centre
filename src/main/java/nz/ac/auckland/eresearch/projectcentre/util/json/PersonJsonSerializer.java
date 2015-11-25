@@ -75,13 +75,16 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
     }
 
     if (p.getAffiliations().size() > 0) {
-      jgen.writeObjectFieldStart("affiliations");
+      jgen.writeArrayFieldStart("affiliations");
       for (Integer id : p.getAffiliations().keySet()) {
+        jgen.writeStartObject();
         Division d = divRepo.findOne(id);
         DivisionalRole divrole = divroleRepo.findOne(p.getAffiliations().get(id));
-        jgen.writeStringField(d.getCode(), divrole.getName());
+        jgen.writeStringField("division", d.getCode());
+        jgen.writeStringField("role", divrole.getName());
+        jgen.writeEndObject();
       }
-      jgen.writeEndObject();
+      jgen.writeEndArray();
     }
     jgen.writeEndObject();
 

@@ -42,6 +42,7 @@ public class Project implements Serializable, HasId, HasProjectId {
   private Integer statusId;
   @NotNull
   private Integer typeId;
+  @Size(min = 500, max = 2500)
   private String description;
   private LocalDate endDate;
   @NotNull

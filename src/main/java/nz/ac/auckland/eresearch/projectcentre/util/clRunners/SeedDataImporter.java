@@ -47,7 +47,7 @@ import java.util.stream.Stream;
  * Created by markus on 12/11/15.
  */
 @Component
-@Profile({"dev", "test", "mysql"})
+@Profile({"minimal"})
 public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   private Logger log = LoggerFactory.getLogger(SeedDataImporter.class);
@@ -115,12 +115,6 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
     if (seedLevel > 1) {
       addData(Division.class, seedLocation);
-
-      List<Division> all = divrepo.findAll();
-      for ( Division d : all ) {
-        shadow.updateDivisionChildren(d);
-      }
-
     }
 
     if (seedLevel > 2) {

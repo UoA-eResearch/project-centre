@@ -120,49 +120,91 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
       }
     }
 
-    // affiliations
+    // affiliations -- two way of specifying it on the client
     temp = node.get("affiliations");
     if (temp != null) {
-      Map<String, Object> affiliations = om.convertValue(temp, Map.class);
-      for (String div : affiliations.keySet()) {
-        int divId = -1;
-        try {
-          divId = Integer.parseInt(div);
-        } catch (NumberFormatException nfe) {
-          // means we'll try the string as code
-          Division d = divrepo.findByCode(div);
-          if (d == null) {
-            throw new JsonEntityNotFoundException("No division with id/code: " + div);
-          }
-          divId = d.getId();
-        }
-
-        Object value = affiliations.get(div);
-        Integer divRoleId = -1;
-        if (value instanceof Integer) {
-          divRoleId = (Integer) value;
-        } else {
+      if (temp.isArray()) {
+        // specified in long form, as list of objects: [{"division":<division_id_or_code>, "role":<role_id_or_code>}, ...]
+        for (JsonNode divRole : temp) {
+          String divCode = divRole.get("division").asText();
+          int divId = -1;
           try {
-            try {
-              divRoleId = Integer.parseInt((String) value);
-            } catch (NumberFormatException nfe) {
-              // means we'll try the string as name
-              DivisionalRole dr = divrolerepo.findByName((String) value);
-              if (dr == null) {
-                throw new JsonEntityNotFoundException("No divisional role with id/code: " + value);
-              }
-              divRoleId = dr.getId();
+            divId = Integer.parseInt(divCode);
+          } catch (NumberFormatException nfe) {
+            // means we'll try the string as code
+            Division d = divrepo.findByCode(divCode);
+            if (d == null) {
+              throw new JsonEntityNotFoundException("No division with id/code: " + divCode);
             }
-          } catch (ClassCastException cce) {
-            throw new JsonEntityInvalidException("Can't parse affiliation field");
+            divId = d.getId();
           }
+
+          JsonNode roleNode = divRole.get("role");
+          int roleId = -1;
+          if (roleNode.isInt()) {
+            roleId = roleNode.asInt();
+          } else {
+            String roleCode = roleNode.asText();
+            try {
+              roleId = Integer.parseInt(roleCode);
+            } catch (NumberFormatException nfe) {
+              // means we'll try string as code
+              DivisionalRole dr = divrolerepo.findByName(roleCode);
+              if (dr == null) {
+                throw new JsonEntityNotFoundException("No divisional role found with name: " + roleCode);
+              }
+              roleId = dr.getId();
+            }
+          }
+
+          p.addAffiliation(divId, roleId);
         }
 
-        p.addAffiliation(divId, divRoleId);
 
+      } else if (temp.isContainerNode()) {
+        // specified in short form, as map: ["{<division_id_or_code>":"role_id_or_code"] <- key always needs to be string
+        Map<String, Object> affiliations = om.convertValue(temp, Map.class);
+        for (String div : affiliations.keySet()) {
+          int divId = -1;
+          try {
+            divId = Integer.parseInt(div);
+          } catch (NumberFormatException nfe) {
+            // means we'll try the string as code
+            Division d = divrepo.findByCode(div);
+            if (d == null) {
+              throw new JsonEntityNotFoundException("No division with id/code: " + div);
+            }
+            divId = d.getId();
+          }
+
+          Object value = affiliations.get(div);
+          Integer divRoleId = -1;
+          if (value instanceof Integer) {
+            divRoleId = (Integer) value;
+          } else {
+            try {
+              try {
+                divRoleId = Integer.parseInt((String) value);
+              } catch (NumberFormatException nfe) {
+                // means we'll try the string as name
+                DivisionalRole dr = divrolerepo.findByName((String) value);
+                if (dr == null) {
+                  throw new JsonEntityNotFoundException("No divisional role with id/code: " + value);
+                }
+                divRoleId = dr.getId();
+              }
+            } catch (ClassCastException cce) {
+              throw new JsonEntityInvalidException("Can't parse affiliation field");
+            }
+          }
+
+          p.addAffiliation(divId, divRoleId);
+
+        }
       }
     }
 
     return p;
   }
+
 }

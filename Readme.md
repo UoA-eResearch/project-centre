@@ -81,7 +81,7 @@ top-level Division (for example a faculty), and its institutionId ( modeled usin
 
 Example sql queries can be found under develop/example_sql_queries
 
-### JsonDeserialization
+### Json(de)serialization
 
 We have a few very simple objects (like PersonStatus, etc..) that basically only contain an id and a unique name/code (in order
  to be able to change the name/code without having to change it in all the references too). If those objects are members of 
@@ -91,6 +91,99 @@ We have a few very simple objects (like PersonStatus, etc..) that basically only
  Persons are deserialized with the affiliations inlined as a map with the (human readable) division codes as keys, and the (again,
  human readable) role names as a value). As stated before, when creating a Person object, either ids or code/names can be used
  and will be properly de-serialized at the backend.
+ 
+#### Person
+
+##### Notice
+
+For the input format, you can use both the division/divisionalRole code or internal id. The code is recommended for readability, also, it's less likely to get it wrong.
+
+##### Return format (short):
+
+    {
+      "affiliations": [
+        {
+          "division": "UOFAK", 
+          "role": "Unknown"
+        }
+      ], 
+      "email": "sdfasdfsdf@bbsfsdfsd.de", 
+      "endDate": null, 
+      "fullName": "fullnametest test", 
+      "id": 934, 
+      "lastModified": null, 
+      "notes": null, 
+      "phone": "12341234", 
+      "pictureUrl": null, 
+      "preferredName": null, 
+      "startDate": "2015-01-01", 
+      "status": null
+    }
+    
+##### Accepted input formats (minimal required details for creation):
+
+    {
+       "email": "em@i.l", 
+       "fullName": "Full Name", 
+       "phone": "12341234", 
+       "startDate":"2015-01-01", 
+       "affiliations":
+           [ 
+              {"division":"UOFAK", 
+               "role":"Unknown"}
+           ]
+    }
+    
+Or (shorter affiliation format):
+
+    {
+        "email": "em@i.l", 
+         "fullName": "Full Name", 
+         "phone": "12341234", 
+         "startDate":"2015-01-01", 
+         "affiliations":
+             {"UOFAK":"Unknown"}
+    }
+    
+    
+    
+#### Project
+
+##### Notice
+
+For the input format, you can use both the division/status/type code or internal id. The code is recommended for readability, also, it's less likely to mix it up and get it wrong.
+
+##### Return format (short):
+
+    {
+      "code": "proj_code_1", 
+      "description": "blah blah blah", 
+      "divisions": ["Division 1"], 
+      "endDate": null, 
+      "id": 932, 
+      "nextReviewDate": "2016-01-01", 
+      "notes": null, 
+      "requirements": null, 
+      "startDate": "2015-10-10", 
+      "status": "Closed", 
+      "title": "temptitle", 
+      "todo": null, 
+      "type": "Collaborator"
+    }
+    
+    
+##### Input format (minimal required details for creation):
+
+    {
+       "code":"proj_code_1", 
+       "description":"blah blah blah", 
+       "title":"Project title", 
+       "startDate":"2015-10-10", 
+       "status":"Pending", 
+       "type":"Collaborator"
+    }
+
+
 
 ### Seed data
 

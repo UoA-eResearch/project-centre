@@ -1,6 +1,5 @@
 package nz.ac.auckland.eresearch.projectcentre;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -23,12 +22,6 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "nz.ac.auckland.eresearch.projectcentre.repositories")
 public class Application extends SpringBootServletInitializer {
-
-
-  @Value("${admin.username}")
-  private String adminUsername;
-  @Value("${admin.password}")
-  private String adminPassword;
 
 
   public static void main(String[] args) throws Exception {

@@ -11,7 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InstitutionalRoleService extends BaseService<DivisionalRole> {
+public class DivisionalRoleService extends BaseService<DivisionalRole> {
 
   @Autowired
   private DivisionalRoleRepository repo;
@@ -43,5 +43,11 @@ public class InstitutionalRoleService extends BaseService<DivisionalRole> {
   public void delete(Integer id) {
     repo.delete(id);
   }
+
+  @PreAuthorize(Authz.AUTHENTICATED)
+  public DivisionalRole findByName(String roleName) {
+    return repo.findByName(roleName);
+  }
+
 }
 

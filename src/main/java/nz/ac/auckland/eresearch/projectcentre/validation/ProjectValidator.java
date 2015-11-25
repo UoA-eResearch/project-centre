@@ -1,5 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
+import com.mysql.jdbc.StringUtils;
+
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectService;
 
@@ -26,7 +28,7 @@ public class ProjectValidator implements Validator {
   @Override
   public void validate(Object project, Errors errors) {
     Project p = (Project) project;
-    String[] notEmpty = {"institutionId", "description", "title", "code"};
+    String[] notEmpty = {"title", "code", "divisionIds", "startDate"};
     new RejectEmptyValidator(Project.class, notEmpty).validate(project, errors);
     if (!errors.hasErrors()) {
       //TODO fix that for lists
@@ -43,6 +45,11 @@ public class ProjectValidator implements Validator {
   }
 
   private void validateDescription(String description, Errors errors) {
+    // if no description, that is fine for now (hard to input 500 chars on commandline client for example),
+    // but project can't be active until there is a description
+    if (StringUtils.isNullOrEmpty(description)) {
+      return;
+    }
     int length = description.trim().length();
     if (length < 500 || length > 2500) {
       errors.rejectValue("description", "project.description.invalid");

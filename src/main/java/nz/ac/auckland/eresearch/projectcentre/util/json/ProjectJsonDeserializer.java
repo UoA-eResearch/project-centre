@@ -58,27 +58,39 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
     }
 
     // statusId
-    temp = node.get("statusId");
+    temp = node.get("status");
     if (temp != null) {
-      p.setStatusId(temp.asInt());
-    } else {
-      temp = node.get("status");
-      if (temp != null) {
-        ProjectStatus stat = projstatrepo.findByName(temp.asText());
-        p.setStatusId(stat.getId());
+      int id = -1;
+      if ( temp.isInt() ) {
+        id = temp.asInt();
+      } else {
+        String id_or_code = temp.asText();
+        try {
+          id = Integer.parseInt(id_or_code);
+        } catch (NumberFormatException nfe) {
+          ProjectStatus status = projstatrepo.findByName(id_or_code);
+          id = status.getId();
+        }
       }
+      p.setStatusId(id);
     }
 
     // type
-    temp = node.get("typeId");
+    temp = node.get("type");
     if (temp != null) {
-      p.setTypeId(temp.asInt());
-    } else {
-      temp = node.get("type");
-      if (temp != null) {
-        ProjectType type = projtyperepo.findByName(temp.asText());
-        p.setTypeId(type.getId());
+      int id = -1;
+      if ( temp.isInt() ) {
+        id = temp.asInt();
+      } else {
+        String id_or_code = temp.asText();
+        try {
+          id = Integer.parseInt(id_or_code);
+        } catch (NumberFormatException nfe) {
+          ProjectType type = projtyperepo.findByName(id_or_code);
+          id = type.getId();
+        }
       }
+      p.setTypeId(id);
     }
 
     // description

@@ -1,6 +1,5 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -9,9 +8,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nz.ac.auckland.eresearch.projectcentre.util.json.DivisionJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.DivisionJsonSerializer;
 
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -55,6 +54,10 @@ public class Division implements IHierarchyElement {
   // all childs of a division, to make it easier to do custom sql queries
   // so, don't use any of the associated getters/setters
   @ElementCollection
+  @CollectionTable(
+          name = "division_childs",
+          joinColumns = @JoinColumn(name = "parent_id", referencedColumnName = "id")
+  )
   private Set<Integer> childIds = Sets.newHashSet();
 
   public Division() {
@@ -102,5 +105,31 @@ public class Division implements IHierarchyElement {
 
   public void setChildIds(Set<Integer> childIds) {
     this.childIds = childIds;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Division division = (Division) o;
+
+    return id.equals(division.id);
+
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Division{" +
+            "parent=" + parent +
+            ", name='" + name + '\'' +
+            ", code='" + code + '\'' +
+            ", id=" + id +
+            '}';
   }
 }

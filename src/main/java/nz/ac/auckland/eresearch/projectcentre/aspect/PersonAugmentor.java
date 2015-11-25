@@ -2,7 +2,7 @@ package nz.ac.auckland.eresearch.projectcentre.aspect;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
-import nz.ac.auckland.eresearch.projectcentre.service.InstitutionalRoleService;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionalRoleService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonStatusService;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,7 +23,7 @@ public class PersonAugmentor {
   @Autowired
   private PersonStatusService personStatusService;
   @Autowired
-  private InstitutionalRoleService institutionalRoleService;
+  private DivisionalRoleService divisionalRoleService;
 
   @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonService.findOne(*)) && args(id)")
   public Person augmentPersonFindOne(ProceedingJoinPoint method, Integer id) throws Throwable {

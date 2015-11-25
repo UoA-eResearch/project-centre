@@ -38,9 +38,7 @@
     "requirements": "proj req 3",
     "todo": "proj todo 3",
     "divisions": [
-      "div1",
-      "div2",
-      "div3"
+      "MATHS"
     ]
   },
   {
@@ -56,8 +54,8 @@
     "requirements": "proj req 4",
     "todo": "proj todo 4",
     "divisions": [
-      "div3211",
-      "div1"
+      "SBS",
+      "CONFUCIUS"
     ]
   },
   {
@@ -73,9 +71,7 @@
     "requirements": "proj req 5",
     "todo": "proj todo 5",
     "divisions": [
-      "div3211",
-      "div1",
-      "div2"
+      "CONFUCIUS"
     ]
   }
 ]
