@@ -9,9 +9,6 @@ public class UserInfo extends User {
 
   private static final long serialVersionUID = 1L;
   private Integer id;
-  private Integer institutionId;
-  private Integer divisionId;
-  private Integer departmentId;
   private String email;
   private String fullName;
 
@@ -37,30 +34,6 @@ public class UserInfo extends User {
 
   public void setFullName(String fullName) {
     this.fullName = fullName;
-  }
-
-  public Integer getInstitutionId() {
-    return institutionId;
-  }
-
-  public void setInstitutionId(Integer institutionId) {
-    this.institutionId = institutionId;
-  }
-
-  public Integer getDivisionId() {
-    return divisionId;
-  }
-
-  public void setDivisionId(Integer divisionId) {
-    this.divisionId = divisionId;
-  }
-
-  public Integer getDepartmentId() {
-    return departmentId;
-  }
-
-  public void setDepartmentId(Integer departmentId) {
-    this.departmentId = departmentId;
   }
 
   public Integer getId() {

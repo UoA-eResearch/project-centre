@@ -26,9 +26,9 @@ public class DivisionShadowTableHelper {
     List<Division> divs_to_update;
 
     List<Division> childs = getChilds(entity, Lists.newArrayList());
-    Set<Integer> childIds = childs.stream().map(c -> c.getId()).collect(Collectors.toSet());
+    Set<Integer> childId = childs.stream().map(c -> c.getId()).collect(Collectors.toSet());
 
-    entity.setChildIds(childIds);
+    entity.setChildId(childId);
 
     return entity;
 

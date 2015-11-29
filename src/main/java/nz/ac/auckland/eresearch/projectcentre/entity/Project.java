@@ -1,7 +1,6 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
 import com.google.common.collect.Lists;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,16 +11,11 @@ import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonSerializer;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -37,6 +31,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   private Integer id;
 
   @ElementCollection
+  @Column(name="divisionId")
+  @CollectionTable(
+    name = "project_division",
+    joinColumns = @JoinColumn(name = "projectId", referencedColumnName = "id")
+  )
   private List<Integer> divisionIds = Lists.newArrayList();
   @NotNull
   private Integer statusId;
@@ -44,11 +43,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   private Integer typeId;
   @Size(min = 1, max = 2500)
   private String description;
-  private LocalDate endDate;
+  private Date endDate;
   @NotNull
   private String title;
   @NotNull // probably good to force that
-  private LocalDate nextReviewDate;
+  private Date nextReviewDate;
   private String notes;
   @Column(unique = true)
   @NotNull
@@ -56,7 +55,7 @@ public class Project implements Serializable, HasId, HasProjectId {
   private String code;
   private String requirements;
   @NotNull
-  private LocalDate startDate;
+  private Date startDate;
   private String todo;
 
   public Project() {
@@ -68,16 +67,28 @@ public class Project implements Serializable, HasId, HasProjectId {
                  LocalDate startDate, Integer statusId, String title, Integer typeId, String todo) {
     super();
     this.description = description;
-    this.endDate = endDate;
     this.title = title;
-    this.nextReviewDate = nextReviewDate;
     this.notes = notes;
     this.code = code;
     this.typeId = typeId;
     this.requirements = requirements;
-    this.startDate = startDate;
     this.statusId = statusId;
     this.todo = todo;
+    if (startDate == null) {
+    	this.startDate = null;
+    } else {
+    	this.startDate = Date.valueOf(startDate);
+    }
+    if (nextReviewDate == null) {
+    	this.nextReviewDate = null;
+    } else {
+    	this.nextReviewDate = Date.valueOf(nextReviewDate);
+    }
+    if (endDate == null) {
+    	this.endDate = null;
+    } else {
+    	this.endDate = Date.valueOf(endDate);
+    }
   }
 
   public List<Integer> getDivisionIds() {
@@ -110,13 +121,20 @@ public class Project implements Serializable, HasId, HasProjectId {
     this.description = description;
   }
 
-
   public LocalDate getEndDate() {
-    return this.endDate;
+	if (this.endDate == null) {
+	  return null;
+	} else {
+	  return this.endDate.toLocalDate();		
+	}
   }
 
   public void setEndDate(LocalDate endDate) {
-    this.endDate = endDate;
+	if (endDate == null) {
+	  this.endDate = null;
+	} else {
+	  this.endDate = Date.valueOf(endDate);	  
+	}
   }
 
   public String getTitle() {
@@ -128,11 +146,19 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
   public LocalDate getNextReviewDate() {
-    return this.nextReviewDate;
+	if (this.nextReviewDate == null) {
+	  return null;
+	} else {
+	  return this.nextReviewDate.toLocalDate();		
+	}
   }
 
   public void setNextReviewDate(LocalDate nextReviewDate) {
-    this.nextReviewDate = nextReviewDate;
+	if (nextReviewDate == null) {
+      this.nextReviewDate = null;
+	} else {
+      this.nextReviewDate = Date.valueOf(nextReviewDate);	  
+	}
   }
 
   public String getNotes() {
@@ -168,11 +194,19 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
   public LocalDate getStartDate() {
-    return this.startDate;
+	if (this.startDate == null) {
+	  return null;
+	} else {
+	  return this.startDate.toLocalDate();		
+	}
   }
 
   public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
+	if (startDate == null) {
+	  this.startDate = null;
+	} else {
+	  this.startDate = Date.valueOf(startDate);	  
+	}
   }
 
   public Integer getStatusId() {

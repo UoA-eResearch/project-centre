@@ -26,6 +26,7 @@ public class PersonService extends BaseService<Person> {
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
+  @Cacheable(value = "PersonCache")
   public Iterable<Person> findAll() {
 
     return person_repo.findAll();

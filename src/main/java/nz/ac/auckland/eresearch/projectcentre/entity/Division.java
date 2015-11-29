@@ -35,7 +35,7 @@ import javax.validation.constraints.Size;
 public class Division implements IHierarchyElement {
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "parent_id")
+  @JoinColumn(name = "parentId")
   private Division parent;
 
   private String name;
@@ -55,10 +55,10 @@ public class Division implements IHierarchyElement {
   // so, don't use any of the associated getters/setters
   @ElementCollection
   @CollectionTable(
-          name = "division_childs",
-          joinColumns = @JoinColumn(name = "parent_id", referencedColumnName = "id")
+          name = "division_children",
+          joinColumns = @JoinColumn(name = "divisionId", referencedColumnName = "id")
   )
-  private Set<Integer> childIds = Sets.newHashSet();
+  private Set<Integer> childId = Sets.newHashSet();
 
   public Division() {
   }
@@ -99,14 +99,15 @@ public class Division implements IHierarchyElement {
     this.parent = parent;
   }
 
-  public Set<Integer> getChildIds() {
-    return childIds;
+  public Set<Integer> getChildId() {
+    return childId;
   }
 
-  public void setChildIds(Set<Integer> childIds) {
-    this.childIds = childIds;
+  public void setChildId(Set<Integer> childId) {
+    this.childId = childId;
   }
 
+/*
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -122,6 +123,7 @@ public class Division implements IHierarchyElement {
   public int hashCode() {
     return id.hashCode();
   }
+*/
 
   @Override
   public String toString() {

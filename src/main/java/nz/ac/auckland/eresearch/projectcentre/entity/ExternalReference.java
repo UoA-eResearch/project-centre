@@ -4,6 +4,7 @@ import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class ExternalReference implements Serializable, HasId, HasProjectId {
   @NotNull
   private Integer projectId;
   private String description;
-  private LocalDate date;
+  private Date date;
   private String uri;
 
   public ExternalReference() {
@@ -71,11 +72,19 @@ public class ExternalReference implements Serializable, HasId, HasProjectId {
   }
 
   public LocalDate getDate() {
-    return this.date;
+	if (this.date == null) {
+		return null;
+	} else {
+	    return this.date.toLocalDate();		
+	}
   }
 
   public void setDate(LocalDate date) {
-    this.date = date;
+    if (date == null) {
+      this.date = null;
+    } else {
+  	  this.date = Date.valueOf(date);    	
+    }
   }
 
 }
