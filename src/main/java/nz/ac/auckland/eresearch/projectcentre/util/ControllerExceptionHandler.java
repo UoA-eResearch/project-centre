@@ -1,10 +1,16 @@
 package nz.ac.auckland.eresearch.projectcentre.util;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,12 +20,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
   @Autowired
@@ -29,6 +31,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<Object> handleIdException(IdException ex, WebRequest request) {
     Map<String, Object> m = this.prepareMessageMap(ex.getMessage(), request);
     return new ResponseEntity(m, HttpStatus.BAD_REQUEST);
+  }
+
+  // workaround until i find out whey these exceptions are swallowed if you configure
+  // this class with @ControllerAdvice
+  @Override
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+                                                  HttpHeaders headers,
+                                                  HttpStatus status,
+                                                  WebRequest request) {
+    throw ex;
   }
 
   @Override
