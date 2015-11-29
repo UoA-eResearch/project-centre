@@ -1,6 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
 import com.google.common.collect.Lists;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,11 +12,18 @@ import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.ProjectJsonSerializer;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -43,11 +51,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   private Integer typeId;
   @Size(min = 1, max = 2500)
   private String description;
-  private Date endDate;
+  private LocalDate endDate;
   @NotNull
   private String title;
   @NotNull // probably good to force that
-  private Date nextReviewDate;
+  private LocalDate nextReviewDate;
   private String notes;
   @Column(unique = true)
   @NotNull
@@ -55,7 +63,7 @@ public class Project implements Serializable, HasId, HasProjectId {
   private String code;
   private String requirements;
   @NotNull
-  private Date startDate;
+  private LocalDate startDate;
   private String todo;
 
   public Project() {
@@ -67,28 +75,16 @@ public class Project implements Serializable, HasId, HasProjectId {
                  LocalDate startDate, Integer statusId, String title, Integer typeId, String todo) {
     super();
     this.description = description;
+    this.endDate = endDate;
     this.title = title;
+    this.nextReviewDate = nextReviewDate;
     this.notes = notes;
     this.code = code;
     this.typeId = typeId;
     this.requirements = requirements;
+    this.startDate = startDate;
     this.statusId = statusId;
     this.todo = todo;
-    if (startDate == null) {
-    	this.startDate = null;
-    } else {
-    	this.startDate = Date.valueOf(startDate);
-    }
-    if (nextReviewDate == null) {
-    	this.nextReviewDate = null;
-    } else {
-    	this.nextReviewDate = Date.valueOf(nextReviewDate);
-    }
-    if (endDate == null) {
-    	this.endDate = null;
-    } else {
-    	this.endDate = Date.valueOf(endDate);
-    }
   }
 
   public List<Integer> getDivisionIds() {
@@ -121,20 +117,13 @@ public class Project implements Serializable, HasId, HasProjectId {
     this.description = description;
   }
 
+
   public LocalDate getEndDate() {
-	if (this.endDate == null) {
-	  return null;
-	} else {
-	  return this.endDate.toLocalDate();		
-	}
+    return this.endDate;
   }
 
   public void setEndDate(LocalDate endDate) {
-	if (endDate == null) {
-	  this.endDate = null;
-	} else {
-	  this.endDate = Date.valueOf(endDate);	  
-	}
+    this.endDate = endDate;
   }
 
   public String getTitle() {
@@ -146,19 +135,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
   public LocalDate getNextReviewDate() {
-	if (this.nextReviewDate == null) {
-	  return null;
-	} else {
-	  return this.nextReviewDate.toLocalDate();		
-	}
+    return this.nextReviewDate;
   }
 
   public void setNextReviewDate(LocalDate nextReviewDate) {
-	if (nextReviewDate == null) {
-      this.nextReviewDate = null;
-	} else {
-      this.nextReviewDate = Date.valueOf(nextReviewDate);	  
-	}
+    this.nextReviewDate = nextReviewDate;
   }
 
   public String getNotes() {
@@ -194,19 +175,11 @@ public class Project implements Serializable, HasId, HasProjectId {
   }
 
   public LocalDate getStartDate() {
-	if (this.startDate == null) {
-	  return null;
-	} else {
-	  return this.startDate.toLocalDate();		
-	}
+    return this.startDate;
   }
 
   public void setStartDate(LocalDate startDate) {
-	if (startDate == null) {
-	  this.startDate = null;
-	} else {
-	  this.startDate = Date.valueOf(startDate);	  
-	}
+    this.startDate = startDate;
   }
 
   public Integer getStatusId() {

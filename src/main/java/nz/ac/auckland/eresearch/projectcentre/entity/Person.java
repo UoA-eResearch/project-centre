@@ -1,6 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.entity;
 
 import com.google.common.collect.Maps;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -9,12 +10,20 @@ import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonDeserializer;
 import nz.ac.auckland.eresearch.projectcentre.util.json.PersonJsonSerializer;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Map;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -41,7 +50,7 @@ public class Person implements Serializable, HasId {
   private Integer statusId;
   @Column(unique = true)
   private String email;
-  private Date endDate;
+  private LocalDate endDate;
   @NotNull
   @Size(min = 1)
   private String fullName;
@@ -49,7 +58,7 @@ public class Person implements Serializable, HasId {
   private String phone;
   private String pictureUrl;
   private String preferredName;
-  private Date startDate;
+  private LocalDate startDate;
   private Timestamp lastModified;
 
   public Person() {
@@ -80,19 +89,11 @@ public class Person implements Serializable, HasId {
   }
 
   public LocalDate getEndDate() {
-	if (this.endDate == null) {
-		return null;
-	} else {
-	    return this.endDate.toLocalDate();		
-	}
+    return this.endDate;
   }
 
   public void setEndDate(LocalDate endDate) {
-	if (endDate == null) {
-		this.endDate = null;
-	} else {
-	    this.endDate = Date.valueOf(endDate);
-	}
+    this.endDate = endDate;
   }
 
   public String getFullName() {
@@ -144,19 +145,11 @@ public class Person implements Serializable, HasId {
   }
 
   public LocalDate getStartDate() {
-	if (this.startDate == null) {
-	  return null;
-	} else {
-	  return this.startDate.toLocalDate();		
-	}
+    return this.startDate;
   }
 
   public void setStartDate(LocalDate startDate) {
-	if (startDate == null) {
-	  this.startDate = null;
-	} else {
-	  this.startDate = Date.valueOf(startDate);	  
-	}
+    this.startDate = startDate;
   }
 
   public Integer getStatusId() {
