@@ -1,6 +1,5 @@
 package nz.ac.auckland.eresearch.projectcentre.util.clRunners;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
@@ -35,13 +34,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by markus on 12/11/15.
@@ -58,6 +51,8 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
   private String adminPassword;
   @Value("${seed.location}")
   private String defaultSeed;
+  @Value("${seed.level:10000}")
+  private Integer seedLevel;
 
   @Autowired
   private JsonHelpers jsonHelper;
@@ -71,7 +66,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
 
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
-    List<T> objects = jsonHelper.readJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json", true);
+    List<T> objects = jsonHelper.deserializeJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json", true);
 
   }
 
@@ -135,7 +130,7 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
       return;
     }
 
-    int seedLevel = Integer.MAX_VALUE;
+    int sl = this.seedLevel;
     String seedLocation = this.defaultSeed;
     if (args.length > 0) {
       for (String arg : args) {
@@ -143,12 +138,12 @@ public class SeedDataImporter implements CommandLineRunner, Ordered {
           seedLocation = arg.substring(14);
         } else if (arg.startsWith("seed-level=")) {
           String value = arg.substring(11);
-          seedLevel = Integer.parseInt(value);
+          sl = Integer.parseInt(value);
         }
       }
 
     }
-    addSeedData(seedLocation, seedLevel);
+    addSeedData(seedLocation, sl);
   }
 }
 

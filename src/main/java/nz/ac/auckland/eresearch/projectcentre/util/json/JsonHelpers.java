@@ -68,7 +68,9 @@ public class JsonHelpers {
     return (T) getCrudRepository(cls).findOne(id);
   }
 
-  public <T> List<T> readJsonFromFile(Class<T> type, String folder, String filename_matcher, boolean persistStraightAway) throws Exception {
+
+
+  public <T> List<T> deserializeJsonFromFile(Class<T> type, String folder, String filename_matcher, boolean persistStraightAway) throws Exception {
 
     //workaround for type erasure at compile time
     T classHolder = type.getConstructor().newInstance();
@@ -77,7 +79,7 @@ public class JsonHelpers {
     Path start = Paths.get(folder);
     int maxDepth = 1;
     try (Stream<Path> stream = Files.find(start, maxDepth, (path, attr) ->
-            String.valueOf(path).toLowerCase().contains("init-" + type.getSimpleName().toLowerCase() + ".json"))) {
+            String.valueOf(path).toLowerCase().contains("init-" + filename_matcher))) {
 
       List<File> files = stream
               .sorted()

@@ -87,7 +87,7 @@ public class SeedDataImporterLDAP implements CommandLineRunner, Ordered {
 
   public <T> void addData(Class<T> type, String folder) throws Exception {
 
-    List<T> objects = jsonHelper.readJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json", true);
+    List<T> objects = jsonHelper.deserializeJsonFromFile(type, folder, type.getSimpleName().toLowerCase()+".json", true);
 
   }
 

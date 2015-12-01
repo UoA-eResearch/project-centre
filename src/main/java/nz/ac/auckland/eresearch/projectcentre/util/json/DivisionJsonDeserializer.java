@@ -56,11 +56,19 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
     JsonNode parentNode = node.get("parentId");
     if (parentNode != null) {
-      parent = divRepo.findOne(parentNode.asInt());
+      int parentId = parentNode.asInt();
+      parent = divRepo.findOne(parentId);
+      if (parent == null ) {
+        throw new JsonEntityNotFoundException("Could not find parent division with id: "+parentId);
+      }
     } else {
       parentNode = node.get("parentCode");
       if (parentNode != null) {
-        parent = divRepo.findByCode(parentNode.asText());
+        String parentCode = parentNode.asText();
+        parent = divRepo.findByCode(parentCode);
+        if ( parent == null ) {
+          throw new JsonEntityNotFoundException("Could not find parent division with code: "+parentCode);
+        }
       } else {
         parentNode = node.get("parent");
         if (parentNode != null) {

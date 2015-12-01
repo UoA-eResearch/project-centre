@@ -54,7 +54,7 @@ public class CreateAdminAccount implements CommandLineRunner, Ordered {
   private PasswordEncoder encoder;
 
 
-  private void createAdminAccount() {
+  public void createAdminAccount() {
 
     boolean already_contains_data = personRepo.findAll().iterator().hasNext();
     if (already_contains_data) {
