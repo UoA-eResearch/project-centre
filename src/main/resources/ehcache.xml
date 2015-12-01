@@ -2,22 +2,12 @@
          xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true" monitoring="autodetect"
          dynamicConfig="true">
 
-    <cache name="InstitutionCache" maxEntriesLocalHeap="20" eternal="false" timeToLiveSeconds="60"
+    <cache name="DivisionCache" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
 
-    <cache name="DivisionCache" maxEntriesLocalHeap="50" eternal="false" timeToLiveSeconds="60"
-           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
-        <persistence strategy="none"/>
-    </cache>
-
-    <cache name="DepartmentCache" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="60"
-           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
-        <persistence strategy="none"/>
-    </cache>
-
-    <cache name="InstitutionalRoleCache" maxEntriesLocalHeap="10" eternal="false"
+    <cache name="DivisionalRoleCache" maxEntriesLocalHeap="100" eternal="false"
            timeToLiveSeconds="60" memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
@@ -42,16 +32,15 @@
         <persistence strategy="none"/>
     </cache>
 
-    <cache name="ProjectCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="5"
+    <cache name="ProjectCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
 
-    <cache name="PersonCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="5"
+    <cache name="PersonCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
-
 
 </ehcache>
 
