@@ -1,5 +1,22 @@
 package nz.ac.auckland.eresearch.projectcentre.util.json;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
+
+import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
+import nz.ac.auckland.eresearch.projectcentre.entity.Person;
+import nz.ac.auckland.eresearch.projectcentre.entity.PersonStatus;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityInvalidException;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionalRoleService;
+import nz.ac.auckland.eresearch.projectcentre.service.PersonStatusService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -8,34 +25,17 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.Division;
-import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
-import nz.ac.auckland.eresearch.projectcentre.entity.Person;
-import nz.ac.auckland.eresearch.projectcentre.entity.PersonStatus;
-import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityInvalidException;
-import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * Created by markus on 16/11/15.
  */
 public class PersonJsonDeserializer extends JsonDeserializer<Person> {
 
   @Autowired
-  private PersonStatusRepository perstatrepo;
+  private PersonStatusService personStatusService;
   @Autowired
-  private DivisionRepository divrepo;
+  private DivisionService divisionService;
   @Autowired
-  private DivisionalRoleRepository divrolerepo;
+  private DivisionalRoleService divisionalRoleService;
   @Autowired
   private ObjectMapper om;
 
@@ -112,7 +112,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
     } else {
       temp = node.get("status");
       if (temp != null) {
-        PersonStatus status = perstatrepo.findByName(temp.asText());
+        PersonStatus status = personStatusService.findByName(temp.asText());
         p.setStatusId(status.getId());
         if (status == null) {
           throw new JsonEntityNotFoundException("No person status named: " + temp.asText());
@@ -132,7 +132,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
             divId = Integer.parseInt(divCode);
           } catch (NumberFormatException nfe) {
             // means we'll try the string as code
-            Division d = divrepo.findByCode(divCode);
+            Division d = divisionService.findByCode(divCode);
             if (d == null) {
               throw new JsonEntityNotFoundException("No division with id/code: " + divCode);
             }
@@ -149,7 +149,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
               roleId = Integer.parseInt(roleCode);
             } catch (NumberFormatException nfe) {
               // means we'll try string as code
-              DivisionalRole dr = divrolerepo.findByName(roleCode);
+              DivisionalRole dr = divisionalRoleService.findByName(roleCode);
               if (dr == null) {
                 throw new JsonEntityNotFoundException("No divisional role found with name: " + roleCode);
               }
@@ -170,7 +170,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
             divId = Integer.parseInt(div);
           } catch (NumberFormatException nfe) {
             // means we'll try the string as code
-            Division d = divrepo.findByCode(div);
+            Division d = divisionService.findByCode(div);
             if (d == null) {
               throw new JsonEntityNotFoundException("No division with id/code: " + div);
             }
@@ -187,7 +187,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
                 divRoleId = Integer.parseInt((String) value);
               } catch (NumberFormatException nfe) {
                 // means we'll try the string as name
-                DivisionalRole dr = divrolerepo.findByName((String) value);
+                DivisionalRole dr = divisionalRoleService.findByName((String) value);
                 if (dr == null) {
                   throw new JsonEntityNotFoundException("No divisional role with id/code: " + value);
                 }

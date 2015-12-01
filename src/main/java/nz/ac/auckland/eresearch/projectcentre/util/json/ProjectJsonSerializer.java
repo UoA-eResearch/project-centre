@@ -1,24 +1,24 @@
 package nz.ac.auckland.eresearch.projectcentre.util.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
 import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectStatusRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectTypeRepository;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * Created by markus on 11/11/15.
@@ -29,11 +29,11 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
 
 
   @Autowired
-  private DivisionRepository divRepo;
+  private DivisionService divRepo;
   @Autowired
-  private ProjectStatusRepository projstatrepo;
+  private ProjectStatusService projstatrepo;
   @Autowired
-  private ProjectTypeRepository projtyperepo;
+  private ProjectTypeService projtyperepo;
   @Autowired
   private ObjectMapper om;
 

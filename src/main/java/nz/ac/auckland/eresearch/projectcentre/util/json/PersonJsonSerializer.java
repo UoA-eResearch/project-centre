@@ -1,21 +1,21 @@
 package nz.ac.auckland.eresearch.projectcentre.util.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
 import nz.ac.auckland.eresearch.projectcentre.entity.Person;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepository;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionalRoleService;
+import nz.ac.auckland.eresearch.projectcentre.service.PersonStatusService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.time.format.DateTimeFormatter;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * Created by markus on 11/11/15.
@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatter;
 public class PersonJsonSerializer extends JsonSerializer<Person> {
 
   @Autowired
-  private DivisionRepository divRepo;
+  private DivisionService divisionService;
   @Autowired
-  private DivisionalRoleRepository divroleRepo;
+  private DivisionalRoleService divisionalRoleService;
   @Autowired
-  private PersonStatusRepository perstatRepo;
+  private PersonStatusService personStatusService;
 
   @Override
   public void serialize(Person p, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
@@ -71,15 +71,15 @@ public class PersonJsonSerializer extends JsonSerializer<Person> {
     }
 
     if (p.getStatusId() != null) {
-      jgen.writeStringField("status", perstatRepo.findOne(p.getStatusId()).getName());
+      jgen.writeStringField("status", personStatusService.findOne(p.getStatusId()).getName());
     }
 
     if (p.getAffiliations().size() > 0) {
       jgen.writeArrayFieldStart("affiliations");
       for (Integer id : p.getAffiliations().keySet()) {
         jgen.writeStartObject();
-        Division d = divRepo.findOne(id);
-        DivisionalRole divrole = divroleRepo.findOne(p.getAffiliations().get(id));
+        Division d = divisionService.findOne(id);
+        DivisionalRole divrole = divisionalRoleService.findOne(p.getAffiliations().get(id));
         jgen.writeStringField("division", d.getCode());
         jgen.writeStringField("role", divrole.getName());
         jgen.writeEndObject();

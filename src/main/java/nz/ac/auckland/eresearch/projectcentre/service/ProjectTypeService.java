@@ -43,5 +43,13 @@ public class ProjectTypeService extends BaseService<ProjectType> {
   public void delete(Integer id) {
     repo.delete(id);
   }
+
+  @PreAuthorize(Authz.AUTHENTICATED)
+  @Cacheable(value = "ProjectTypeCache", key = "#name")
+  public ProjectType findByName(String name) {
+    return repo.findByName(name);
+  }
+
+
 }
 

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import nz.ac.auckland.eresearch.projectcentre.entity.Division;
 import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
   @Autowired
-  private DivisionRepository divRepo;
+  private DivisionService divisionService;
 
   /*
   This is only used when deserializing without JPA in TestCases.
@@ -57,7 +57,7 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
     JsonNode parentNode = node.get("parentId");
     if (parentNode != null) {
       int parentId = parentNode.asInt();
-      parent = divRepo.findOne(parentId);
+      parent = divisionService.findOne(parentId);
       if (parent == null ) {
         throw new JsonEntityNotFoundException("Could not find parent division with id: "+parentId);
       }
@@ -65,7 +65,7 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
       parentNode = node.get("parentCode");
       if (parentNode != null) {
         String parentCode = parentNode.asText();
-        parent = divRepo.findByCode(parentCode);
+        parent = divisionService.findByCode(parentCode);
         if ( parent == null ) {
           throw new JsonEntityNotFoundException("Could not find parent division with code: "+parentCode);
         }
@@ -73,13 +73,13 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
         parentNode = node.get("parent");
         if (parentNode != null) {
           // rest assured test framework creates it's own object mapper, which doesn't auto-wire
-          if (divRepo == null) {
+          if (divisionService == null) {
             parent = assembleDivision(parentNode);
           } else {
             JsonNode tempNode = parentNode.get("id");
             if (tempNode != null) {
               int tempId = tempNode.asInt();
-              parent = divRepo.findOne(tempId);
+              parent = divisionService.findOne(tempId);
             }
           }
         }

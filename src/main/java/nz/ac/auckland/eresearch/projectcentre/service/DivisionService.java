@@ -63,7 +63,7 @@ public class DivisionService extends BaseService<Division> {
     repo.delete(id);
   }
 
-//  @PreAuthorize(Authz.AUTHENTICATED)
+  @PreAuthorize(Authz.AUTHENTICATED)
   public List<Division> filterOutNonExististingDivisions(Collection<String> allDivisionCodes) {
 
     if (allDivisionCodes == null || allDivisionCodes.size() == 0 ) {
@@ -81,6 +81,7 @@ public class DivisionService extends BaseService<Division> {
    * @param divisionsToCheck the list of division codes
    * @return a set of top-level Divisions
    */
+  @PreAuthorize(Authz.AUTHENTICATED)
   public Set<Division> filterTopMostMemberDivisions(Collection<String> divisionsToCheck) {
     List<Division> filteredDivs = filterOutNonExististingDivisions(divisionsToCheck);
     return getTopMostMemberDivisions(filteredDivs);
@@ -95,6 +96,7 @@ public class DivisionService extends BaseService<Division> {
    * @param divisionsToCheck the list of division codes
    * @return a set of top-level Divisions
    */
+  @PreAuthorize(Authz.AUTHENTICATED)
   public Set<Division> getTopMostMemberDivisions(Collection<Division> divisionsToCheck) {
 
     if ( divisionsToCheck.size() == 0 || divisionsToCheck.size() == 1 ) {
@@ -118,6 +120,7 @@ public class DivisionService extends BaseService<Division> {
 
   }
 
+  @PreAuthorize(Authz.AUTHENTICATED)
   public boolean isChildOf(Division child, Division parent) {
 
     Division temp = child;
@@ -132,6 +135,7 @@ public class DivisionService extends BaseService<Division> {
 
   }
 
+  @PreAuthorize(Authz.AUTHENTICATED)
   public Division findByCode(String code) {
     return repo.findByCode(code);
   }

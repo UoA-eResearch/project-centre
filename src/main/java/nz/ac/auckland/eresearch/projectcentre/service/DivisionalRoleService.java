@@ -17,7 +17,7 @@ public class DivisionalRoleService extends BaseService<DivisionalRole> {
   private DivisionalRoleRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  @Cacheable(value = "InstitutionalRoleCache", key = "#id")
+  @Cacheable(value = "DivisionalRoleCache", key = "#id")
   public DivisionalRole findOne(Integer id) {
     return repo.findOne(id);
   }
@@ -33,13 +33,13 @@ public class DivisionalRoleService extends BaseService<DivisionalRole> {
   }
 
   @PreAuthorize(Authz.ADMIN)
-  @CacheEvict(value = "InstitutionalRoleCache", key = "#entity.getId()")
+  @CacheEvict(value = "DivisionalRoleCache", key = "#entity.getId()")
   public DivisionalRole update(DivisionalRole entity) throws Exception {
     return repo.save(entity);
   }
 
   @PreAuthorize(Authz.ADMIN)
-  @CacheEvict(value = "InstitutionalRoleCache", key = "#id")
+  @CacheEvict(value = "DivisionalRoleCache", key = "#id")
   public void delete(Integer id) {
     repo.delete(id);
   }
