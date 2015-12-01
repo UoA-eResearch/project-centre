@@ -43,5 +43,12 @@ public class ProjectStatusService extends BaseService<ProjectStatus> {
   public void delete(Integer id) {
     repo.delete(id);
   }
+
+  @PreAuthorize(Authz.AUTHENTICATED)
+  @Cacheable(value = "ProjectStatusCache", key = "#name")
+  public ProjectStatus findByName(String name) {
+    return repo.findByName(name);
+  }
+
 }
 

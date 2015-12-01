@@ -1,6 +1,21 @@
 package nz.ac.auckland.eresearch.projectcentre.util.json;
 
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.entity.Project;
+import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
+import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityInvalidException;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,23 +24,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import nz.ac.auckland.eresearch.projectcentre.entity.Division;
-import nz.ac.auckland.eresearch.projectcentre.entity.Project;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectType;
-import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityInvalidException;
-import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectStatusRepository;
-import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectTypeRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import com.google.common.collect.Lists;
 
 /**
  * Created by markus on 16/11/15.
@@ -33,11 +32,11 @@ import java.util.Optional;
 public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
 
   @Autowired
-  private ProjectStatusRepository projstatrepo;
+  private ProjectStatusService projectStatusService;
   @Autowired
-  private ProjectTypeRepository projtyperepo;
+  private ProjectTypeService projectTypeService;
   @Autowired
-  private DivisionRepository divrepo;
+  private DivisionService divisionService;
   @Autowired
   private ObjectMapper om;
 
@@ -68,7 +67,7 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
         try {
           id = Integer.parseInt(id_or_code);
         } catch (NumberFormatException nfe) {
-          ProjectStatus status = projstatrepo.findByName(id_or_code);
+          ProjectStatus status = projectStatusService.findByName(id_or_code);
           id = status.getId();
         }
       }
@@ -86,7 +85,7 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
         try {
           id = Integer.parseInt(id_or_code);
         } catch (NumberFormatException nfe) {
-          ProjectType type = projtyperepo.findByName(id_or_code);
+          ProjectType type = projectTypeService.findByName(id_or_code);
           id = type.getId();
         }
       }
@@ -167,7 +166,7 @@ public class ProjectJsonDeserializer extends JsonDeserializer<Project> {
             divId = Integer.parseInt((String) div);
           } catch (NumberFormatException nfe) {
             // means we'll try the string as code
-            Division d = divrepo.findByCode((String) div);
+            Division d = divisionService.findByCode((String) div);
             if (d == null) {
               throw new JsonEntityNotFoundException("No division with id/code: " + div);
             }

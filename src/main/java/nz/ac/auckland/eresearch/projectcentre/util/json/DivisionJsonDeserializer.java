@@ -1,18 +1,18 @@
 package nz.ac.auckland.eresearch.projectcentre.util.json;
 
+import java.io.IOException;
+
+import nz.ac.auckland.eresearch.projectcentre.entity.Division;
+import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
+import nz.ac.auckland.eresearch.projectcentre.service.DivisionService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import nz.ac.auckland.eresearch.projectcentre.entity.Division;
-import nz.ac.auckland.eresearch.projectcentre.exceptions.JsonEntityNotFoundException;
-import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
 
 /**
  * Created by markus on 10/11/15.
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
   @Autowired
-  private DivisionRepository divRepo;
+  private DivisionService divisionService;
 
   /*
   This is only used when deserializing without JPA in TestCases.
@@ -56,22 +56,22 @@ public class DivisionJsonDeserializer extends JsonDeserializer<Division> {
 
     JsonNode parentNode = node.get("parentId");
     if (parentNode != null) {
-      parent = divRepo.findOne(parentNode.asInt());
+      parent = divisionService.findOne(parentNode.asInt());
     } else {
       parentNode = node.get("parentCode");
       if (parentNode != null) {
-        parent = divRepo.findByCode(parentNode.asText());
+        parent = divisionService.findByCode(parentNode.asText());
       } else {
         parentNode = node.get("parent");
         if (parentNode != null) {
           // rest assured test framework creates it's own object mapper, which doesn't auto-wire
-          if (divRepo == null) {
+          if (divisionService == null) {
             parent = assembleDivision(parentNode);
           } else {
             JsonNode tempNode = parentNode.get("id");
             if (tempNode != null) {
               int tempId = tempNode.asInt();
-              parent = divRepo.findOne(tempId);
+              parent = divisionService.findOne(tempId);
             }
           }
         }
