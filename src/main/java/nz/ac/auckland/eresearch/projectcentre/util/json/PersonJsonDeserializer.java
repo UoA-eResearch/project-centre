@@ -162,7 +162,7 @@ public class PersonJsonDeserializer extends JsonDeserializer<Person> {
 
 
       } else if (temp.isContainerNode()) {
-        // specified in short form, as map: ["{<division_id_or_code>":"role_id_or_code"] <- key always needs to be string
+        // specified in short form, as map: "{<division_id_or_code>":"role_id_or_code"} <- key always needs to be string
         Map<String, Object> affiliations = om.convertValue(temp, Map.class);
         for (String div : affiliations.keySet()) {
           int divId = -1;
