@@ -33,16 +33,23 @@ public class PersonStatusService extends BaseService<PersonStatus> {
   }
 
   @PreAuthorize(Authz.ADMIN)
-  @CacheEvict(value = "DepartmentCache", key = "#entity.getId()")
+  @CacheEvict(value = "PersonStatusCache", key = "#entity.getId()")
   public PersonStatus update(PersonStatus entity) throws Exception {
     return repo.save(entity);
   }
 
   @PreAuthorize(Authz.ADMIN)
-  @CacheEvict(value = "DepartmentCache", key = "#id")
+  @CacheEvict(value = "PersonStatusCache", key = "#id")
   public void delete(Integer id) {
     repo.delete(id);
   }
+
+  @PreAuthorize(Authz.AUTHENTICATED)
+  @Cacheable(value = "PersonStatusCache", key = "#name")
+  public PersonStatus findByName(String name) {
+    return repo.findByName(name);
+  }
+
 
 }
 
