@@ -8,16 +8,10 @@ spring.datasource.initialSize=10
 spring.datasource.maxActive=10
 spring.datasource.maxIdle=10
 
-#spring.jpa.hibernate.ddl_auto=none
-#spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.DefaultNamingStrategy
-#spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
-#spring.jpa.show-sql=false
-
-
 spring.jpa.generate-ddl=true
-spring.jpa.hibernate.naming_strategy=org.hibernate.cfg.DefaultNamingStrategy
-spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
-spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+spring.jpa.properties.hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+spring.jpa.properties.hibernate.id.new_generator_mappings=false
 
 spring.jackson.serialization.indent_output=true
 
