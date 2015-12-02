@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface PersonRepository extends CrudRepository<Person, Integer> {
 
-  List<Person> findByEmail(String email);
+  Person findByEmail(String email);
 
   List<Person> findByEmailAndIdNot(String email, Integer id);
 }

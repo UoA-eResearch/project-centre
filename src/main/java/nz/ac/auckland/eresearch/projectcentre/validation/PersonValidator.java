@@ -32,14 +32,16 @@ public class PersonValidator implements Validator {
   }
 
   private void validateEmail(Person person, Errors errors) {
-    List<Person> tmp = null;
     if (person.getId() == null) { // new person
-      tmp = this.personService.findByEmail(person.getEmail());
+      Person p = this.personService.findByEmail(person.getEmail());
+      if ( p != null ) {
+        errors.rejectValue("email", "person.email.in.use");
+      }
     } else { // existing person
-      tmp = this.personService.findByEmailAndIdNot(person.getEmail(), person.getId());
-    }
-    if (tmp != null && tmp.size() > 0) {
-      errors.rejectValue("email", "person.email.in.use");
+      List<Person> tmp = this.personService.findByEmailAndIdNot(person.getEmail(), person.getId());
+      if (tmp != null && tmp.size() > 0) {
+        errors.rejectValue("email", "person.email.in.use");
+      }
     }
   }
 
