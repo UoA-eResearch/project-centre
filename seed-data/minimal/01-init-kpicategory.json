@@ -1,26 +1,26 @@
 [
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "throughput"
   },
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "cpucores"
   },
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "memory"
   },
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "optimization"
   },
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "diskspace"
   },
   {
-    "kpiId": 0,
+    "kpiId": 1,
     "name": "gpu"
   }
 ]
