@@ -33,7 +33,7 @@ public class PersonService extends BaseService<Person> {
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public List<Person> findByEmail(String email) {
+  public Person findByEmail(String email) {
     return person_repo.findByEmail(email);
   }
 
