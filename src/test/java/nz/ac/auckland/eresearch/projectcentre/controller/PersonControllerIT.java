@@ -94,7 +94,6 @@ public class PersonControllerIT {
     adminAccount.createAdminAccount();
 
 
-
   }
 
 
@@ -106,13 +105,13 @@ public class PersonControllerIT {
   private Person createPerson(int nr, boolean persist) {
 
     Person p = new Person();
-    p.setFullName("First"+nr+" Last"+nr);
-    p.setEmail("email"+nr+"@mail.com");
-    p.setPhone("1234 ext. "+nr);
-    p.setPreferredName("Pref First Last "+nr);
+    p.setFullName("First" + nr + " Last" + nr);
+    p.setEmail("email" + nr + "@mail.com");
+    p.setPhone("1234 ext. " + nr);
+    p.setPreferredName("Pref First Last " + nr);
 
 
-    if ( persist ) {
+    if (persist) {
       personServ.create(p);
     }
 
@@ -134,14 +133,14 @@ public class PersonControllerIT {
 
     for (int i = 1; i < 10; i++) {
       Person p = personResult[i];
-      if ( p.getFullName().equals(adminUsername) ) {
+      if (p.getFullName().equals(adminUsername)) {
         continue;
       }
       assertThat("Person has id", personResult[i].getId(), notNullValue());
       assertThat("Person name ends with " + i, personResult[i].getFullName(), endsWith("Last" + i));
-      assertThat("Person email is correct", personResult[i].getEmail(), is("email"+i+"@mail.com"));
-      assertThat("Person phone is correct", personResult[i].getPhone(), is("1234 ext. "+i));
-      assertThat("Person prefferred name is correct", personResult[i].getPreferredName(), is("Pref First Last "+i));
+      assertThat("Person email is correct", personResult[i].getEmail(), is("email" + i + "@mail.com"));
+      assertThat("Person phone is correct", personResult[i].getPhone(), is("1234 ext. " + i));
+      assertThat("Person prefferred name is correct", personResult[i].getPreferredName(), is("Pref First Last " + i));
     }
 
 
@@ -191,7 +190,39 @@ public class PersonControllerIT {
     assertThat("Person has status", p.getStatusId(), notNullValue());
   }
 
+  @Test
+  public void testGet() throws Exception {
 
+    Person p = createPerson(1, true);
+
+    Response r = given().auth().basic(adminUsername, adminPassword)
+            .get("/api/person/" + p.getId());
+
+    Integer id = r.jsonPath().getInt("id");
+    String email = r.jsonPath().getString("email");
+    String name = r.jsonPath().getString("fullName");
+
+    assertThat("id does exist", id, notNullValue());
+    assertThat("email does exist", email, notNullValue());
+    assertThat("name does exist", name, notNullValue());
+  }
+
+  @Test
+  public void testCreateWithChildAffiliation() throws Exception {
+
+    Response r1 = createEntity(adminUsername, adminPassword, "create-division.json", "division");
+
+    Response r2 = createEntity(adminUsername, adminPassword, "create-division-with-parent.json", "division");
+
+    Response r3 = createEntity(adminUsername, adminPassword, "create-person-with-single-affiliation.json", "person");
+
+    Person p = personServ.findByEmail("email_affil@auckland.ac.nz");
+
+    assertThat("person was created", p, notNullValue());
+    assertThat("person affiliation exists", p.getAffiliations().size(), equalTo(1));
+
+
+  }
 
 
 }
