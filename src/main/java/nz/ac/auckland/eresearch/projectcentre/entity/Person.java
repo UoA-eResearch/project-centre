@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ElementCollection;
 import javax.persistence.CollectionTable;
@@ -38,7 +39,7 @@ public class Person implements Serializable, HasId {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(
     name = "person_affiliation",
     joinColumns = @JoinColumn(name = "personId")
