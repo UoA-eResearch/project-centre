@@ -16,8 +16,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.sql.DataSource;
 
-// TODO: On migrate: handle the few people who have 2 person entries
-//       because they have had a researcher and an adviser profile
 @EnableCaching
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "nz.ac.auckland.eresearch.projectcentre.repositories")
