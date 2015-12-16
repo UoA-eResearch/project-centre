@@ -1,6 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.controller;
 
 import nz.ac.auckland.eresearch.projectcentre.util.auth.ApiToken;
+import nz.ac.auckland.eresearch.projectcentre.util.auth.UserDao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +26,11 @@ import javax.sql.DataSource;
 public class TokenGeneratorController {
 
   private final String sqlSelect = "SELECT personId FROM person_properties WHERE propname = 'eppn' AND propvalue = ?";
-  private final String sqlDelete = "DELETE FROM apitoken WHERE personId = ?";
-  private final String sqlInsert = "INSERT INTO apitoken (personId, token, validUntil) VALUES (?, ?, ?)";
+  private final String sqlDelete = "DELETE FROM identity WHERE personId = ?";
+  private final String sqlInsert = "INSERT INTO identity (personId, username, service, token, expires) VALUES (?, ?, ?, ?, ?)";
   private Logger log = LoggerFactory.getLogger(TokenGeneratorController.class);
   private JdbcTemplate jdbcTemplate;
+  
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
 
@@ -41,15 +43,16 @@ public class TokenGeneratorController {
     if (eppn == null || eppn.trim().length() == 0) {
       throw new Exception("Failed to generate token. No user identifier found");
     }
+    String username = eppn.split("@")[0];
     log.debug("Received token request by " + eppn);
     String tokenString = UUID.randomUUID().toString();
     Integer personId = jdbcTemplate.queryForObject(sqlSelect, new Object[]{eppn}, Integer.class);
     if (personId == null) {
       throw new Exception("Failed to generate token. No person found for given identifier");
     }
-    Timestamp ts = new Timestamp(System.currentTimeMillis() + (86400 * 1000));
+    Timestamp ts = new Timestamp(System.currentTimeMillis() + (86400 * 1000 * 365));
     jdbcTemplate.update(sqlDelete, personId);
-    jdbcTemplate.update(sqlInsert, personId, passwordEncoder.encode(tokenString), ts);
+    jdbcTemplate.update(sqlInsert, personId, username, UserDao.PROJECT_DB_SERVICE_NAME, passwordEncoder.encode(tokenString), ts);
     ApiToken token = new ApiToken();
     token.setToken(tokenString);
     token.setValidUntil(ts.toString());
