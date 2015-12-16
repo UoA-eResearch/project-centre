@@ -39,7 +39,7 @@ public class UserDao {
   public UserInfo getUserInfo(String username) throws UsernameNotFoundException {
 
     UserInfo userInfo = null;
-
+    log.debug("Getting user info for user " + username);
     try {
       List<Identity> ids = identityrepo.findByUsernameAndService(username, PROJECT_DB_SERVICE_NAME);
 
@@ -79,6 +79,7 @@ public class UserDao {
       throw new UsernameNotFoundException(message);
     }
 
+    log.debug("Returning user info for user " + username);
     return userInfo;
   }
 
