@@ -41,72 +41,76 @@ public class ProjectJsonSerializer extends JsonSerializer<Project> {
   @Override
   public void serialize(Project p, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
 
-    jgen.writeStartObject();
+	  try {
+		    jgen.writeStartObject();
 
-    if (p.getId() != null) {
-      jgen.writeNumberField("id", p.getId());
-    }
+		    if (p.getId() != null) {
+		      jgen.writeNumberField("id", p.getId());
+		    }
 
-    if (p.getStatusId() != null) {
-      jgen.writeStringField("status", projstatrepo.findOne(p.getStatusId()).getName());
-    }
+		    if (p.getStatusId() != null) {
+		      jgen.writeStringField("status", projstatrepo.findOne(p.getStatusId()).getName());
+		    }
 
-    if (p.getTypeId() != null) {
-      jgen.writeStringField("type", projtyperepo.findOne(p.getTypeId()).getName());
-    }
+		    if (p.getTypeId() != null) {
+		      jgen.writeStringField("type", projtyperepo.findOne(p.getTypeId()).getName());
+		    }
 
-    if (p.getDescription() != null) {
-      jgen.writeStringField("description", p.getDescription());
-    }
+		    if (p.getDescription() != null) {
+		      jgen.writeStringField("description", p.getDescription());
+		    }
 
-    if (p.getNotes() != null) {
-      jgen.writeStringField("notes", p.getNotes());
-    }
+		    if (p.getNotes() != null) {
+		      jgen.writeStringField("notes", p.getNotes());
+		    }
 
-    if (p.getStartDate() != null) {
-      jgen.writeStringField("startDate", p.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
+		    if (p.getStartDate() != null) {
+		      jgen.writeStringField("startDate", p.getStartDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		    }
 
-    if (p.getEndDate() != null) {
-      jgen.writeStringField("endDate", p.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
+		    if (p.getEndDate() != null) {
+		      jgen.writeStringField("endDate", p.getEndDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		    }
 
-    if (p.getTitle() != null) {
-      jgen.writeStringField("title", p.getTitle());
-    }
+		    if (p.getTitle() != null) {
+		      jgen.writeStringField("title", p.getTitle());
+		    }
 
-    if (p.getCode() != null) {
-      jgen.writeStringField("code", p.getCode());
-    }
+		    if (p.getCode() != null) {
+		      jgen.writeStringField("code", p.getCode());
+		    }
 
-    if (p.getNextReviewDate() != null) {
-      jgen.writeStringField("nextReviewDate", p.getNextReviewDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
+		    if (p.getNextReviewDate() != null) {
+		      jgen.writeStringField("nextReviewDate", p.getNextReviewDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		    }
 
-    if (p.getRequirements() != null) {
-      jgen.writeStringField("requirements", p.getRequirements());
-    }
+		    if (p.getRequirements() != null) {
+		      jgen.writeStringField("requirements", p.getRequirements());
+		    }
 
-    if (p.getTodo() != null) {
-      jgen.writeStringField("todo", p.getTodo());
-    }
+		    if (p.getTodo() != null) {
+		      jgen.writeStringField("todo", p.getTodo());
+		    }
 
-    if (p.getDivisionIds().size() > 0) {
-      jgen.writeArrayFieldStart("divisions");
-      for (Integer id : p.getDivisionIds()) {
-        Division div = divRepo.findOne(id);
-        if (div == null) {
-          // this is a serious issue, would point to some sort of db corruption
-          log.error("Could not find division with id '{}' for project '{}'", id, p.getId());
-          throw new JsonEntityNotFoundException("No division with id " + id + " found. Please contact an administrator.");
-        }
-        jgen.writeString(div.getCode());
-//        om.writeValue(jgen, div); // we could do this too
-      }
-      jgen.writeEndArray();
-    }
+		    if (p.getDivisionIds().size() > 0) {
+		      jgen.writeArrayFieldStart("divisions");
+		      for (Integer id : p.getDivisionIds()) {
+		        Division div = divRepo.findOne(id);
+		        if (div == null) {
+		          // this is a serious issue, would point to some sort of db corruption
+		          log.error("Could not find division with id '{}' for project '{}'", id, p.getId());
+		          throw new JsonEntityNotFoundException("No division with id " + id + " found. Please contact an administrator.");
+		        }
+		        jgen.writeString(div.getCode());
+//		        om.writeValue(jgen, div); // we could do this too
+		      }
+		      jgen.writeEndArray();
+		    }
 
-    jgen.writeEndObject();
-
+		    jgen.writeEndObject();		  
+	  } catch (Exception e) {
+		  log.error("Failed to serialize project with code " + p.getCode(), e);
+		  throw e;
+	  }
   }
 }
