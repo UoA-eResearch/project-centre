@@ -1,9 +1,16 @@
 package nz.ac.auckland.eresearch.projectcentre.aspect;
 
+import java.util.List;
+
+import nz.ac.auckland.eresearch.projectcentre.entity.PersonProject;
+import nz.ac.auckland.eresearch.projectcentre.entity.PersonRole;
+import nz.ac.auckland.eresearch.projectcentre.entity.Project;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonRoleService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectService;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,27 +26,27 @@ public class PersonProjectAugmentor {
   @Autowired
   private PersonRoleService personRoleService;
 
-//  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService.findByPersonId(..)) && args(personId)")
-//  public List<PersonProject> augmentProjectFindByPersonId(ProceedingJoinPoint method, int personId) throws Throwable {
-//    List<PersonProject> pps = (List<PersonProject>) method.proceed(new Object[]{personId});
-//    if (pps != null) {
-//      for (PersonProject pp : pps) {
-//        Integer projectId = pp.getProjectId();
-//        if (projectId != null) {
-//          Project p = this.projectService.findOne(projectId);
-//          pp.setProject(p);
-//        }
-//
-//        Integer personRoleId = pp.getPersonRoleId();
-//        if (personRoleId != null) {
-//          PersonRole personRole = this.personRoleService.findOne(personRoleId);
-//          pp.setPersonRole((personRole == null) ? null : personRole.getName());
-//        }
-//      }
-//    }
-//    return pps;
-//  }
-//
+  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService.findByPersonId(..)) && args(personId)")
+  public List<PersonProject> augmentProjectFindByPersonId(ProceedingJoinPoint method, int personId) throws Throwable {
+    List<PersonProject> pps = (List<PersonProject>) method.proceed(new Object[]{personId});
+    if (pps != null) {
+      for (PersonProject pp : pps) {
+        Integer projectId = pp.getProjectId();
+        if (projectId != null) {
+          Project p = this.projectService.findOne(projectId);
+          pp.setProject(p);
+        }
+
+        Integer personRoleId = pp.getPersonRoleId();
+        if (personRoleId != null) {
+          PersonRole personRole = this.personRoleService.findOne(personRoleId);
+          pp.setPersonRoleName((personRole == null) ? null : personRole.getName());
+        }
+      }
+    }
+    return pps;
+  }
+
 //  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService.findByProjectId(..)) && args(projectId)")
 //  public List<PersonProject> augmentProjectFindByProjectId(ProceedingJoinPoint method, int projectId) throws Throwable {
 //    List<PersonProject> pps = (List<PersonProject>) method.proceed(new Object[]{projectId});
