@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -27,10 +28,15 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
   private Integer personRoleId;
   @NotNull
   private Integer projectId;
-
+  @Transient
+  private Project project;
+  @Transient
+  private String personRoleName;
+  
   public PersonProject() {
+	  
   }
-
+  
   public PersonProject(String notes, Integer personId, Integer personRoleId,
                        int projectId) {
     super();
@@ -80,5 +86,20 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
     this.projectId = projectId;
   }
 
+  public Project getProject() {
+	return project;
+  }
+
+  public void setProject(Project project) {
+	this.project = project;
+  }
+
+  public String getPersonRoleName() {
+	return personRoleName;
+  }
+
+  public void setPersonRoleName(String personRoleName) {
+	this.personRoleName = personRoleName;
+  }
 
 }
