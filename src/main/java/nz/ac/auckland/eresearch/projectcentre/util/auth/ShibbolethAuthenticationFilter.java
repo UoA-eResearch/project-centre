@@ -10,9 +10,9 @@ public class ShibbolethAuthenticationFilter extends AbstractPreAuthenticatedProc
   protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
     // TODO: make this nicer...
     String eppn = (String) request.getAttribute("eppn");
-    if (eppn != null) {
-      eppn = eppn.split("@")[0];
-    }
+    //if (eppn != null) {
+    //  eppn = eppn.split("@")[0];
+    //}
     return eppn;
   }
 
