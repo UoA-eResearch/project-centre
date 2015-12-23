@@ -14,6 +14,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return this.userDao.getUserInfo(username);
+    return this.userDao.getUserInfoForApiLogin(username);
   }
 } 

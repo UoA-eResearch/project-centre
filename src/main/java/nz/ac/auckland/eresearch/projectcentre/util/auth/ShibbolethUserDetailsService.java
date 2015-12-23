@@ -15,6 +15,6 @@ public class ShibbolethUserDetailsService implements AuthenticationUserDetailsSe
 
   @Override
   public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken user) throws UsernameNotFoundException {
-    return this.userDao.getUserInfo((String) user.getPrincipal());
+    return this.userDao.getUserInfoForSamlLogin((String) user.getPrincipal());
   }
 } 

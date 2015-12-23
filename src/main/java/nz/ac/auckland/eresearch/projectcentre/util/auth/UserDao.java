@@ -39,40 +39,57 @@ public class UserDao {
   private AuthzRoleRepository authzroleRepo;
 
   // FIXME: Set credentialsNonExpired to true if user logs in via Shibboleth!!!!
-  public UserInfo getUserInfo(String username) throws UsernameNotFoundException {
+  public UserInfo getUserInfoForApiLogin(String username) throws UsernameNotFoundException {
 
-    log.debug("Getting user info for user " + username);
-    UserInfo userInfo = null;
-    
+    log.debug("Getting user info for user " + username + " (API login)");
     try {
-      //TODO: do we really need expiring tokens?
-      boolean credentialsNonExpired = true;
-      String password = "n/a";
-      Integer personId = null;
       List<Identity> ids = identityRepo.findByUsernameAndService(username, PROJECT_DB_SERVICE_NAME);
-
-      if (ids.size() == 1) {
-          Identity identity = ids.get(0);
-          password = identity.getToken();
-          personId = identity.getPersonId();
-          LocalDateTime expires = identity.getExpires();
-          if (expires != null && expires.isBefore(LocalDateTime.now())) {
-            credentialsNonExpired = false;
-          }    	  
-      } else if (ids.size() > 1) {
-        throw new RuntimeException("More than one user with username: " + username);
-      } else if (ids.size() == 0) {
-    	  List<PersonProperty> props = personPropertyRepo.findByPropnameAndPropvalue("eppn", username);
-    	  if (props.size() == 0) {
-              throw new UsernameNotFoundException("Could not find user: " + username);    		  
-    	  } else if (props.size() > 1) {
-    	        throw new RuntimeException("More than one user with username: " + username);    		  
-    	  }
-    	  personId = props.get(0).getPersonId();
-      } else {
-    	  throw new RuntimeException("Unexpected error. size = " + ids.size());
+  	  this.checkNumberUsers(ids.size(), username);
+      //TODO: do we really need expiring tokens?
+      Boolean credentialsNonExpired = false;
+      Identity identity = ids.get(0);
+      LocalDateTime expires = identity.getExpires();
+      if (expires != null && expires.isAfter(LocalDateTime.now())) {
+        credentialsNonExpired = true;
       }
+      log.debug("Returning user info for user " + username);
+      return this.createUserInfo(identity.getPersonId(), username, identity.getToken(), credentialsNonExpired);
+    } catch (Exception e) {
+      String message = "Unable to load user details for name " + username + " (API login)";
+      log.error(message, e);
+      throw new UsernameNotFoundException(message);
+    }
+  }
 
+  // FIXME: Set credentialsNonExpired to true if user logs in via Shibboleth!!!!
+  public UserInfo getUserInfoForSamlLogin(String eppn) throws UsernameNotFoundException {
+
+    log.debug("Getting user info for user " + eppn + " (SAML login)");
+    try {
+  	  List<PersonProperty> props = personPropertyRepo.findByPropnameAndPropvalue("eppn", eppn);
+  	  this.checkNumberUsers(props.size(), eppn);
+      log.debug("Returning user info for user " + eppn);
+      return this.createUserInfo(props.get(0).getPersonId(), eppn, "n/a", true);  	  
+    } catch (Exception e) {
+      String message = "Unable to load user details for name " + eppn + " (SAML login)";
+      log.error(message, e);
+      throw new UsernameNotFoundException(message);
+    }
+  }
+
+  private void checkNumberUsers(Integer numUsersFound, String username) throws Exception {
+  	  if (numUsersFound == 0) {
+    	  throw new UsernameNotFoundException("Could not find user: " + username);
+  	  } else if (numUsersFound > 1) {
+  	        throw new RuntimeException("More than one user with username: " + username);    		  
+  	  } else {
+          throw new Exception("Unexpected error. size = " + numUsersFound);
+      }	  
+  }
+  
+  private UserInfo createUserInfo(Integer personId, String username, String password, 
+		  Boolean credentialsNonExpired) {
+	  
       Person p = personRepo.findOne(personId);
       Collection<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
       List<AuthzRole> aRoles = authzroleRepo.findByPersonId(personId);
@@ -81,19 +98,11 @@ public class UserDao {
         roles.add(auth);
       }
 
-      userInfo = new UserInfo(username, password, true, true, credentialsNonExpired, true, roles);
+      UserInfo userInfo = new UserInfo(username, password, true, true, credentialsNonExpired, true, roles);
       userInfo.setFullName(p.getFullName());
       userInfo.setEmail(p.getEmail());
       userInfo.setId(p.getId());
-    } catch (Exception e) {
-      String message = "Unable to load user details for upi " + username;
-      log.error(message, e);
-      throw new UsernameNotFoundException(message);
-    }
-
-    log.debug("Returning user info for user " + username);
-    return userInfo;
+	  return userInfo;
   }
-
 
 } 
