@@ -78,13 +78,13 @@ public class UserDao {
   }
 
   private void checkNumberUsers(Integer numUsersFound, String username) throws Exception {
-  	  if (numUsersFound == 0) {
+	  if (numUsersFound < 0) {
+          throw new Exception("Unexpected error. size = " + numUsersFound);
+      } else if (numUsersFound == 0) {
     	  throw new UsernameNotFoundException("Could not find user: " + username);
   	  } else if (numUsersFound > 1) {
-  	        throw new RuntimeException("More than one user with username: " + username);    		  
-  	  } else {
-          throw new Exception("Unexpected error. size = " + numUsersFound);
-      }	  
+  	      throw new RuntimeException("More than one user with username: " + username);    		  
+  	  }  
   }
   
   private UserInfo createUserInfo(Integer personId, String username, String password, 
