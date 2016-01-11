@@ -42,7 +42,7 @@ public class PersonCollector implements ResultCollector<Person> {
                   .build();
 
   List<Person> persons = Lists.newArrayList();
-  private Logger log = LoggerFactory.getLogger(PersonCollector.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
   private DivisionService divServ;
   private DivisionalRoleService divRoleSer;
 

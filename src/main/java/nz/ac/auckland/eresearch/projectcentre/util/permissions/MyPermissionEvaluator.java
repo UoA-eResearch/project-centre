@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class MyPermissionEvaluator implements PermissionEvaluator {
 
-  private Logger log = LoggerFactory.getLogger(MyPermissionEvaluator.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
   private Map<String, Permission> permissionNameToPermissionMap = new HashMap<String, Permission>();
 
   public MyPermissionEvaluator(Map<String, Permission> permissionNameToPermissionMap) {

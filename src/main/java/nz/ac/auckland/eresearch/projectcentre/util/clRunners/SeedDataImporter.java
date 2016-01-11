@@ -45,7 +45,7 @@ import java.util.List;
 @Profile({"minimal"})
 public class SeedDataImporter implements CommandLineRunner, Ordered {
 
-  private Logger log = LoggerFactory.getLogger(SeedDataImporter.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   @Value("${admin.username}")
   private String adminUsername;

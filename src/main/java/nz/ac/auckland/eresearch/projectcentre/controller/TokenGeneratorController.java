@@ -28,7 +28,7 @@ public class TokenGeneratorController {
   private final String sqlSelect = "SELECT personId FROM person_properties WHERE propname = 'eppn' AND propvalue = ?";
   private final String sqlDelete = "DELETE FROM identity WHERE personId = ?";
   private final String sqlInsert = "INSERT INTO identity (personId, username, service, token, expires) VALUES (?, ?, ?, ?, ?)";
-  private Logger log = LoggerFactory.getLogger(TokenGeneratorController.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
   private JdbcTemplate jdbcTemplate;
   
   @Autowired

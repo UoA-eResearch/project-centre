@@ -57,7 +57,7 @@ import java.util.stream.Stream;
 @Profile({"ldap"})
 public class SeedDataImporterLDAP implements CommandLineRunner, Ordered {
 
-  private Logger log = LoggerFactory.getLogger(SeedDataImporterLDAP.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   @Value("${admin.username}")
   private String adminUsername;

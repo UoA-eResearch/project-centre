@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 @Component
 public class JsonHelpers {
 
-  private static Logger log = LoggerFactory.getLogger(JsonHelpers.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
   @Autowired
   private ObjectMapper om;
   private Repositories repositories = null;

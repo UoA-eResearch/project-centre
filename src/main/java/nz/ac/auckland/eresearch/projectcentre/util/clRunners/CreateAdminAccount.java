@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 @Profile({"dev"})
 public class CreateAdminAccount implements CommandLineRunner, Ordered {
 
-  private Logger log = LoggerFactory.getLogger(CreateAdminAccount.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
 
   @Value("${admin.username}")

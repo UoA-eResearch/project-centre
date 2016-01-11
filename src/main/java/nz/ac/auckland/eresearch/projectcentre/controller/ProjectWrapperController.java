@@ -50,7 +50,7 @@ public class ProjectWrapperController {
   ProjectFacilityService projectFacilityService;
   @Autowired
   ProjectPropertyService projectPropertyService;
-  private Logger log = LoggerFactory.getLogger(ProjectWrapperController.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
   // TODO finish this
   @RequestMapping(value = "/{projectId}", method = RequestMethod.GET)

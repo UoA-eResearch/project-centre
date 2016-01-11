@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
  */
 public class ProjectJsonSerializer extends JsonSerializer<Project> {
 
-  private Logger log = LoggerFactory.getLogger(ProjectJsonSerializer.class);
+  private Logger log = LoggerFactory.getLogger(getClass());
 
 
   @Autowired
