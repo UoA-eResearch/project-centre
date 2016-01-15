@@ -2,6 +2,8 @@ package nz.ac.auckland.eresearch.projectcentre.entity;
 
 import nz.ac.auckland.eresearch.projectcentre.util.HasId;
 import nz.ac.auckland.eresearch.projectcentre.util.HasProjectId;
+import nz.ac.auckland.eresearch.projectcentre.util.json.LocalDateDeserializer;
+import nz.ac.auckland.eresearch.projectcentre.util.json.LocalDateSerializer;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -12,6 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "project_kpi")
@@ -32,6 +38,9 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
   private Integer kpiCategoryId;
   private Integer personId;
   private Integer projectId;
+  @NotNull
+  @JsonSerialize(using = LocalDateSerializer.class)
+  @JsonDeserialize(using = LocalDateDeserializer.class)
   private LocalDate date;
   private String notes;
   private Float value;
