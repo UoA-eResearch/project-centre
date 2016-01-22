@@ -27,10 +27,14 @@ public class PersonProjectController extends BaseController<PersonProject, Integ
 
   @RequestMapping(value = "/findByPersonId/{id}", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public
-  @ResponseBody
-  Iterable<PersonProject> findByResearcherId(@PathVariable Integer id) {
+  public @ResponseBody Iterable<PersonProject> findByPersonId(@PathVariable Integer id) {
     return service.findByPersonId(id);
+  }
+
+  @RequestMapping(value = "/findByProjectId/{id}", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public @ResponseBody Iterable<PersonProject> findByProjectId(@PathVariable Integer id) {
+    return service.findByProjectId(id);
   }
 
 }

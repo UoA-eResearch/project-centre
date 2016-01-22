@@ -24,7 +24,6 @@ public class KpiCategory implements Serializable, HasId {
   public KpiCategory() {
   }
 
-
   public KpiCategory(String name) {
     super();
     this.name = name;

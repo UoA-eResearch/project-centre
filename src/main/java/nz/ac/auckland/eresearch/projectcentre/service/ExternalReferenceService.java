@@ -24,6 +24,11 @@ public class ExternalReferenceService extends BaseService<ExternalReference> {
     return repo.findAll();
   }
 
+  @PreAuthorize(Authz.AUTHENTICATED)
+  public Iterable<ExternalReference> findByProjectId(Integer projectId) {
+    return repo.findByProjectId(projectId);
+  }
+  
   @PreAuthorize(Authz.ADMIN)
   public ExternalReference create(ExternalReference entity) {
     return repo.save(entity);

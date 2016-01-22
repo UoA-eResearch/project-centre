@@ -2,6 +2,7 @@ package nz.ac.auckland.eresearch.projectcentre.aspect;
 
 import java.util.List;
 
+import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.entity.PersonProject;
 import nz.ac.auckland.eresearch.projectcentre.entity.PersonRole;
 import nz.ac.auckland.eresearch.projectcentre.entity.Project;
@@ -47,34 +48,34 @@ public class PersonProjectAugmentor {
     return pps;
   }
 
-//  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService.findByProjectId(..)) && args(projectId)")
-//  public List<PersonProject> augmentProjectFindByProjectId(ProceedingJoinPoint method, int projectId) throws Throwable {
-//    List<PersonProject> pps = (List<PersonProject>) method.proceed(new Object[]{projectId});
-//    if (pps != null) {
-//      for (PersonProject pp : pps) {
-//        Integer personId = pp.getPersonId();
-//        if (personId != null) {
-//          Person p = this.personService.findOne(personId);
-//          pp.setPerson(p);
-//        }
-//
-//        Integer personRoleId = pp.getPersonRoleId();
-//        if (personRoleId != null) {
-//          PersonRole personRole = this.personRoleService.findOne(personRoleId);
-//          pp.setPersonRole((personRole == null) ? null : personRole.getName());
-//        }
-//      }
-//    }
-//    return pps;
-//  }
-//
-//  public void setPersonService(PersonService personService) {
-//    this.personService = personService;
-//  }
-//
-//  public void setProjectService(ProjectService projectService) {
-//    this.projectService = projectService;
-//  }
+  @Around("execution(* nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService.findByProjectId(..)) && args(projectId)")
+  public List<PersonProject> augmentProjectFindByProjectId(ProceedingJoinPoint method, int projectId) throws Throwable {
+    List<PersonProject> pps = (List<PersonProject>) method.proceed(new Object[]{projectId});
+    if (pps != null) {
+      for (PersonProject pp : pps) {
+        Integer personId = pp.getPersonId();
+        if (personId != null) {
+          Person p = this.personService.findOne(personId);
+          pp.setPerson(p);
+        }
+
+        Integer personRoleId = pp.getPersonRoleId();
+        if (personRoleId != null) {
+          PersonRole personRole = this.personRoleService.findOne(personRoleId);
+          pp.setPersonRoleName((personRole == null) ? null : personRole.getName());
+        }
+      }
+    }
+    return pps;
+  }
+
+  public void setPersonService(PersonService personService) {
+    this.personService = personService;
+  }
+
+  public void setProjectService(ProjectService projectService) {
+    this.projectService = projectService;
+  }
 
   public void setPersonRoleService(PersonRoleService personRoleService) {
     this.personRoleService = personRoleService;

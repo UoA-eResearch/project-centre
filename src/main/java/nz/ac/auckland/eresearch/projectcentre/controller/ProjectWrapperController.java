@@ -4,6 +4,7 @@ import nz.ac.auckland.eresearch.projectcentre.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.entity.PersonProject;
 import nz.ac.auckland.eresearch.projectcentre.entity.ProjectFacility;
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonRepository;
+import nz.ac.auckland.eresearch.projectcentre.service.ExternalReferenceService;
 import nz.ac.auckland.eresearch.projectcentre.service.FacilityService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonProjectService;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectActionService;
@@ -49,7 +50,10 @@ public class ProjectWrapperController {
   @Autowired
   ProjectFacilityService projectFacilityService;
   @Autowired
+  ExternalReferenceService externalReferenceService;
+  @Autowired
   ProjectPropertyService projectPropertyService;
+
   private Logger log = LoggerFactory.getLogger(getClass());
 
   // TODO finish this
@@ -64,17 +68,8 @@ public class ProjectWrapperController {
     pw.setResearchOutputs(this.researchOutputService.findByProjectId(projectId));
     pw.setProjectActions(this.projectActionService.findByProjectId(projectId));
     pw.setProjectKpis(this.projectKpiService.findByProjectId(projectId));
-
-    List<Person> persons = new LinkedList<Person>();
-    Iterable<PersonProject> pps = this.personProjectService.findByProjectId(projectId);
-    if (pps != null) {
-      for (PersonProject pp : pps) {
-        Integer pid = pp.getPersonId();
-        Person persTemp = personRepo.findOne(pid);
-        persons.add(persTemp);
-      }
-    }
-    pw.setPersons(persons);
+    pw.setPersonProjects(this.personProjectService.findByProjectId(projectId));
+    pw.setExternalReferences(this.externalReferenceService.findByProjectId(projectId));
 
     List<ProjectFacility> projectFacilities = this.projectFacilityService.findByProjectId(projectId);
     List<Integer> facilityIds = new LinkedList<Integer>();

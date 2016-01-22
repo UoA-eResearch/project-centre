@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -37,6 +38,10 @@ public class ProjectAction implements Serializable, HasId, HasProjectId {
   private Integer personId;
   @NotNull
   private Integer projectId;
+  @Transient
+  private String actionTypeName;
+  @Transient
+  private String personFullName;
 
   public ProjectAction() {
   }
@@ -98,5 +103,21 @@ public class ProjectAction implements Serializable, HasId, HasProjectId {
   public void setProjectId(Integer projectId) {
     this.projectId = projectId;
   }
+
+	public String getActionTypeName() {
+		return actionTypeName;
+	}
+
+	public void setActionTypeName(String actionTypeName) {
+		this.actionTypeName = actionTypeName;
+	}
+
+	public String getPersonFullName() {
+		return personFullName;
+	}
+
+	public void setPersonFullName(String personFullName) {
+		this.personFullName = personFullName;
+	}
 
 }

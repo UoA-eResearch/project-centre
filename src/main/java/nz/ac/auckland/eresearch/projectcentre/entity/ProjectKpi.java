@@ -22,15 +22,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @Entity
 @Table(name = "project_kpi")
 public class ProjectKpi implements Serializable, HasId, HasProjectId {
+	
   private static final long serialVersionUID = 1L;
-  @Transient
-  String kpiCategory;
-  @Transient
-  String kpiType;
-  @Transient
-  Integer kpiNumber;
-  @Transient
-  String personFullName;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
@@ -44,6 +38,14 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
   private LocalDate date;
   private String notes;
   private Float value;
+  @Transient
+  KpiCategory kpiCategory;
+  @Transient
+  Kpi kpi;
+  @Transient
+  String personFullName;
+  @Transient
+  String projectCode;
 
   public ProjectKpi() {
   }
@@ -123,14 +125,6 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
     this.value = value;
   }
 
-  public String getKpiCategory() {
-    return kpiCategory;
-  }
-
-  public void setKpiCategory(String kpiCategory) {
-    this.kpiCategory = kpiCategory;
-  }
-
   public String getPersonFullName() {
     return personFullName;
   }
@@ -139,20 +133,28 @@ public class ProjectKpi implements Serializable, HasId, HasProjectId {
     this.personFullName = personFullName;
   }
 
-  public String getKpiType() {
-    return kpiType;
-  }
+	public KpiCategory getKpiCategory() {
+		return kpiCategory;
+	}
 
-  public void setKpiType(String kpiType) {
-    this.kpiType = kpiType;
-  }
+	public void setKpiCategory(KpiCategory kpiCategory) {
+		this.kpiCategory = kpiCategory;
+	}
 
-  public Integer getKpiNumber() {
-    return kpiNumber;
-  }
+	public Kpi getKpi() {
+		return kpi;
+	}
 
-  public void setKpiNumber(Integer kpiNumber) {
-    this.kpiNumber = kpiNumber;
-  }
+	public void setKpi(Kpi kpi) {
+		this.kpi = kpi;
+	}
+
+	public String getProjectCode() {
+		return projectCode;
+	}
+
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
 
 }

@@ -29,6 +29,8 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
   @NotNull
   private Integer projectId;
   @Transient
+  private Person person;
+  @Transient
   private Project project;
   @Transient
   private String personRoleName;
@@ -102,4 +104,12 @@ public class PersonProject implements Serializable, HasId, HasProjectId {
 	this.personRoleName = personRoleName;
   }
 
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+  
 }

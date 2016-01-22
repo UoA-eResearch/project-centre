@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,6 +31,8 @@ public class ProjectProperty implements Serializable, HasId, HasProjectId {
   private String propname;
   private String propvalue;
   private Timestamp timestamp;
+  @Transient
+  private String facilityName;
 
   public ProjectProperty() {
   }
@@ -92,4 +95,12 @@ public class ProjectProperty implements Serializable, HasId, HasProjectId {
     this.timestamp = timestamp;
   }
 
+	public String getFacilityName() {
+		return facilityName;
+	}
+
+	public void setFacilityName(String facilityName) {
+		this.facilityName = facilityName;
+	}
+  
 }

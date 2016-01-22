@@ -21,6 +21,7 @@ public class ProjectActionType implements Serializable, HasId {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
+  
   @Column(unique = true)
   @NotNull
   @Size(min = 1)
