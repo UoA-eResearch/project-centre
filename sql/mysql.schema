@@ -1,0 +1,496 @@
+-- MySQL dump 10.13  Distrib 5.5.40, for osx10.9 (x86_64)
+--
+-- Host: localhost    Database: projects
+-- ------------------------------------------------------
+-- Server version	5.5.40
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `division`
+--
+
+DROP TABLE IF EXISTS `division`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `division` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `parentId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_code` (`code`),
+  KEY `K_parentId` (`parentId`),
+  CONSTRAINT `K_parentId` FOREIGN KEY (`parentId`) REFERENCES `division` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of all possible affiliations of a person or a project';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `external_reference`
+--
+
+DROP TABLE IF EXISTS `external_reference`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `external_reference` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `projectId` int(11) NOT NULL,
+  `reference` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `uri` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `external_reference_ibfk_1` (`projectId`),
+  CONSTRAINT `external_reference_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='External references of projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `facility`
+--
+
+DROP TABLE IF EXISTS `facility`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `facility` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of available clusters/facilities';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `divisional_role`
+--
+
+DROP TABLE IF EXISTS `divisional_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `divisional_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of roles in a division a person can have';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `kpi`
+--
+
+DROP TABLE IF EXISTS `kpi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `kpi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `number` int(11) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `title` text NOT NULL,
+  `measures` text NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_number_type` (`number`,`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of key performance indicators';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `kpi_category`
+--
+
+DROP TABLE IF EXISTS `kpi_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `kpi_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kpiId` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `kpiId` (`kpiId`),
+  CONSTRAINT `kpi_category_ibfk_1` FOREIGN KEY (`kpiId`) REFERENCES `kpi` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of kpi sub-categories';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person`
+--
+
+DROP TABLE IF EXISTS `person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fullName` varchar(100) DEFAULT NULL,
+  `preferredName` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `pictureUrl` varchar(300) DEFAULT NULL,
+  `startDate` DATE DEFAULT NULL,
+  `endDate` DATE DEFAULT NULL,
+  `notes` text,
+  `statusId` int(11) DEFAULT NULL,
+  `lastModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'A unix timestamp indicating the last time the person was edited',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Basic information about a person';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person_project`
+--
+
+DROP TABLE IF EXISTS `person_project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `personId` int(11) NOT NULL,
+  `projectId` int(11) NOT NULL,
+  `personRoleId` int(11) DEFAULT NULL,
+  `notes` text,
+  PRIMARY KEY (`id`),
+  KEY `personId` (`personId`),
+  KEY `projectId` (`projectId`),
+  CONSTRAINT `person_project_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `person` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `person_project_ibfk_2` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Link persons to projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person_properties`
+--
+
+DROP TABLE IF EXISTS `person_properties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_properties` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `personId` int(11) NOT NULL DEFAULT '0',
+  `propname` varchar(255) NOT NULL DEFAULT '',
+  `propvalue` varchar(255) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `personId` (`personId`),
+  CONSTRAINT `person_properties_ibfk_2` FOREIGN KEY (`personId`) REFERENCES `person` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Person properties not captured in person table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person_role`
+--
+
+DROP TABLE IF EXISTS `person_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Roles a person can have on a project';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person_status`
+--
+
+DROP TABLE IF EXISTS `person_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of states a person can be in';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project`
+--
+
+DROP TABLE IF EXISTS `project`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL DEFAULT '',
+  `typeId` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(200) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `startDate` DATE NOT NULL,
+  `nextReviewDate` DATE DEFAULT NULL,
+  `endDate` DATE DEFAULT NULL,
+  `requirements` text,
+  `notes` text,
+  `todo` text,
+  `statusId` int(11) NOT NULL DEFAULT '0',
+  `lastModified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'A unix timestamp indicating the last time the project was edited',
+  `creationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Basic information about a project';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_action`
+--
+
+DROP TABLE IF EXISTS `project_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_action` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` int(11) NOT NULL,
+  `personId` int(11) NOT NULL,
+  `actionTypeId` int(11) NOT NULL,
+  `date` DATE NOT NULL,
+  `notes` text,
+  PRIMARY KEY (`id`),
+  KEY `project_action_ibfk_1` (`projectId`),
+  CONSTRAINT `project_action_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Actions on projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_action_type`
+--
+
+DROP TABLE IF EXISTS `project_action_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_action_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of types of a project action';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_facility`
+--
+
+DROP TABLE IF EXISTS `project_facility`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_facility` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` int(11) NOT NULL,
+  `facilityId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `projectId` (`projectId`),
+  CONSTRAINT `project_facility_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Facilities used by projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_kpi`
+--
+
+DROP TABLE IF EXISTS `project_kpi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_kpi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kpiId` int(11) NOT NULL,
+  `projectId` int(11) NOT NULL,
+  `date` DATE NOT NULL,
+  `personId` int(11) NOT NULL,
+  `value` float DEFAULT NULL,
+  `notes` text,
+  `kpiCategoryId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_kpi_ibfk_1` (`projectId`),
+  CONSTRAINT `project_kpi_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='KPIs linked to projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_properties`
+--
+
+DROP TABLE IF EXISTS `project_properties`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_properties` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` int(11) NOT NULL DEFAULT '0',
+  `facilityId` int(11) NOT NULL DEFAULT '1',
+  `propname` varchar(255) NOT NULL DEFAULT '',
+  `propvalue` varchar(255) NOT NULL DEFAULT '',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `propname_2` (`propname`),
+  KEY `propname_3` (`propname`),
+  KEY `projectId` (`projectId`),
+  KEY `facilityId` (`facilityId`),
+  CONSTRAINT `project_properties_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `project_properties_ibfk_3` FOREIGN KEY (`facilityId`) REFERENCES `facility` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Project properties not captured in project table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_status`
+--
+
+DROP TABLE IF EXISTS `project_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='List of states a project can be in';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_type`
+--
+
+DROP TABLE IF EXISTS `project_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of types a project can have';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `research_output`
+--
+
+DROP TABLE IF EXISTS `research_output`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `research_output` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` int(11) NOT NULL,
+  `typeId` int(11) DEFAULT NULL,
+  `description` text,
+  `uri` text,
+  `doi` text,
+  `date` DATE NOT NULL,
+  `personId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `research_output_ibfk_1` (`projectId`),
+  CONSTRAINT `research_output_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Research output of projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `research_output_type`
+--
+
+DROP TABLE IF EXISTS `research_output_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `research_output_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of research output types';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `authz_role`
+--
+
+DROP TABLE IF EXISTS `authz_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `authz_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `personId` int(11) NOT NULL,
+  `roleName` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `authz_role_ibfk_1` (`personId`),
+  CONSTRAINT `authz_role_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `person` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Map authorization roles to persons';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `identity`
+--
+
+DROP TABLE IF EXISTS `identity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `identity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `personId` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `service` varchar(100) NOT NULL,
+  `token` varchar(100) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `identity_ibfk_1` (`personId`),
+  UNIQUE KEY `UK_service_username` (`service`,`username`),
+  CONSTRAINT `identity_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `person` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `division_children`
+--
+
+DROP TABLE IF EXISTS `division_children`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `division_children` (
+  `divisionId` int(11) NOT NULL,
+  `childId` int(11) DEFAULT NULL,
+  KEY `division_children_ibfk_1` (`divisionId`),
+  CONSTRAINT `division_children_ibfk_1` FOREIGN KEY (`divisionId`) REFERENCES `division` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='List of children of a division';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `project_division`
+--
+
+DROP TABLE IF EXISTS `project_division`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_division` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` int(11) NOT NULL,
+  `divisionId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `project_division_ibfk_1` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `project_division_ibfk_2` FOREIGN KEY (`divisionId`) REFERENCES `division` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Map divisions to projects';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `person_affiliation`
+--
+
+DROP TABLE IF EXISTS `person_affiliation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_affiliation` (
+  `personId` int(11) NOT NULL,
+  `divisionId` int(11) NOT NULL,
+  `roleId` int(11) NOT NULL,
+  PRIMARY KEY (`personId`, `divisionId`),
+  CONSTRAINT `person_affiliation_ibfk_1` FOREIGN KEY (`personId`) REFERENCES `person` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `person_affiliation_ibfk_2` FOREIGN KEY (`divisionId`) REFERENCES `division` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Map divisions to persons';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
