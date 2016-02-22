@@ -38,7 +38,6 @@ public class UserDao {
   @Autowired
   private AuthzRoleRepository authzroleRepo;
 
-  // FIXME: Set credentialsNonExpired to true if user logs in via Shibboleth!!!!
   public UserInfo getUserInfoForApiLogin(String username) throws UsernameNotFoundException {
 
     log.debug("Getting user info for user " + username + " (API login)");
@@ -61,7 +60,6 @@ public class UserDao {
     }
   }
 
-  // FIXME: Set credentialsNonExpired to true if user logs in via Shibboleth!!!!
   public UserInfo getUserInfoForSamlLogin(String eppn) throws UsernameNotFoundException {
 
     log.debug("Getting user info for user " + eppn + " (SAML login)");
