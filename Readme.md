@@ -40,6 +40,5 @@ Service to manage research projects for the Centre for eResearch at the Universi
     
 ### Viewing swagger API
 
-    # after running 
     mvn clean package -Dspring.profiles.active="local"
-    point browser to http://localhost:8080/swagger-ui.html
+    # point browser to http://localhost:8080/swagger-ui.html
