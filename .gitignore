@@ -22,5 +22,5 @@ target
 # Python
 *.pyc
 
-application.properties
+application-prod.properties
 application-local.properties
