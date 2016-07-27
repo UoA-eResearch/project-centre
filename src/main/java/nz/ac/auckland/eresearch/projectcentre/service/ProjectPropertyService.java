@@ -1,24 +1,26 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectProperty;
+import java.util.List;
+import java.util.Map;
+
 import nz.ac.auckland.eresearch.projectcentre.repositories.ProjectPropertyRepository;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectProperty;
+import nz.ac.auckland.eresearch.projectcentre.util.BaseService;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-public class ProjectPropertyService extends BaseService<ProjectProperty> {
+public class ProjectPropertyService implements BaseService<ProjectProperty> {
 
   @Autowired
   private ProjectPropertyRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public ProjectProperty findOne(Integer id) {
-    return repo.findOne(id);
+  public ProjectProperty findOne(Integer id, Map<String, Integer> idMap) {
+    return repo.findByIdAndProjectId(id, idMap.get("projectId"));
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
@@ -27,8 +29,8 @@ public class ProjectPropertyService extends BaseService<ProjectProperty> {
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public Iterable<ProjectProperty> findAll() {
-    return repo.findAll();
+  public Iterable<ProjectProperty> findAll(Map<String, Integer> idMap) {
+    return this.findByProjectId(idMap.get("projectId"));
   }
 
   @PreAuthorize(Authz.ADMIN)

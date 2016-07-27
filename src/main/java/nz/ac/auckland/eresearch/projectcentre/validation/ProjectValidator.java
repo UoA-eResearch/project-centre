@@ -1,71 +1,85 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
-import com.mysql.jdbc.StringUtils;
+import java.time.LocalDate;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.Project;
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectStatusService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectTypeService;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.Project;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectStatus;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.util.List;
-
 @Component
 public class ProjectValidator implements Validator {
 
   @Autowired
-  ProjectService projectService;
+  protected ProjectStatusService projectStatusService;
   @Autowired
-  ValidationUtil validationUtil;
-
+  protected ProjectTypeService projectTypeService;
+  @Autowired
+  protected ProjectService projectService;
+  @Autowired
+  protected ValidationUtil validationUtil;
+  
   @Override
   public boolean supports(Class<?> clazz) {
     return Project.class.isAssignableFrom(clazz);
   }
 
   @Override
-  public void validate(Object project, Errors errors) {
-    Project p = (Project) project;
-    String[] notEmpty = {"title", "code", "divisionIds", "startDate"};
-    new RejectEmptyValidator(Project.class, notEmpty).validate(project, errors);
+  public void validate(Object o, Errors errors) {
+    Project p = (Project) o;
+    validationUtil.checkNotEmpty(errors, new String[]{"title", "description", "code"});
+    validationUtil.checkNotEmpty(errors, "typeId", "type");
+    validationUtil.checkNotEmpty(errors, "statusId", "status");
     if (!errors.hasErrors()) {
-      //TODO fix that for lists
-      //this.validateAffiliation(p.getDivisionId(), errors);
       this.validateDescription(p.getDescription(), errors);
-      this.validateCode(p, errors);
+      this.validateStatus(p.getStatusId(), errors);
+      this.validateType(p.getTypeId(), errors);
+      this.validateCode(p.getId(), p.getCode(), errors);
+    }
+    if (p.getStartDate() == null) {
+      p.setStartDate(LocalDate.now());
     }
   }
 
-  private void validateAffiliation(Integer divId, Errors errors) {
-
-    this.validationUtil.validateDivisionId(divId, errors);
-
-  }
-
-  private void validateDescription(String description, Errors errors) {
-    // if no description, that is fine for now (hard to input 500 chars on commandline client for example),
-    // but project can't be active until there is a description
-    if (StringUtils.isNullOrEmpty(description)) {
-      return;
+  protected void validateStatus(Integer statusId, Errors errors) {
+    ProjectStatus ps = this.projectStatusService.findOne(statusId, null);
+    if (ps == null) {
+      errors.rejectValue("statusId", "Invalid person status");
     }
+  }
+  
+  protected void validateType(Integer typeId, Errors errors) {
+    ProjectType pt = this.projectTypeService.findOne(typeId, null);
+    if (pt == null) {
+      errors.rejectValue("typeId", "Invalid project type");
+    }
+  }
+  
+  protected void validateDescription(String description, Errors errors) {
     int length = description.trim().length();
     if (length < 500 || length > 2500) {
-      errors.rejectValue("description", "project.description.invalid");
+      errors.rejectValue("description", "Project description must be"
+          + " > 500 and < 2500 characters");
     }
   }
-
-  private void validateCode(Project project, Errors errors) {
-    List<Project> tmp = null;
-    if (project.getId() == null) { // new project
-      tmp = this.projectService.findByCode(project.getCode());
-    } else { // existing project
-      tmp = this.projectService.findByCodeAndIdNot(project.getCode(), project.getId());
+  
+  protected void validateCode(Integer id, String code, Errors errors) {
+    Project p = null;
+    if (id == null) {
+      p = this.projectService.findByCode(code);
+    } else {
+      p = this.projectService.findByCodeAndIdNot(code, id);      
     }
-    if (tmp != null && tmp.size() > 0) {
-      errors.rejectValue("code", "project.code.in.use");
+    if (p != null) {
+      errors.rejectValue("code", "Project code already in use: " + code);
     }
   }
-
+  
 }

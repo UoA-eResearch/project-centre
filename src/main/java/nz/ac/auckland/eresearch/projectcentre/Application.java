@@ -1,5 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre;
 
+import javax.sql.DataSource;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -10,11 +12,10 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import javax.sql.DataSource;
 
 @EnableCaching
 @SpringBootApplication
@@ -43,8 +44,15 @@ public class Application extends SpringBootServletInitializer {
   }
 
   @Bean
-  @ConfigurationProperties(prefix = "spring.datasource")
-  public DataSource dataSource() {
+  @Primary
+  @ConfigurationProperties(prefix = "datasource.project")
+  public DataSource projectDataSource() {
+    return DataSourceBuilder.create().build();
+  }
+
+  @Bean
+  @ConfigurationProperties(prefix = "datasource.vm")
+  public DataSource vmDataSource() {
     return DataSourceBuilder.create().build();
   }
 
@@ -56,6 +64,5 @@ public class Application extends SpringBootServletInitializer {
     messageSource.setCacheSeconds(60);
     return messageSource;
   }
-
-
+  
 }

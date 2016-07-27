@@ -1,12 +1,9 @@
 package nz.ac.auckland.eresearch.projectcentre.repositories;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectStatus;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectStatus;
 
 import org.springframework.data.repository.CrudRepository;
 
-/**
- * Created by markus on 9/11/15.
- */
 public interface ProjectStatusRepository extends CrudRepository<ProjectStatus, Integer> {
   ProjectStatus findByName(String s);
 }

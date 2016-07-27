@@ -1,0 +1,26 @@
+datasource.project.url=jdbc:mysql://localhost/project_centre
+datasource.project.username=username
+datasource.project.password=password
+datasource.project.driverClassName=com.mysql.jdbc.Driver
+datasource.project.testOnBorrow=true
+datasource.project.validationQuery=SELECT 1
+datasource.project.initialSize=10
+datasource.project.maxActive=10
+datasource.project.maxIdle=10
+
+spring.jpa.generate-ddl=false
+spring.jpa.properties.hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+spring.jpa.properties.hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+spring.jpa.properties.hibernate.id.new_generator_mappings=false
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.show-sql=false
+
+# force the use of CGLIB proxies
+spring.aop.proxy-target-class=true
+
+spring.jackson.serialization.indent_output=true
+
+logging.level.org.springframework=WARN
+logging.level.nz.ac.auckland.eresearch=DEBUG
+#logging.level.org.springframework.security.authentication=DEBUG
+#logging.level.org.springframework.security.web.authentication.preauth=DEBUG

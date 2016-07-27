@@ -19,9 +19,8 @@ target
 .idea
 *.iml
 
-application-prod.properties
-application-mysql.properties
-application-ldap.properties
+# Python
+*.pyc
 
-seed-data/uoa_hierarchy.xlsx
-
+application.properties
+application-local.properties

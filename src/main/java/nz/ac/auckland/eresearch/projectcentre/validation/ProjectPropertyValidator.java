@@ -1,8 +1,8 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.Facility;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectProperty;
 import nz.ac.auckland.eresearch.projectcentre.service.FacilityService;
+import nz.ac.auckland.eresearch.projectcentre.service.ProjectPropertyService;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectProperty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +12,8 @@ import org.springframework.validation.Validator;
 @Component
 public class ProjectPropertyValidator implements Validator {
 
+  @Autowired
+  ProjectPropertyService projectPropertyService;
   @Autowired
   FacilityService facilityService;
   @Autowired
@@ -23,20 +25,15 @@ public class ProjectPropertyValidator implements Validator {
   }
 
   @Override
-  public void validate(Object personProject, Errors errors) {
-    ProjectProperty pp = (ProjectProperty) personProject;
-    String[] notEmpty = {"facilityId", "projectId", "propname", "propvalue"};
-    new RejectEmptyValidator(ProjectProperty.class, notEmpty).validate(personProject, errors);
-    if (!errors.hasErrors()) {
-      this.validationUtil.validateProjectId(pp.getProjectId(), errors);
-      this.validateFacilityId(pp.getFacilityId(), errors);
-    }
-  }
-
-  public void validateFacilityId(Integer id, Errors errors) {
-    Facility f = facilityService.findOne(id);
-    if (f == null) {
-      errors.rejectValue("facilityId", "facility.id.invalid");
+  public void validate(Object in, Errors errors) {
+    ProjectProperty tmp = (ProjectProperty) in;
+    validationUtil.checkNotEmpty(errors, new String[]{"propname", "propvalue", "projectId"});
+    validationUtil.checkNotEmpty(errors, "facilityId", "facility");
+    if (!errors.hasFieldErrors()) {
+      validationUtil.validateProjectId(tmp.getProjectId(), errors);
+      if (null == facilityService.findOne(tmp.getFacilityId(), null)){
+        errors.rejectValue("facility", "Specified facility does not exist");
+      }
     }
   }
 

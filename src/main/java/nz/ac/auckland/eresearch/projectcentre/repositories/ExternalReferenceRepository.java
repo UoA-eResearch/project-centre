@@ -2,15 +2,13 @@ package nz.ac.auckland.eresearch.projectcentre.repositories;
 
 import java.util.List;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ExternalReference;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectExternalReference;
 
 import org.springframework.data.repository.CrudRepository;
 
-/**
- * Created by markus on 9/11/15.
- */
-public interface ExternalReferenceRepository extends CrudRepository<ExternalReference, Integer> {
+public interface ExternalReferenceRepository extends CrudRepository<ProjectExternalReference, Integer> {
 
-	  List<ExternalReference> findByProjectId(Integer projectId);
+	  List<ProjectExternalReference> findByProjectId(Integer projectId);
+      ProjectExternalReference findByIdAndProjectId(Integer id, Integer projectId);
 
 }

@@ -1,7 +1,7 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.PersonProperty;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonPropertyService;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.PersonProperty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,12 +22,11 @@ public class PersonPropertyValidator implements Validator {
   }
 
   @Override
-  public void validate(Object personProperty, Errors errors) {
-    PersonProperty pp = (PersonProperty) personProperty;
-    String[] notEmpty = {"personId", "propname", "propvalue"};
-    new RejectEmptyValidator(PersonProperty.class, notEmpty).validate(personProperty, errors);
-    if (!errors.hasErrors()) {
-      this.validationUtil.validatePersonId(pp.getPersonId(), errors);
+  public void validate(Object in, Errors errors) {
+    PersonProperty tmp = (PersonProperty) in;
+    validationUtil.checkNotEmpty(errors, new String[]{"propname", "propvalue", "personId"});
+    if (!errors.hasFieldErrors()) {
+      validationUtil.validatePersonId(tmp.getPersonId(), errors);
     }
   }
 

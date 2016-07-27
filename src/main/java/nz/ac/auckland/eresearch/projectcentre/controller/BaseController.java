@@ -1,128 +1,125 @@
 package nz.ac.auckland.eresearch.projectcentre.controller;
 
-import com.google.common.collect.Lists;
-
-import nz.ac.auckland.eresearch.projectcentre.service.BaseService;
-import nz.ac.auckland.eresearch.projectcentre.validation.MyValidator;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.io.Serializable;
 import java.net.URI;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class BaseController<T, ID extends Serializable> {
+import nz.ac.auckland.eresearch.projectcentre.util.BaseService;
+import nz.ac.auckland.eresearch.projectcentre.util.NullAwareBeanUtilsBean;
+import nz.ac.auckland.eresearch.projectcentre.util.TypeConverter;
+import nz.ac.auckland.eresearch.projectcentre.validation.MyValidator;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import springfox.documentation.annotations.ApiIgnore;
+
+@ApiIgnore
+public class BaseController<T, TGET, TPUT, TPOST> {
 
   protected Logger log = LoggerFactory.getLogger(getClass());
   private BaseService<T> service;
+  private TypeConverter<T, TGET, TPUT, TPOST> converter;
   private Validator[] validators;
 
-  public BaseController(BaseService<T> service, Validator... validators) {
+  public BaseController(BaseService<T> service, TypeConverter<T, TGET, TPUT, TPOST> converter, 
+      Validator... validators) {
     this.service = service;
+    this.converter = converter;
     this.validators = validators;
   }
 
-  @RequestMapping(method = RequestMethod.GET)
-  @ResponseStatus(HttpStatus.OK)
-  public
-  @ResponseBody
-  List<T> getAll() {
+  public ResponseEntity<List<TGET>> getAll(Map<String, Integer> idMap) throws Exception {
     log.debug("GET all");
-    Iterable<T> result = this.service.findAll();
-    return Lists.newArrayList(result);
+    return new ResponseEntity<List<TGET>>(this.getAllRaw(idMap), HttpStatus.OK);
   }
 
-  @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public
-  @ResponseBody
-  ResponseEntity<?> create(@RequestBody T domainObject, HttpServletRequest request) throws Exception {
-    log.debug("POST");
-    PropertyUtils.setProperty(domainObject, "id", null);
-    new MyValidator(this.validators).validate(domainObject);
-    domainObject = this.service.create(domainObject);
+  public ResponseEntity<Void> create(TPOST in, Map<String, Integer> idMap, HttpServletRequest request) throws Exception {
+    T entity = this.createWithoutResponse(in, idMap, request);
     HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(this.createLocation(request, domainObject));
-    return new ResponseEntity<T>(domainObject, headers, HttpStatus.CREATED);
+    headers.setLocation(this.createLocation(request, entity));
+    return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public
-  @ResponseBody
-  ResponseEntity<?> get(@PathVariable Integer id) {
-    log.debug("GET id " + id);
-    T entity = this.service.findOne(id);
+  public T createWithoutResponse(TPOST in, Map<String, Integer> idMap, HttpServletRequest request) throws Exception {
+    log.debug("POST");
+    T entity = this.converter.post2Entity(in, idMap);
+    new MyValidator(validators).validate(entity);
+    entity = this.service.create(entity);
+    return entity;
+  }
+
+  public ResponseEntity<TGET> get(Map<String, Integer> idMap) throws Exception {
+    log.debug("GET");
+    TGET result = this.getRaw(idMap);
+    if (result == null) {
+      return new ResponseEntity<TGET>(HttpStatus.NOT_FOUND);
+    }
+    return new ResponseEntity<TGET>(result, HttpStatus.OK);
+  }
+
+  public @ResponseBody ResponseEntity<Void> put(Map<String, Integer> idMap, TPUT in) throws Exception {
+    log.debug("PUT");
+    T oldEntity = this.service.findOne(idMap.get("id"), idMap);
+    if (oldEntity == null) {
+      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    } 
+    T updatedEntity = this.converter.put2Entity(in, idMap);
+    new MyValidator(validators).validate(updatedEntity);
+    this.service.update(updatedEntity);
+    return new ResponseEntity<Void>(HttpStatus.OK);
+  }
+
+  public ResponseEntity<Void> patch(Map<String, Integer> idMap, TPUT in) throws Exception {
+    log.debug("PATCH");
+    T oldEntity = this.service.findOne(idMap.get("id"), idMap);
+    if (oldEntity == null) {
+      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    }
+    TPUT tput = converter.entity2Put(oldEntity, idMap);
+    new NullAwareBeanUtilsBean().copyProperties(tput, in);
+    T updatedEntity = converter.put2Entity(tput, idMap);
+    new MyValidator(this.validators).validate(updatedEntity);
+    this.service.update(updatedEntity);
+    return new ResponseEntity<Void>(HttpStatus.OK);
+  }
+
+  public @ResponseBody ResponseEntity<Void> delete(Map<String, Integer> idMap) throws Exception {
+    log.debug("DELETE");
+    Integer id = idMap.get("id");
+    T entity = this.service.findOne(id, idMap);
     if (entity == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<T>(entity, HttpStatus.OK);
+      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);      
     }
+    this.service.delete(id);
+    //TGET object = this.converter.entity2Get(entity, idMap);
+    return new ResponseEntity<Void>(HttpStatus.OK);
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public
-  @ResponseBody
-  ResponseEntity<?> put(@PathVariable Integer id, @RequestBody T domainObject) throws Exception {
-    log.debug("POST id " + id);
-    BeanUtils.setProperty(domainObject, "id", id);
-    new MyValidator(this.validators).validate(domainObject);
-    T oldEntity = this.service.findOne(id);
-    if (oldEntity == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    } else {
-      this.service.update(domainObject);
-      return new ResponseEntity<Void>(HttpStatus.OK);
+  public TGET getRaw(Map<String, Integer> idMap) throws Exception {
+    T entity = this.service.findOne(idMap.get("id"), idMap);
+    if (entity != null) {
+      return this.converter.entity2Get(entity, idMap);      
     }
+    return null;
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-  public
-  @ResponseBody
-  ResponseEntity<?> patch(@PathVariable Integer id, @RequestBody HashMap<String, Object> params) throws Exception {
-    log.debug("PUT id " + id);
-    params.put("id", id); // just in case somebody uses different id in body
-    T oldEntity = this.service.findOne(id); // potentially cached, so overwrite in new instance
-    if (oldEntity == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    } else {
-      T newEntity = ((Class<T>) oldEntity.getClass()).newInstance();
-      BeanUtils.copyProperties(newEntity, oldEntity); // copy from old to new
-      BeanUtils.populate(newEntity, params); // apply requested changes
-      new MyValidator(this.validators).validate(newEntity); // validate
-      this.service.update(newEntity);
-      return new ResponseEntity<Void>(HttpStatus.OK);
+  public List<TGET> getAllRaw(Map<String, Integer> idMap) throws Exception {
+    Iterable<T> objects = this.service.findAll(idMap);
+    List<TGET> result = new LinkedList<TGET>();
+    for (T t: objects) {
+      result.add(this.converter.entity2Get(t, idMap));
     }
-  }
-
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public
-  @ResponseBody
-  ResponseEntity<?> delete(@PathVariable Integer id) {
-    log.debug("DELETE id " + id);
-    try {
-      this.service.delete(id);
-      return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-    } catch (EmptyResultDataAccessException e) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    }
+    return result;
   }
 
   private URI createLocation(HttpServletRequest request, T newObject) throws Exception {
@@ -132,7 +129,6 @@ public abstract class BaseController<T, ID extends Serializable> {
     }
     url.append(BeanUtils.getSimpleProperty(newObject, "id"));
     return new URI(url.toString());
-
   }
 
 }

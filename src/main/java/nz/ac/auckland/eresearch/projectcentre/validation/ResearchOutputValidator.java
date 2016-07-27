@@ -1,8 +1,8 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
-import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutputType;
 import nz.ac.auckland.eresearch.projectcentre.service.ResearchOutputTypeService;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ResearchOutput;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ResearchOutputType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,20 +27,20 @@ public class ResearchOutputValidator implements Validator {
   @Override
   public void validate(Object personProject, Errors errors) {
     ResearchOutput ro = (ResearchOutput) personProject;
-    String[] notEmpty = {"personId", "projectId", "typeId", "description"};
-    new RejectEmptyValidator(ResearchOutput.class, notEmpty).validate(personProject, errors);
+    validationUtil.checkNotEmpty(errors, new String[]{"personId", "projectId", "typeId", "description"});
     if (!errors.hasErrors()) {
       this.validationUtil.validateProjectId(ro.getProjectId(), errors);
-      this.validationUtil.validatePersonId(ro.getPersonId(), errors);
       this.validateResearchOutputTypeId(ro.getTypeId(), errors);
     }
-    ro.setDate(LocalDate.now());
+    if (ro.getDateReported() == null) {
+      ro.setDateReported(LocalDate.now());
+    }
   }
 
   public void validateResearchOutputTypeId(Integer id, Errors errors) {
-    ResearchOutputType rot = service.findOne(id);
+    ResearchOutputType rot = service.findOne(id, null);
     if (rot == null) {
-      errors.rejectValue("typeId", "research.output.type.id.invalid");
+      errors.rejectValue("typeId", "Invalid research output type");
     }
   }
 

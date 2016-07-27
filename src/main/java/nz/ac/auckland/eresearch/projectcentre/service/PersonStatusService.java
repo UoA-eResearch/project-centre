@@ -1,7 +1,10 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.PersonStatus;
+import java.util.Map;
+
 import nz.ac.auckland.eresearch.projectcentre.repositories.PersonStatusRepository;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.PersonStatus;
+import nz.ac.auckland.eresearch.projectcentre.util.IdNameTypeService;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +14,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PersonStatusService extends BaseService<PersonStatus> {
+public class PersonStatusService implements IdNameTypeService<PersonStatus> {
 
   @Autowired
   private PersonStatusRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
   @Cacheable(value = "PersonStatusCache", key = "#id")
-  public PersonStatus findOne(Integer id) {
+  public PersonStatus findOne(Integer id, Map<String, Integer> idMap) {
     return repo.findOne(id);
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public Iterable<PersonStatus> findAll() {
+  public Iterable<PersonStatus> findAll(Map<String, Integer> idMap) {
     return repo.findAll();
   }
 
@@ -49,7 +52,6 @@ public class PersonStatusService extends BaseService<PersonStatus> {
   public PersonStatus findByName(String name) {
     return repo.findByName(name);
   }
-
 
 }
 

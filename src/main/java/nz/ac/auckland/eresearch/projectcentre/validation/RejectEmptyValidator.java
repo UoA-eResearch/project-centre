@@ -1,11 +1,13 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 public class RejectEmptyValidator implements Validator {
 
+  @Autowired
+  private ValidationUtil validationUtil;
   private Class<?> clazz;
   private String[] fields;
 
@@ -22,10 +24,7 @@ public class RejectEmptyValidator implements Validator {
   @Override
   public void validate(Object domainObject, Errors errors) {
     if (fields != null) {
-      for (String field : fields) {
-        Object[] args = new Object[]{field};
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, field, "mandatory.field.missing", args);
-      }
+      validationUtil.checkNotEmpty(errors, fields);
     }
   }
 

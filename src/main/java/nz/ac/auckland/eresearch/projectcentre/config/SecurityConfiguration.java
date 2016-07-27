@@ -1,6 +1,13 @@
 package nz.ac.auckland.eresearch.projectcentre.config;
 
-import nz.ac.auckland.eresearch.projectcentre.util.auth.ShibbolethAuthenticationFilter;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import nz.ac.auckland.eresearch.projectcentre.util.auth.ProxyPreAuthenticatedFilter;
+import nz.ac.auckland.eresearch.projectcentre.util.auth.ProxyUserDetailsService;
+import nz.ac.auckland.eresearch.projectcentre.util.auth.ShibbolethPreAuthenticatedFilter;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.ShibbolethUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +15,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 @Configuration
 // NOTE: @EnableWebSecurity commented out because of https://github.com/spring-projects/spring-boot/issues/1548
@@ -34,7 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Autowired
   ShibbolethUserDetailsService shibUserDetailsService;
-
+  @Autowired
+  ProxyUserDetailsService proxyUserDetailsService;
   @Autowired
   UserDetailsService userDetailsService;
 
@@ -54,14 +55,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
+    // configure proxy authentication filter
+    ProxyPreAuthenticatedFilter proxyFilter = new ProxyPreAuthenticatedFilter();
+    PreAuthenticatedAuthenticationProvider proxyAuthProvider = new PreAuthenticatedAuthenticationProvider();
+    proxyAuthProvider.setPreAuthenticatedUserDetailsService(proxyUserDetailsService);
+    List<AuthenticationProvider> proxyAuthProviders = new LinkedList<AuthenticationProvider>();
+    proxyAuthProviders.add(proxyAuthProvider);
+    proxyFilter.setAuthenticationManager(new ProviderManager(proxyAuthProviders));
+    
     // configure Shibboleth authentication filter
-    AbstractPreAuthenticatedProcessingFilter shibbolethFilter = new ShibbolethAuthenticationFilter();
+    ShibbolethPreAuthenticatedFilter shibbolethFilter = new ShibbolethPreAuthenticatedFilter();
     PreAuthenticatedAuthenticationProvider shibbolethAuthProvider = new PreAuthenticatedAuthenticationProvider();
-    shibbolethAuthProvider.setPreAuthenticatedUserDetailsService(shibUserDetailsService);
-    List<AuthenticationProvider> authProviders = new LinkedList<AuthenticationProvider>();
-    authProviders.add(shibbolethAuthProvider);
-    shibbolethFilter.setAuthenticationManager(new ProviderManager(authProviders));
-    http.addFilterBefore(shibbolethFilter, UsernamePasswordAuthenticationFilter.class);
+    shibbolethAuthProvider.setPreAuthenticatedUserDetailsService(shibUserDetailsService);    
+    List<AuthenticationProvider> shibAuthProviders = new LinkedList<AuthenticationProvider>();
+    shibAuthProviders.add(shibbolethAuthProvider);
+    shibbolethFilter.setAuthenticationManager(new ProviderManager(shibAuthProviders));
+    
+    http.addFilter(shibbolethFilter);
+    http.addFilter(proxyFilter);
 
     http.httpBasic().and().authorizeRequests()
             .antMatchers("/authenticate/api").permitAll()

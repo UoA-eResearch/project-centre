@@ -27,17 +27,47 @@
         <persistence strategy="none"/>
     </cache>
 
+    <cache name="ServiceInstanceStatusCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
     <cache name="ProjectTypeCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
 
-    <cache name="ProjectCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+    <cache name="ProjectDivisionCache" maxEntriesLocalHeap="50" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>
 
-    <cache name="PersonCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+    <cache name="ProjectCache" maxEntriesLocalHeap="50" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
+    <cache name="PersonCache" maxEntriesLocalHeap="50" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
+    <cache name="ServiceCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
+    <cache name="ServiceSchemaCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
+    <cache name="ServiceInstanceCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+        <persistence strategy="none"/>
+    </cache>
+
+    <cache name="ServiceOwnerCache" maxEntriesLocalHeap="10" eternal="false" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU" transactionalMode="off">
         <persistence strategy="none"/>
     </cache>

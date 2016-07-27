@@ -1,14 +1,14 @@
 package nz.ac.auckland.eresearch.projectcentre.validation;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectAction;
+import java.time.LocalDate;
+
 import nz.ac.auckland.eresearch.projectcentre.service.ProjectActionService;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.ProjectAction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.time.LocalDate;
 
 @Component
 public class ProjectActionValidator implements Validator {
@@ -24,22 +24,16 @@ public class ProjectActionValidator implements Validator {
   }
 
   @Override
-  public void validate(Object personProject, Errors errors) {
-    ProjectAction pa = (ProjectAction) personProject;
-    String[] notEmpty = {"actionTypeId", "notes", "personId", "projectId"};
-    new RejectEmptyValidator(ProjectAction.class, notEmpty).validate(personProject, errors);
-    if (!errors.hasErrors()) {
-      this.validationUtil.validateProjectId(pa.getProjectId(), errors);
-      this.validationUtil.validatePersonId(pa.getPersonId(), errors);
-      this.validateActionTypeId(pa.getActionTypeId(), errors);
+  public void validate(Object in, Errors errors) {
+    ProjectAction tmp = (ProjectAction) in;
+    validationUtil.checkNotEmpty(errors, new String[]{"notes", "personId"});
+    validationUtil.checkNotEmpty(errors, "actionTypeId", "actionType");
+    if (!errors.hasFieldErrors()) {
+      validationUtil.validatePersonId(tmp.getPersonId(), errors);
+      validationUtil.validateProjectId(tmp.getProjectId(), errors);
     }
-    pa.setDate(LocalDate.now());
-  }
-
-  public void validateActionTypeId(Integer actionTypeId, Errors errors) {
-    ProjectAction pa = projectActionService.findOne(actionTypeId);
-    if (pa == null) {
-      errors.rejectValue("actionTypeId", "action.type.id.invalid");
+    if (tmp.getDate() == null) {
+      tmp.setDate(LocalDate.now());      
     }
   }
 

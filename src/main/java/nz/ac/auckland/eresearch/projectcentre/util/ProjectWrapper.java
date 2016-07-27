@@ -1,101 +1,92 @@
 package nz.ac.auckland.eresearch.projectcentre.util;
 
 import java.util.LinkedList;
+import java.util.List;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.ExternalReference;
-import nz.ac.auckland.eresearch.projectcentre.entity.Facility;
-import nz.ac.auckland.eresearch.projectcentre.entity.PersonProject;
-import nz.ac.auckland.eresearch.projectcentre.entity.Project;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectAction;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectKpi;
-import nz.ac.auckland.eresearch.projectcentre.entity.ProjectProperty;
-import nz.ac.auckland.eresearch.projectcentre.entity.ResearchOutput;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ProjectActionGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ProjectExternalReferenceGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ProjectGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ProjectMemberGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ProjectPropertyGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ResearchOutputGet;
+import nz.ac.auckland.eresearch.projectcentre.types.api.ServiceInstanceGet;
 
+// TODO: add service instances
+// TODO: remove facilities
 public class ProjectWrapper {
 
-  private Project project;
-  private Iterable<PersonProject> personProjects;
-  private Iterable<ResearchOutput> researchOutputs;
-  private Iterable<ProjectAction> projectActions;
-  private Iterable<Facility> facilities;
-  private Iterable<ProjectKpi> projectKpis;
-  private Iterable<ExternalReference> externalReferences;
-  private Iterable<ProjectProperty> projectProperties;
+  private ProjectGet project;
+  private List<ProjectMemberGet> members;
+  private List<ResearchOutputGet> researchOutputs;
+  private List<ProjectActionGet> projectActions;
+  private List<ProjectExternalReferenceGet> externalReferences;
+  private List<ServiceInstanceGet> serviceInstances;
+  private List<ProjectPropertyGet> projectProperties;
 
   public ProjectWrapper() {
-    project = new Project();
-    personProjects = new LinkedList<PersonProject>();
-    researchOutputs = new LinkedList<ResearchOutput>();
-    projectActions = new LinkedList<ProjectAction>();
-    projectKpis = new LinkedList<ProjectKpi>();
-    facilities = new LinkedList<Facility>();
-    externalReferences = new LinkedList<ExternalReference>();
-    projectProperties = new LinkedList<ProjectProperty>();
+    project = new ProjectGet();
+    members = new LinkedList<ProjectMemberGet>();
+    researchOutputs = new LinkedList<ResearchOutputGet>();
+    projectActions = new LinkedList<ProjectActionGet>();
+    externalReferences = new LinkedList<ProjectExternalReferenceGet>();
+    serviceInstances = new LinkedList<ServiceInstanceGet>();
+    projectProperties = new LinkedList<ProjectPropertyGet>();
   }
 
-  public Project getProject() {
+  public ProjectGet getProject() {
     return project;
   }
 
-  public void setProject(Project project) {
+  public void setProject(ProjectGet project) {
     this.project = project;
   }
 
-  public Iterable<PersonProject> getPersonProjects() {
-    return personProjects;
+  public List<ProjectMemberGet> getMembers() {
+    return members;
   }
 
-  public void setPersonProjects(Iterable<PersonProject> personProjects) {
-    this.personProjects = personProjects;
+  public void setMembers(List<ProjectMemberGet> members) {
+    this.members = members;
   }
 
-  public Iterable<ResearchOutput> getResearchOutputs() {
+  public List<ResearchOutputGet> getResearchOutputs() {
     return researchOutputs;
   }
 
-  public void setResearchOutputs(Iterable<ResearchOutput> researchOutputs) {
+  public void setResearchOutputs(List<ResearchOutputGet> researchOutputs) {
     this.researchOutputs = researchOutputs;
   }
 
-  public Iterable<ProjectAction> getProjectActions() {
+  public List<ProjectActionGet> getProjectActions() {
     return projectActions;
   }
 
-  public void setProjectActions(Iterable<ProjectAction> projectActions) {
+  public void setProjectActions(List<ProjectActionGet> projectActions) {
     this.projectActions = projectActions;
   }
 
-  public Iterable<Facility> getFacilities() {
-    return facilities;
-  }
-
-  public void setFacilities(Iterable<Facility> facilities) {
-    this.facilities = facilities;
-  }
-
-  public Iterable<ProjectKpi> getProjectKpis() {
-    return projectKpis;
-  }
-
-  public void setProjectKpis(Iterable<ProjectKpi> projectKpis) {
-    this.projectKpis = projectKpis;
-  }
-
-  public Iterable<ProjectProperty> getProjectProperties() {
+  public List<ProjectPropertyGet> getProjectProperties() {
     return projectProperties;
   }
 
-  public void setProjectProperties(Iterable<ProjectProperty> projectProperties) {
+  public void setProjectProperties(List<ProjectPropertyGet> projectProperties) {
     this.projectProperties = projectProperties;
   }
 
-	public Iterable<ExternalReference> getExternalReferences() {
-		return externalReferences;
-	}
+  public List<ProjectExternalReferenceGet> getExternalReferences() {
+    return externalReferences;
+  }
 
-	public void setExternalReferences(
-			Iterable<ExternalReference> externalReferences) {
-		this.externalReferences = externalReferences;
-	}
+  public void setExternalReferences(List<ProjectExternalReferenceGet> externalReferences) {
+    this.externalReferences = externalReferences;
+  }
+
+  public List<ServiceInstanceGet> getServiceInstances() {
+    return serviceInstances;
+  }
+
+  public void setServiceInstances(List<ServiceInstanceGet> serviceInstances) {
+    this.serviceInstances = serviceInstances;
+  }
 
 }

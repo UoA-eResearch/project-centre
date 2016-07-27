@@ -1,7 +1,10 @@
 package nz.ac.auckland.eresearch.projectcentre.service;
 
-import nz.ac.auckland.eresearch.projectcentre.entity.DivisionalRole;
+import java.util.Map;
+
 import nz.ac.auckland.eresearch.projectcentre.repositories.DivisionalRoleRepository;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.DivisionalRole;
+import nz.ac.auckland.eresearch.projectcentre.util.IdNameTypeService;
 import nz.ac.auckland.eresearch.projectcentre.util.auth.Authz;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +14,19 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DivisionalRoleService extends BaseService<DivisionalRole> {
+public class DivisionalRoleService implements IdNameTypeService<DivisionalRole> {
 
   @Autowired
   private DivisionalRoleRepository repo;
 
   @PreAuthorize(Authz.AUTHENTICATED)
   @Cacheable(value = "DivisionalRoleCache", key = "#id")
-  public DivisionalRole findOne(Integer id) {
+  public DivisionalRole findOne(Integer id, Map<String, Integer> idMap) {
     return repo.findOne(id);
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
-  public Iterable<DivisionalRole> findAll() {
+  public Iterable<DivisionalRole> findAll(Map<String, Integer> idMap) {
     return repo.findAll();
   }
 
@@ -45,6 +48,7 @@ public class DivisionalRoleService extends BaseService<DivisionalRole> {
   }
 
   @PreAuthorize(Authz.AUTHENTICATED)
+  @Cacheable(value = "DivisionalRoleCache", key = "#roleName")
   public DivisionalRole findByName(String roleName) {
     return repo.findByName(roleName);
   }
