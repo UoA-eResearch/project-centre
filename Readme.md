@@ -21,24 +21,18 @@ Service to manage research projects for the Centre for eResearch at the Universi
     cp src/main/resources/application.properties.sample src/main/resources/application-local.properties
     # adjust database connection parameters in src/main/resources/application-local.properties
 
-### Build version using local database
+### Build version 
 
     mvn clean package -Dspring.profiles.active="local"
 
-### Build version using local database
-
-    mvn clean package -Dspring.profiles.active="local"
- 
-### Run using maven using local database
+### Run using maven 
 
     mvn spring-boot:run -Dspring.profiles.active="local"
     
 ### Run using java
 
-    mvn clean package
     java -Dspring.profiles.active="local" -jar target/projectcentre-[VERSION].jar
     
 ### Viewing swagger API
 
-    mvn clean package -Dspring.profiles.active="local"
-    # point browser to http://localhost:8080/swagger-ui.html
+Point browser to http://localhost:8080/swagger-ui.html after starting the app as described above
