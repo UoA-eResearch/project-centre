@@ -57,19 +57,17 @@ public class UserDao {
       throws UsernameNotFoundException {
 
     try {
-      List<Identity> ids = identityRepo.findByUsername(username);
-      if (ids == null || ids.size() == 0) {
+      Identity identity = identityRepo.findByUsername(username);
+      if (identity == null) {
         log.debug("username not found. creating dummy user for username " + username);
         return this.createDummyUserInfo(null);
-      } else if (ids.size() == 1 && ids.get(0).getPersonId() == null) {
+      } else if (identity.getPersonId() == null) {
         log.debug("no personId configured for username " + username + ". creating dummy user");
-        return this.createDummyUserInfo(ids.get(0).getToken());
-      } else if (ids.size() > 1) {
-        throw new RuntimeException("more than one user with username: " + username);
+        return this.createDummyUserInfo(identity.getToken());
       }
+      
       // TODO: do we really need expiring tokens?
       Boolean credentialsNonExpired = false;
-      Identity identity = ids.get(0);
       LocalDateTime expires = identity.getExpires();
       if (expires != null && expires.isAfter(LocalDateTime.now())) {
         credentialsNonExpired = true;

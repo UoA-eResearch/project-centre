@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import nz.ac.auckland.eresearch.projectcentre.service.IdentityService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonAffiliationService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonPropertyService;
 import nz.ac.auckland.eresearch.projectcentre.service.PersonService;
@@ -31,6 +32,7 @@ import nz.ac.auckland.eresearch.projectcentre.types.convert.PersonConverter;
 import nz.ac.auckland.eresearch.projectcentre.types.convert.PersonPropertyConverter;
 import nz.ac.auckland.eresearch.projectcentre.types.convert.ProjectConverter;
 import nz.ac.auckland.eresearch.projectcentre.types.convert.ProjectMemberConverter;
+import nz.ac.auckland.eresearch.projectcentre.types.entity.Identity;
 import nz.ac.auckland.eresearch.projectcentre.types.entity.Person;
 import nz.ac.auckland.eresearch.projectcentre.types.entity.PersonAffiliation;
 import nz.ac.auckland.eresearch.projectcentre.types.entity.PersonProperty;
@@ -64,8 +66,11 @@ public class PersonController extends ControllerExceptionHandler {
   private BaseController<PersonAffiliation,PersonAffiliationGet,PersonAffiliationPut,PersonAffiliationPost> affiliationController;
   private BaseController<PersonProperty,PersonPropertyGet,PersonPropertyPut,PersonPropertyPost> propertyController;
   private PersonAffiliationService affiliationService;
+  private IdentityService identityService;
+  private PersonService personService;
   private ProjectService projectService;
   private ProjectMemberService memberService;
+  private PersonConverter personConverter;
   private ProjectConverter projectConverter;
   private ProjectMemberConverter projectMemberConverter;
   private PersonAffiliationConverter affiliationConverter;
@@ -74,6 +79,7 @@ public class PersonController extends ControllerExceptionHandler {
   @Autowired
   public PersonController(
       PersonService personService, 
+      IdentityService identityService, 
       PersonAffiliationService personAffiliationService,
       PersonPropertyService personPropertyService,
       ProjectService projectService, 
@@ -88,9 +94,12 @@ public class PersonController extends ControllerExceptionHandler {
       ProjectMemberConverter projectMemberConverter,
       LocationUtil locationUtil) {
     this.locationUtil = locationUtil;
+    this.personService = personService;
+    this.identityService = identityService;
     this.affiliationService = personAffiliationService;
     this.projectService = projectService;
     this.memberService = memberService;
+    this.personConverter = personConverter;
     this.projectConverter = projectConverter;
     this.projectMemberConverter = projectMemberConverter;
     this.affiliationConverter = personAffiliationConverter;
@@ -130,6 +139,19 @@ public class PersonController extends ControllerExceptionHandler {
   public @ResponseBody ResponseEntity<PersonGet> personGet(@PathVariable Integer id) throws Exception {
     return personController.get(new MapUtil("id", id).create());
   }
+
+  @ApiOperation(value = "get existing person by identity, e.g. UPI")
+  @RequestMapping(value = "/findByIdentity/{identity}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<PersonGet> personGetByIdentity(@PathVariable String identity) throws Exception {
+    Identity i = this.identityService.findByUsername(identity);
+    if (i == null || i.getPersonId() == null) {
+      return new ResponseEntity<PersonGet>(HttpStatus.NOT_FOUND);
+    }
+    Person p = this.personService.findOne(i.getPersonId(), null);
+    PersonGet pg = this.personConverter.entity2Get(p, null);
+    return new ResponseEntity<PersonGet>(pg, HttpStatus.OK);
+  }
+
 
   @ApiOperation(value = "patch existing person. same fields like in PUT can be updated")
   @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
