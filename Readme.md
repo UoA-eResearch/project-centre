@@ -33,6 +33,11 @@ Service to manage research projects for the Centre for eResearch at the Universi
 
     java -Dspring.profiles.active="local" -jar target/projectcentre-[VERSION].jar
     
-### Viewing swagger API
+### Viewing swagger API or schema
 
-Point browser to http://localhost:8080/swagger-ui.html after starting the app as described above
+
+Point browser to the following URL after starting the app as described above:
+
+  Swagger UI:       http://localhost:8080/swagger-ui.html after starting the app as described above
+  Swagger API docs: http://localhost:8080/v2/api-docs
+
