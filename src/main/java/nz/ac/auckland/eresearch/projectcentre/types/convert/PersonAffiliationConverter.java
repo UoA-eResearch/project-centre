@@ -56,9 +56,11 @@ public class PersonAffiliationConverter implements TypeConverter<PersonAffiliati
     PersonAffiliation out = new PersonAffiliation();
     BeanUtils.copyProperties(out, in);
     BeanUtils.populate(out, idMap);
-    DivisionalRole role = divisionalRoleService.findByName(in.getDivisionalRole());
-    if (role != null) {
-      out.setDivisionalRoleId(role.getId());
+    if (in.getDivisionalRole() != null && !in.getDivisionalRole().trim().isEmpty()) {
+      DivisionalRole role = divisionalRoleService.findByName(in.getDivisionalRole());
+      if (role != null) {
+        out.setDivisionalRoleId(role.getId());
+      }      
     }
     return out;
   }
