@@ -252,7 +252,7 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "update existing project action", nickname="backend.project.update_project_action")
-  @RequestMapping(value = "/{projectId}/action/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{projectId}/action/{actionId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> actionPut(@PathVariable Integer projectId,
       @PathVariable Integer actionId, @RequestBody ProjectActionPut projectActionUpdate) throws Exception {
     return actionController.put(new MapUtil("id", actionId).add("projectId", projectId).create(), projectActionUpdate);
