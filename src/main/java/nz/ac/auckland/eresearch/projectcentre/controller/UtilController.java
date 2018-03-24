@@ -116,33 +116,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// divisional role
 
-  @ApiOperation(value = "get all divisional roles", nickname="backend.util.get_divisional_roles")
+  @ApiOperation(value = "get all divisional role options", nickname="backend.util.get_divisional_role_options")
   @RequestMapping(value = "/divisionalrole", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> divRoleGetAll() throws Exception {
     return divisionalRoleController.getAll(null);
   }
 
-  @ApiOperation(value = "create new divisional role", nickname="backend.util.create_divisional_role")
+  @ApiOperation(value = "create new divisional role option", nickname="backend.util.create_divisional_role_option")
   @RequestMapping(value = "/divisionalrole", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> divRolePost(
       @RequestBody IdNameTypePost newDivisionalRole, HttpServletRequest request) throws Exception {
     return divisionalRoleController.create(newDivisionalRole, null, request);
   }
 
-  @ApiOperation(value = "get existing divisional role", nickname="backend.util.get_divisional_role")
+  @ApiOperation(value = "get existing divisional role option", nickname="backend.util.get_divisional_role_option")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> divRoleGet(@PathVariable Integer id) throws Exception {
     return divisionalRoleController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing divisional role", nickname="backend.util.delete_divisional_role")
+  @ApiOperation(value = "remove existing divisional role option", nickname="backend.util.delete_divisional_role_option")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> divRoleDelete(@PathVariable Integer id) throws Exception {
     return divisionalRoleController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing divisional role", nickname="backend.util.update_divisional_role")
+  @ApiOperation(value = "update existing divisional role option", nickname="backend.util.update_divisional_role_option")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> divRolePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut divisionalRoleUpdate) throws Exception {
