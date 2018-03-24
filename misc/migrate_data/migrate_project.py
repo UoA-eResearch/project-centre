@@ -217,20 +217,15 @@ for code in args.projectcode:
   divisionId = get_division_id_for_affiliation(t['hostInstitution'], t['division'], t['department'])
   statusName = get_value_for_id(db_old, 'project_status', 'name', t['statusId'])
   newStatusId = get_id_for_value(db_new, 'projectstatus', 'name', statusName, False)
-  if t['endDate']:
-    query='''INSERT INTO project (code,type_id,title,description,start_date,next_review_date,''' \
+  if not t['endDate']:
+    t['endDate'] = '2100-01-01'
+  if not t['nextReviewDate']:
+    t['nextReviewDate'] = '2100-01-01'
+  query='''INSERT INTO project (code,type_id,title,description,start_date,next_review_date,''' \
       '''end_date,requirements,notes,todo,status_id,last_modified,creation_date) VALUES(''' \
       ''''%s',%s,'%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')''' % (t['projectCode'], t['projectTypeId'],
       t['name'].replace("\'", "\\'"), t['description'].replace("\'", "\\'"),
       t['startDate'], t['nextReviewDate'], t['endDate'], t['requirements'].replace("\'", "\\'"),
-      t['notes'].replace("\'", "\\'"), t['todo'].replace("\'", "\\'"), newStatusId,
-      t['lastModified'], t['creationDate'])
-  else:
-    query='''INSERT INTO project (code,type_id,title,description,start_date,next_review_date,''' \
-      '''end_date,requirements,notes,todo,status_id,last_modified,creation_date) VALUES(''' \
-      ''''%s',%s,'%s','%s','%s','%s',%s,'%s','%s','%s',%s,'%s','%s')''' % (t['projectCode'], t['projectTypeId'],
-      t['name'].replace("\'", "\\'"), t['description'].replace("\'", "\\'"),
-      t['startDate'], t['nextReviewDate'], 'NULL', t['requirements'].replace("\'", "\\'"),
       t['notes'].replace("\'", "\\'"), t['todo'].replace("\'", "\\'"), newStatusId,
       t['lastModified'], t['creationDate'])
   try:

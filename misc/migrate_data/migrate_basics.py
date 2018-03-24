@@ -81,12 +81,13 @@ tmp = db_old.query('SELECT * FROM kpi')
 for t in tmp:
   db_new.query("INSERT INTO kpi (number, type, title, measures) VALUES (%s, '%s', '%s', '%s')" % (
     t['id'], t['type'], t['title'], t['measures']))
+  #print "%s:%s" % (db_new.getLastInsertId(), t['id'])
   id_old_new_maps['kpi'][t['id']] = db_new.getLastInsertId()
 
 # kpicode --> kpicategory
 tmp = db_old.query('SELECT * FROM kpicode')
 for t in tmp:
-  db_new.query("INSERT INTO kpicategory (kpi_id, name) VALUES (%s, '%s')" % (id_old_new_maps['kpi']['9'], t['code']))
+  db_new.query("INSERT INTO kpicategory (kpi_id, name) VALUES (%s, '%s')" % (id_old_new_maps['kpi'][9], t['code']))
 
 # researcherrole --> personrole
 tmp = db_old.query('SELECT * FROM researcherrole')

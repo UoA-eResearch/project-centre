@@ -1,34 +1,33 @@
-import _mysql
+import pymysql, pymysql.cursors
+assert pymysql.paramstyle == "pyformat"  # ie: %
+assert pymysql.apilevel == "2.0"
 
 class DB(object):
 
-  def __init__(self, host, db, user, password):
-    self._host = host
-    self._db = db
-    self._user = user
-    self._password = password
-    # Open a connection to the database 
-    try:
-      self._conn = _mysql.connect(host=self._host, db=self._db, user=self._user, passwd=self._password)
-      if self._conn:
-        self._conn.set_character_set('utf8')
-      else:
-        raise Exception("No connection has been made.")
-    except Exception, e:
-      print "Could not open the connection",e
+  def __init__(self, host, port, db, user, password):
+    db_opts = {
+      'host': host,
+      'port': port,
+      'db': db,
+      'user': user,
+      'password': password
+    }
+    if 'password' in db_opts:
+      db_opts['passwd'] = db_opts.pop('password')
+    if 'port' in db_opts:
+      db_opts['port'] = int(db_opts['port'])
+    db_opts['charset'] = 'utf8'
+    db_opts['use_unicode'] = True
+    db_opts['cursorclass'] = pymysql.cursors.DictCursor
+    self._db = pymysql.connect(**db_opts)
 
-
-  def query(self, sql_query):
+  def query(self, *args):
     ''' Run a SQL query against the database '''
-    result = None
-    try:
-      self._conn.query(sql_query)
-      r = self._conn.store_result()
-      if r:
-        result = r.fetch_row(maxrows=0,how=1)
-      return result
-    except:
-      raise 
+    cursor = self._db.cursor()
+    cursor.execute(*args)
+    result = cursor.fetchall()
+    self._db.commit()
+    return result
 
   def getLastInsertId(self):
     ''' Returns ID of last insert '''
@@ -36,18 +35,5 @@ class DB(object):
 
   def close(self):
     ''' Close the connection to the database '''
-    if self._conn:
-      self._conn.close()
-
-class NoResultError(Exception):
-  """If no result is returned from a query, but a result is expected."""
-  def __init__(self, message):
-    """Initialisation."""
-    Exception.__init__(self, message)
-
-class TooManyResultsError(Exception):
-  """If too many results are returned from a query (e.g., when a result should be unique)."""
-  def __init__(self, message):
-    """Initialisation."""
-    Exception.__init__(self, message)
+    pass
 

@@ -432,7 +432,7 @@ CREATE TABLE `identity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
   `person_id` int(11) DEFAULT NULL,
-  `token` varchar(100) NOT NULL,
+  `token` varchar(100),
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
