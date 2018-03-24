@@ -62,8 +62,8 @@ public class SwaggerConfig {
         "0.1",
         "",
         new Contact("Centre for eResearch", null, "m.feller@auckland.ac.nz"),
-        "",
-        "");
+        "Apache 2.0",
+        "http://www.apache.org/licenses/LICENSE-2.0.html");
       return apiInfo;
   }
 }
