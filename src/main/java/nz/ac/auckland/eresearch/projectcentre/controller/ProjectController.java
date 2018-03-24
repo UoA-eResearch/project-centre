@@ -192,9 +192,9 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing project by code", nickname="backend.project.find_project_by_code")
-  @RequestMapping(value = "/findByCode/{code}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<ProjectGet> projectGetByCode(@PathVariable String code) throws Exception {
-    Project p = this.projectService.findByCode(code);
+  @RequestMapping(value = "/findByCode/{projectCode}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<ProjectGet> projectGetByCode(@PathVariable String projectCode) throws Exception {
+    Project p = this.projectService.findByCode(projectCode);
     if (p == null) {
       return new ResponseEntity<ProjectGet>(HttpStatus.NOT_FOUND);
     }
@@ -238,31 +238,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
   
   @ApiOperation(value = "get existing project action", nickname="backend.project.get_project_action")
-  @RequestMapping(value = "/{projectId}/action/{id}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<ProjectActionGet> actionGet(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return actionController.get(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/action/{actionId}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<ProjectActionGet> actionGet(@PathVariable Integer projectId,
+      @PathVariable Integer actionId) throws Exception {
+    return actionController.get(new MapUtil("id", actionId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing project action. same fields like in PUT can be updated", nickname="backend.project.patch_project_action")
-  @RequestMapping(value = "/{projectId}/action/{id}", method = RequestMethod.PATCH)
-  public @ResponseBody ResponseEntity<Void> actionPatch(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ProjectActionPut params) throws Exception {
-    return actionController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+  @RequestMapping(value = "/{projectId}/action/{actionId}", method = RequestMethod.PATCH)
+  public @ResponseBody ResponseEntity<Void> actionPatch(@PathVariable Integer projectId,
+      @PathVariable Integer actionId, @RequestBody ProjectActionPut params) throws Exception {
+    return actionController.patch(new MapUtil("id", actionId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing project action", nickname="backend.project.update_project_action")
   @RequestMapping(value = "/{projectId}/action/{id}", method = RequestMethod.PUT)
-  public @ResponseBody ResponseEntity<Void> actionPut(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ProjectActionPut projectActionUpdate) throws Exception {
-    return actionController.put(new MapUtil("id", id).add("projectId", projectId).create(), projectActionUpdate);
+  public @ResponseBody ResponseEntity<Void> actionPut(@PathVariable Integer projectId,
+      @PathVariable Integer actionId, @RequestBody ProjectActionPut projectActionUpdate) throws Exception {
+    return actionController.put(new MapUtil("id", actionId).add("projectId", projectId).create(), projectActionUpdate);
   }
 
   @ApiOperation(value = "delete existing project action", nickname="backend.project.delete_project_action")
-  @RequestMapping(value = "/{projectId}/action/{id}", method = RequestMethod.DELETE)
-  public @ResponseBody ResponseEntity<Void> actionDelete(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return actionController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/action/{actionId}", method = RequestMethod.DELETE)
+  public @ResponseBody ResponseEntity<Void> actionDelete(@PathVariable Integer projectId,
+      @PathVariable Integer actionId) throws Exception {
+    return actionController.delete(new MapUtil("id", actionId).add("projectId", projectId).create());
   }
 
   //// research output
@@ -282,31 +282,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
   
   @ApiOperation(value = "get existing research output", nickname="backend.project.get_project_researchoutput")
-  @RequestMapping(value = "/{projectId}/researchoutput/{id}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<ResearchOutputGet> researchoutputGet(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return researchOutputController.get(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/researchoutput/{researchOutputId}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<ResearchOutputGet> researchoutputGet(@PathVariable Integer projectId,
+      @PathVariable Integer researchOutputId) throws Exception {
+    return researchOutputController.get(new MapUtil("id", researchOutputId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing research output. same fields like in PUT can be updated", nickname="backend.project.patch_project_researchoutput")
-  @RequestMapping(value = "/{projectId}/researchoutput/{id}", method = RequestMethod.PATCH)
-  public @ResponseBody ResponseEntity<Void> researchoutputPatch(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ResearchOutputPut params) throws Exception {
-    return researchOutputController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+  @RequestMapping(value = "/{projectId}/researchoutput/{researchOutputId}", method = RequestMethod.PATCH)
+  public @ResponseBody ResponseEntity<Void> researchoutputPatch(@PathVariable Integer projectId,
+      @PathVariable Integer researchOutputId, @RequestBody ResearchOutputPut params) throws Exception {
+    return researchOutputController.patch(new MapUtil("id", researchOutputId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing research output", nickname="backend.project.update_project_researchoutput")
-  @RequestMapping(value = "/{projectId}/researchoutput/{id}", method = RequestMethod.PUT)
-  public @ResponseBody ResponseEntity<Void> researchoutputPut(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ResearchOutputPut researchOutputUpdate) throws Exception {
-    return researchOutputController.put(new MapUtil("id", id).add("projectId", projectId).create(), researchOutputUpdate);
+  @RequestMapping(value = "/{projectId}/researchoutput/{researchOutputId}", method = RequestMethod.PUT)
+  public @ResponseBody ResponseEntity<Void> researchoutputPut(@PathVariable Integer projectId,
+      @PathVariable Integer researchOutputId, @RequestBody ResearchOutputPut researchOutputUpdate) throws Exception {
+    return researchOutputController.put(new MapUtil("id", researchOutputId).add("projectId", projectId).create(), researchOutputUpdate);
   }
 
   @ApiOperation(value = "delete existing research output", nickname="backend.project.delete_project_researchoutput")
-  @RequestMapping(value = "/{projectId}/researchoutput/{id}", method = RequestMethod.DELETE)
-  public @ResponseBody ResponseEntity<Void> researchoutputDoDelete(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return researchOutputController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/researchoutput/{researchOutputId}", method = RequestMethod.DELETE)
+  public @ResponseBody ResponseEntity<Void> researchoutputDoDelete(@PathVariable Integer projectId,
+      @PathVariable Integer researchOutputId) throws Exception {
+    return researchOutputController.delete(new MapUtil("id", researchOutputId).add("projectId", projectId).create());
   }
 
   //// member
@@ -325,31 +325,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing project member", nickname="backend.project.get_project_member")
-  @RequestMapping(value = "/{projectId}/member/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{projectId}/member/{memberId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<ProjectMemberGet> memberGet(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return memberController.get(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer memberId) throws Exception {
+    return memberController.get(new MapUtil("id", memberId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "remove existing project member", nickname="backend.project.delete_project_member")
-  @RequestMapping(value = "/{projectId}/member/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{projectId}/member/{memberId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> memberDelete(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return memberController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer memberId) throws Exception {
+    return memberController.delete(new MapUtil("id", memberId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing project member. same input fields like in PUT can be updated", nickname="backend.project.patch_project_member")
-  @RequestMapping(value = "/{projectId}/member/{id}", method = RequestMethod.PATCH)
+  @RequestMapping(value = "/{projectId}/member/{memberId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> memberPatch(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectMemberPut params) throws Exception {
-    return memberController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+      @PathVariable Integer memberId, @RequestBody ProjectMemberPut params) throws Exception {
+    return memberController.patch(new MapUtil("id", memberId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing project member", nickname="backend.project.update_project_member")
-  @RequestMapping(value = "/{projectId}/member/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{projectId}/member/{memberId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> memberPut(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectMemberPut projectMemberUpdate) throws Exception {
-    return memberController.put(new MapUtil("id", id).add("projectId", projectId).create(), projectMemberUpdate);
+      @PathVariable Integer memberId, @RequestBody ProjectMemberPut projectMemberUpdate) throws Exception {
+    return memberController.put(new MapUtil("id", memberId).add("projectId", projectId).create(), projectMemberUpdate);
   }
 
   //// external reference
@@ -368,31 +368,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing external reference", nickname="backend.project.get_project_ext_ref")
-  @RequestMapping(value = "/{projectId}/externalreference/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{projectId}/externalreference/{extRefId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<ProjectExternalReferenceGet> externalReferenceGet(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return externalReferenceController.get(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer extRefId) throws Exception {
+    return externalReferenceController.get(new MapUtil("id", extRefId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "remove existing external reference", nickname="backend.project.delete_project_ext_ref")
-  @RequestMapping(value = "/{projectId}/externalreference/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{projectId}/externalreference/{extRefId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> externalReferenceDelete(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return externalReferenceController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer extRefId) throws Exception {
+    return externalReferenceController.delete(new MapUtil("id", extRefId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing external reference. same input fields like in PUT can be updated", nickname="backend.project.patch_project_ext_ref")
-  @RequestMapping(value = "/{projectId}/externalreference/{id}", method = RequestMethod.PATCH)
+  @RequestMapping(value = "/{projectId}/externalreference/{extRefId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> externalReferencePatch(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectExternalReferencePut params) throws Exception {
-    return externalReferenceController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+      @PathVariable Integer extRefId, @RequestBody ProjectExternalReferencePut params) throws Exception {
+    return externalReferenceController.patch(new MapUtil("id", extRefId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing external reference", nickname="backend.project.update_project_ext_ref")
-  @RequestMapping(value = "/{projectId}/externalreference/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{projectId}/externalreference/{extRefId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> externalReferencePut(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectExternalReferencePut externalReferenceUpdate) throws Exception {
-    return externalReferenceController.put(new MapUtil("id", id).add("projectId", projectId).create(), externalReferenceUpdate);
+      @PathVariable Integer extRefId, @RequestBody ProjectExternalReferencePut externalReferenceUpdate) throws Exception {
+    return externalReferenceController.put(new MapUtil("id", extRefId).add("projectId", projectId).create(), externalReferenceUpdate);
   }
   
   //// project property
@@ -413,31 +413,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing project property", nickname="backend.project.get_project_property")
-  @RequestMapping(value = "/{projectId}/property/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{projectId}/property/{propertyId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<ProjectPropertyGet> propertyGet(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return propertyController.get(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer propertyId) throws Exception {
+    return propertyController.get(new MapUtil("id", propertyId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "remove existing project property", nickname="backend.project.delete_project_property")
-  @RequestMapping(value = "/{projectId}/property/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{projectId}/property/{propertyId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> propertyDelete(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return propertyController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer propertyId) throws Exception {
+    return propertyController.delete(new MapUtil("id", propertyId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing project property. same input fields like in PUT can be updated", nickname="backend.project.patch_project_property")
-  @RequestMapping(value = "/{projectId}/property/{id}", method = RequestMethod.PATCH)
+  @RequestMapping(value = "/{projectId}/property/{propertyId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> propertyPatch(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectPropertyPut params) throws Exception {
-    return propertyController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+      @PathVariable Integer propertyId, @RequestBody ProjectPropertyPut params) throws Exception {
+    return propertyController.patch(new MapUtil("id", propertyId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing project property", nickname="backend.project.update_project_property")
-  @RequestMapping(value = "/{projectId}/property/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{projectId}/property/{propertyId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> propertyPut(@PathVariable Integer projectId,
-      @PathVariable Integer id, @RequestBody ProjectPropertyPut propertyUpdate) throws Exception {
-    return propertyController.put(new MapUtil("id", id).add("projectId", projectId).create(), propertyUpdate);
+      @PathVariable Integer propertyId, @RequestBody ProjectPropertyPut propertyUpdate) throws Exception {
+    return propertyController.put(new MapUtil("id", propertyId).add("projectId", projectId).create(), propertyUpdate);
   }
 
   //// project division
@@ -451,10 +451,10 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "remove existing project division", nickname="backend.project.delete_project_division")
-  @RequestMapping(value = "/{projectId}/division/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{projectId}/division/{divisionId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> divisionDelete(@PathVariable Integer projectId,
-      @PathVariable Integer id) throws Exception {
-    return projectDivisionController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+      @PathVariable Integer divisionId) throws Exception {
+    return projectDivisionController.delete(new MapUtil("id", divisionId).add("projectId", projectId).create());
   }
 
   //// service instance
@@ -474,31 +474,31 @@ public class ProjectController extends ControllerExceptionHandler {
   }
   
   @ApiOperation(value = "get existing service instance", nickname="backend.project.get_project_service_instance")
-  @RequestMapping(value = "/{projectId}/service/{id}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<ServiceInstanceGet> serviceInstanceGet(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return serviceInstanceController.get(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/service/{serviceId}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<ServiceInstanceGet> serviceInstanceGet(@PathVariable Integer projectId,
+      @PathVariable Integer serviceId) throws Exception {
+    return serviceInstanceController.get(new MapUtil("id", serviceId).add("projectId", projectId).create());
   }
 
   @ApiOperation(value = "patch existing service instance. same fields like in PUT can be updated", nickname="backend.project.patch_project_service_instance")
-  @RequestMapping(value = "/{projectId}/service/{id}", method = RequestMethod.PATCH)
-  public @ResponseBody ResponseEntity<Void> serviceInstancePatch(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ServiceInstancePut params) throws Exception {
-    return serviceInstanceController.patch(new MapUtil("id", id).add("projectId", projectId).create(), params);
+  @RequestMapping(value = "/{projectId}/service/{serviceId}", method = RequestMethod.PATCH)
+  public @ResponseBody ResponseEntity<Void> serviceInstancePatch(@PathVariable Integer projectId,
+      @PathVariable Integer serviceId, @RequestBody ServiceInstancePut params) throws Exception {
+    return serviceInstanceController.patch(new MapUtil("id", serviceId).add("projectId", projectId).create(), params);
   }
 
   @ApiOperation(value = "update existing service instance", nickname="backend.project.update_project_service_instance")
-  @RequestMapping(value = "/{projectId}/service/{id}", method = RequestMethod.PUT)
-  public @ResponseBody ResponseEntity<Void> serviceInstancePut(@PathVariable Integer id,
-      @PathVariable Integer projectId, @RequestBody ServiceInstancePut serviceInstanceUpdate) throws Exception {
-    return serviceInstanceController.put(new MapUtil("id", id).add("projectId", projectId).create(), serviceInstanceUpdate);
+  @RequestMapping(value = "/{projectId}/service/{serviceId}", method = RequestMethod.PUT)
+  public @ResponseBody ResponseEntity<Void> serviceInstancePut(@PathVariable Integer projectId,
+      @PathVariable Integer serviceId, @RequestBody ServiceInstancePut serviceInstanceUpdate) throws Exception {
+    return serviceInstanceController.put(new MapUtil("id", serviceId).add("projectId", projectId).create(), serviceInstanceUpdate);
   }
 
   @ApiOperation(value = "delete existing service instance", nickname="backend.project.delete_project_service_instance")
-  @RequestMapping(value = "/{projectId}/service/{id}", method = RequestMethod.DELETE)
-  public @ResponseBody ResponseEntity<Void> serviceInstanceDelete(@PathVariable Integer id,
-      @PathVariable Integer projectId) throws Exception {
-    return serviceInstanceController.delete(new MapUtil("id", id).add("projectId", projectId).create());
+  @RequestMapping(value = "/{projectId}/service/{serviceId}", method = RequestMethod.DELETE)
+  public @ResponseBody ResponseEntity<Void> serviceInstanceDelete(@PathVariable Integer projectId,
+      @PathVariable Integer serviceId) throws Exception {
+    return serviceInstanceController.delete(new MapUtil("id", serviceId).add("projectId", projectId).create());
   }
 
   //// wrapper

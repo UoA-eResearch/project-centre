@@ -191,31 +191,31 @@ public class PersonController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing person affiliation", nickname="backend.person.get_person_affiliation")
-  @RequestMapping(value = "/{personId}/affiliation/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<PersonAffiliationGet> affiliationGet(@PathVariable Integer personId,
-      @PathVariable Integer id) throws Exception {
-    return affiliationController.get(new MapUtil("id", id).add("personId", personId).create());
+      @PathVariable Integer affiliationId) throws Exception {
+    return affiliationController.get(new MapUtil("id", affiliationId).add("personId", personId).create());
   }
 
   @ApiOperation(value = "remove existing person affiliation", nickname="backend.person.delete_person_affiliation")
-  @RequestMapping(value = "/{personId}/affiliation/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> affiliationDelete(@PathVariable Integer personId,
-      @PathVariable Integer id) throws Exception {
-    return affiliationController.delete(new MapUtil("id", id).add("personId", personId).create());
+      @PathVariable Integer affiliationId) throws Exception {
+    return affiliationController.delete(new MapUtil("id", affiliationId).add("personId", personId).create());
   }
 
   @ApiOperation(value = "patch existing person affiliation. same input fields like in PUT can be updated", nickname="backend.person.patch_person_affiliation")
-  @RequestMapping(value = "/{personId}/affiliation/{id}", method = RequestMethod.PATCH)
+  @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> affiliationPatch(@PathVariable Integer personId,
-      @PathVariable Integer id, @RequestBody PersonAffiliationPut params) throws Exception {
-    return affiliationController.patch(new MapUtil("id", id).add("personId", personId).create(), params);
+      @PathVariable Integer affiliationId, @RequestBody PersonAffiliationPut params) throws Exception {
+    return affiliationController.patch(new MapUtil("id", affiliationId).add("personId", personId).create(), params);
   }
 
   @ApiOperation(value = "update existing person affiliation", nickname="backend.person.update_person_affiliation")
-  @RequestMapping(value = "/{personId}/affiliation/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> affiliationPut(@PathVariable Integer personId,
-      @PathVariable Integer id, @RequestBody PersonAffiliationPut personAffiliationUpdate) throws Exception {
-    return affiliationController.put(new MapUtil("id", id).add("personId", personId).create(), personAffiliationUpdate);
+      @PathVariable Integer affiliationId, @RequestBody PersonAffiliationPut personAffiliationUpdate) throws Exception {
+    return affiliationController.put(new MapUtil("id", affiliationId).add("personId", personId).create(), personAffiliationUpdate);
   }
 
   //// person property
@@ -236,31 +236,31 @@ public class PersonController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get existing person property", nickname="backend.person.get_person_property")
-  @RequestMapping(value = "/{personId}/property/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<PersonPropertyGet> propertyGet(@PathVariable Integer personId,
-      @PathVariable Integer id) throws Exception {
-    return propertyController.get(new MapUtil("id", id).add("personId", personId).create());
+      @PathVariable Integer propertyId) throws Exception {
+    return propertyController.get(new MapUtil("id", propertyId).add("personId", personId).create());
   }
 
   @ApiOperation(value = "remove existing person property", nickname="backend.person.delete_person_property")
-  @RequestMapping(value = "/{personId}/property/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> propertyDelete(@PathVariable Integer personId,
-      @PathVariable Integer id) throws Exception {
-    return propertyController.delete(new MapUtil("id", id).add("personId", personId).create());
+      @PathVariable Integer propertyId) throws Exception {
+    return propertyController.delete(new MapUtil("id", propertyId).add("personId", personId).create());
   }
 
   @ApiOperation(value = "patch existing person property. same input fields like in PUT can be updated", nickname="backend.person.patch_person_property")
-  @RequestMapping(value = "/{personId}/property/{id}", method = RequestMethod.PATCH)
+  @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> propertyPatch(@PathVariable Integer personId,
-      @PathVariable Integer id, @RequestBody PersonPropertyPut params) throws Exception {
-    return propertyController.patch(new MapUtil("id", id).add("personId", personId).create(), params);
+      @PathVariable Integer propertyId, @RequestBody PersonPropertyPut params) throws Exception {
+    return propertyController.patch(new MapUtil("id", propertyId).add("personId", personId).create(), params);
   }
 
   @ApiOperation(value = "update existing person property", nickname="backend.person.update_person_property")
-  @RequestMapping(value = "/{personId}/property/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> propertyPut(@PathVariable Integer personId,
-      @PathVariable Integer id, @RequestBody PersonPropertyPut propertyUpdate) throws Exception {
-    return propertyController.put(new MapUtil("id", id).add("personId", personId).create(), propertyUpdate);
+      @PathVariable Integer propertyId, @RequestBody PersonPropertyPut propertyUpdate) throws Exception {
+    return propertyController.put(new MapUtil("id", propertyId).add("personId", personId).create(), propertyUpdate);
   }
 
   //// helper methods
