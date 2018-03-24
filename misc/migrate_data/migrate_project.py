@@ -220,7 +220,7 @@ for code in args.projectcode:
   if not t['endDate']:
     t['endDate'] = '2100-01-01'
   if not t['nextReviewDate']:
-    t['nextReviewDate'] = '2100-01-01'
+    t['nextReviewDate'] = t['endDate']
   query='''INSERT INTO project (code,type_id,title,description,start_date,next_review_date,''' \
       '''end_date,requirements,notes,todo,status_id,last_modified,creation_date) VALUES(''' \
       ''''%s',%s,'%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s')''' % (t['projectCode'], t['projectTypeId'],
