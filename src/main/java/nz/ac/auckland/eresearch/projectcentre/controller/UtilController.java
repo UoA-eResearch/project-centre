@@ -54,7 +54,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api(tags={"Utilities"}, description="Miscellaneous utility operations")
+@Api(tags={"Utilities"})
 @RequestMapping(value = "/api/util")
 public class UtilController extends ControllerExceptionHandler {
 
@@ -116,33 +116,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// divisional role
 
-  @ApiOperation(value = "get all divisional roles")
+  @ApiOperation(value = "get all divisional roles", nickname="app.get_divisional_roles")
   @RequestMapping(value = "/divisionalrole", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> divRoleGetAll() throws Exception {
     return divisionalRoleController.getAll(null);
   }
 
-  @ApiOperation(value = "create new divisional role")
+  @ApiOperation(value = "create new divisional role", nickname="app.create_divisional_role")
   @RequestMapping(value = "/divisionalrole", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> divRolePost(
       @RequestBody IdNameTypePost newDivisionalRole, HttpServletRequest request) throws Exception {
     return divisionalRoleController.create(newDivisionalRole, null, request);
   }
 
-  @ApiOperation(value = "get existing divisional role")
+  @ApiOperation(value = "get existing divisional role", nickname="app.get_divisional_role")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> divRoleGet(@PathVariable Integer id) throws Exception {
     return divisionalRoleController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing divisional role")
+  @ApiOperation(value = "remove existing divisional role", nickname="app.delete_divisional_role")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> divRoleDelete(@PathVariable Integer id) throws Exception {
     return divisionalRoleController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing divisional role")
+  @ApiOperation(value = "update existing divisional role", nickname="app.update_divisional_role")
   @RequestMapping(value = "/divisionalrole/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> divRolePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut divisionalRoleUpdate) throws Exception {
@@ -151,33 +151,33 @@ public class UtilController extends ControllerExceptionHandler {
   
   //// person status
   
-  @ApiOperation(value = "get all person status options")
+  @ApiOperation(value = "get all person status options", nickname="app.get_person_status_options")
   @RequestMapping(value = "/personstatus", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> personStatusGetAll() throws Exception {
     return personStatusController.getAll(null);
   }
 
-  @ApiOperation(value = "create new person status")
+  @ApiOperation(value = "create new person status option", nickname="app.create_person_status_option")
   @RequestMapping(value = "/personstatus", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> personStatusPost (
       @RequestBody IdNameTypePost newPersonStatus, HttpServletRequest request) throws Exception {
     return personStatusController.create(newPersonStatus, null, request);
   }
 
-  @ApiOperation(value = "get existing person status")
+  @ApiOperation(value = "get existing person status option", nickname="app.get_person_status_option")
   @RequestMapping(value = "/personstatus/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> personStatusGet(@PathVariable Integer id) throws Exception {
     return personStatusController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing person status")
+  @ApiOperation(value = "remove existing person status option", nickname="app.delete_person_status_option")
   @RequestMapping(value = "/personstatus/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> personStatusDelete(@PathVariable Integer id) throws Exception {
     return personStatusController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing person status")
+  @ApiOperation(value = "update existing person status option", nickname="app.update_person_status_option")
   @RequestMapping(value = "/personstatus/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> personStatusPut(@PathVariable Integer id,
       @RequestBody IdNameTypePut personStatusUpdate) throws Exception {
@@ -186,14 +186,14 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// division
   
-  @ApiOperation(value = "get all divisions")
+  @ApiOperation(value = "get all divisions", nickname="app.get_divisions")
   @RequestMapping(value = "/division", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<DivisionGet>> divisionGetAll() throws Exception {
     return divisionController.getAll(null);
   }
 
-  @ApiOperation(value = "create new division")
+  @ApiOperation(value = "create new division", nickname="app.create_division")
   @RequestMapping(value = "/division", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> divisionPost(
       @RequestBody DivisionPost newDivision, HttpServletRequest request) throws Exception {
@@ -201,27 +201,27 @@ public class UtilController extends ControllerExceptionHandler {
     return divisionController.create(newDivision, null, request);
   }
 
-  @ApiOperation(value = "get existing division")
+  @ApiOperation(value = "get existing division", nickname="app.get_division")
   @RequestMapping(value = "/division/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<DivisionGet> divisionGet(@PathVariable Integer id) throws Exception {
     return divisionController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing division")
+  @ApiOperation(value = "remove existing division", nickname="app.delete_division")
   @RequestMapping(value = "/division/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> divisionDelete(@PathVariable Integer id) throws Exception {
     // TODO: Remove child entries from division_children table
     return divisionController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "patch existing division. same input fields like in PUT can be updated")
+  @ApiOperation(value = "patch existing division. same input fields like in PUT can be updated", nickname="app.patch_division")
   @RequestMapping(value = "/division/{id}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> divisionPatch(@PathVariable Integer id,
       @RequestBody DivisionPut params) throws Exception {
     return divisionController.patch(new MapUtil("id", id).create(), params);
   }
 
-  @ApiOperation(value = "update existing division")
+  @ApiOperation(value = "update existing division", nickname="app.update_division")
   @RequestMapping(value = "/division/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> divisionPut(@PathVariable Integer id,
       @RequestBody DivisionPut divisionUpdate) throws Exception {
@@ -230,33 +230,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// facility
 
-  @ApiOperation(value = "get all facilities")
+  @ApiOperation(value = "get all facilities", nickname="app.get_facilities")
   @RequestMapping(value = "/facility", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> facilityGetAll() throws Exception {
     return facilityController.getAll(null);
   }
 
-  @ApiOperation(value = "create new facility")
+  @ApiOperation(value = "create new facility", nickname="app.create_facility")
   @RequestMapping(value = "/facility", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> facilityPost(
       @RequestBody IdNameTypePost newFacility, HttpServletRequest request) throws Exception {
     return facilityController.create(newFacility, null, request);
   }
 
-  @ApiOperation(value = "get existing facility")
+  @ApiOperation(value = "get existing facility", nickname="app.get_facility")
   @RequestMapping(value = "/facility/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> facilityGet(@PathVariable Integer id) throws Exception {
     return facilityController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing facility")
+  @ApiOperation(value = "remove existing facility", nickname="app.delete_facility")
   @RequestMapping(value = "/facility/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> facilityDelete(@PathVariable Integer id) throws Exception {
     return facilityController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing facility")
+  @ApiOperation(value = "update existing facility", nickname="app.update_facility")
   @RequestMapping(value = "/facility/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> facilityPut(@PathVariable Integer id,
       @RequestBody IdNameTypePut facilityUpdate) throws Exception {
@@ -265,33 +265,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// project status
   
-  @ApiOperation(value = "get all project status options")
+  @ApiOperation(value = "get all project status options", nickname="app.get_project_status_options")
   @RequestMapping(value = "/projectstatus", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> projectStatusGetAll() throws Exception {
     return projectStatusController.getAll(null);
   }
 
-  @ApiOperation(value = "create new project status")
+  @ApiOperation(value = "create new project status option", nickname="app.create_project_status_option")
   @RequestMapping(value = "/projectstatus", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> projectStatusPost (
       @RequestBody IdNameTypePost newProjectStatus, HttpServletRequest request) throws Exception {
     return projectStatusController.create(newProjectStatus, null, request);
   }
 
-  @ApiOperation(value = "get existing project status")
+  @ApiOperation(value = "get existing project status option", nickname="app.get_project_status_option")
   @RequestMapping(value = "/projectstatus/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> projectStatusGet(@PathVariable Integer id) throws Exception {
     return projectStatusController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing project status")
+  @ApiOperation(value = "remove existing project status option", nickname="app.delete_project_status_option")
   @RequestMapping(value = "/projectstatus/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> projectStatusDelete(@PathVariable Integer id) throws Exception {
     return projectStatusController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing project status")
+  @ApiOperation(value = "update existing project status option", nickname="app.update_project_status_option")
   @RequestMapping(value = "/projectstatus/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> projectStatusPut(@PathVariable Integer id,
       @RequestBody IdNameTypePut projectStatusUpdate) throws Exception {
@@ -300,33 +300,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// project action type
   
-  @ApiOperation(value = "get all project action type options")
+  @ApiOperation(value = "get all project action type options", nickname="app.get_project_action_type_options")
   @RequestMapping(value = "/projectactiontype", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> projectActionTypeGetAll() throws Exception {
     return projectActionTypeController.getAll(null);
   }
 
-  @ApiOperation(value = "create new project action type")
+  @ApiOperation(value = "create new project action type option", nickname="app.create_project_action_type_option")
   @RequestMapping(value = "/projectactiontype", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> projectActionTypePost (
       @RequestBody IdNameTypePost newProjectActionType, HttpServletRequest request) throws Exception {
     return projectActionTypeController.create(newProjectActionType, null, request);
   }
 
-  @ApiOperation(value = "get existing project action type")
+  @ApiOperation(value = "get existing project action type option", nickname="app.get_project_action_type_option")
   @RequestMapping(value = "/projectactiontype/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> projectActionTypeGet(@PathVariable Integer id) throws Exception {
     return projectActionTypeController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing project action type")
+  @ApiOperation(value = "remove existing project action type option", nickname="app.delete_project_action_type_option")
   @RequestMapping(value = "/projectactiontype/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> projectActionTypeDelete(@PathVariable Integer id) throws Exception {
     return projectActionTypeController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing project action type")
+  @ApiOperation(value = "update existing project action type option", nickname="app.update_project_action_type_option")
   @RequestMapping(value = "/projectactiontype/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> projectActionTypePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut projectActionTypeUpdate) throws Exception {
@@ -335,33 +335,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// project type
   
-  @ApiOperation(value = "get all project type options")
+  @ApiOperation(value = "get all project type options", nickname="app.get_project_type_options")
   @RequestMapping(value = "/projecttype", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> projectTypeGetAll() throws Exception {
     return projectTypeController.getAll(null);
   }
 
-  @ApiOperation(value = "create new project type")
+  @ApiOperation(value = "create new project type option", nickname="app.create_project_type_option")
   @RequestMapping(value = "/projecttype", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> projectTypePost (
       @RequestBody IdNameTypePost newProjectType, HttpServletRequest request) throws Exception {
     return projectTypeController.create(newProjectType, null, request);
   }
 
-  @ApiOperation(value = "get existing project type")
+  @ApiOperation(value = "get existing project type option", nickname="app.get_project_type_option")
   @RequestMapping(value = "/projecttype/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> projectTypeGet(@PathVariable Integer id) throws Exception {
     return projectTypeController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing project type")
+  @ApiOperation(value = "remove existing project type option", nickname="app.delete_project_type_option")
   @RequestMapping(value = "/projecttype/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> projectTypeDelete(@PathVariable Integer id) throws Exception {
     return projectTypeController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing project type")
+  @ApiOperation(value = "update existing project type option", nickname="app.update_project_type_option")
   @RequestMapping(value = "/projecttype/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> projectTypePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut projectTypeUpdate) throws Exception {
@@ -370,33 +370,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// research output type
   
-  @ApiOperation(value = "get all research output type options")
+  @ApiOperation(value = "get all research output type options", nickname="app.get_research_output_type_options")
   @RequestMapping(value = "/researchoutputtype", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> researchOutputTypeGetAll() throws Exception {
     return researchOutputTypeController.getAll(null);
   }
 
-  @ApiOperation(value = "create new research output type")
+  @ApiOperation(value = "create new research output type option", nickname="app.create_research_output_type_option")
   @RequestMapping(value = "/researchoutputtype", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> researchOutputTypePost (
       @RequestBody IdNameTypePost newResearchOutputType, HttpServletRequest request) throws Exception {
     return researchOutputTypeController.create(newResearchOutputType, null, request);
   }
 
-  @ApiOperation(value = "get existing research output type")
+  @ApiOperation(value = "get existing research output type option", nickname="app.get_research_output_type_option")
   @RequestMapping(value = "/researchoutputtype/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> researchOutputTypeGet(@PathVariable Integer id) throws Exception {
     return researchOutputTypeController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing research output type")
+  @ApiOperation(value = "remove existing research output type option", nickname="app.delete_research_output_type_option")
   @RequestMapping(value = "/researchoutputtype/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> researchOutputTypeDelete(@PathVariable Integer id) throws Exception {
     return researchOutputTypeController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing research output type")
+  @ApiOperation(value = "update existing research output type option", nickname="app.update_research_output_type_option")
   @RequestMapping(value = "/researchoutputtype/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> researchOutputTypePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut researchOutputTypeUpdate) throws Exception {
@@ -405,33 +405,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// person role
   
-  @ApiOperation(value = "get all person role options")
+  @ApiOperation(value = "get all person role options", nickname="app.get_person_role_options")
   @RequestMapping(value = "/personrole", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> personRoleGetAll() throws Exception {
     return personRoleController.getAll(null);
   }
 
-  @ApiOperation(value = "create new person role")
+  @ApiOperation(value = "create new person role option", nickname="app.create_person_role_option")
   @RequestMapping(value = "/personrole", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> personRolePost (
       @RequestBody IdNameTypePost newPersonRole, HttpServletRequest request) throws Exception {
     return personRoleController.create(newPersonRole, null, request);
   }
 
-  @ApiOperation(value = "get existing person role")
+  @ApiOperation(value = "get existing person role option", nickname="app.get_person_role_option")
   @RequestMapping(value = "/personrole/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> personRoleGet(@PathVariable Integer id) throws Exception {
     return personRoleController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing person role")
+  @ApiOperation(value = "remove existing person role option", nickname="app.delete_person_role_option")
   @RequestMapping(value = "/personrole/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> personRoleDelete(@PathVariable Integer id) throws Exception {
     return personRoleController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing person role")
+  @ApiOperation(value = "update existing person role option", nickname="app.update_person_role_option")
   @RequestMapping(value = "/personrole/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> personRolePut(@PathVariable Integer id,
       @RequestBody IdNameTypePut personRoleUpdate) throws Exception {
@@ -440,33 +440,33 @@ public class UtilController extends ControllerExceptionHandler {
 
   //// service instance status
   
-  @ApiOperation(value = "get all service instance status options")
+  @ApiOperation(value = "get all service instance status options", nickname="app.get_service_instance_status_options")
   @RequestMapping(value = "/serviceinstancestatus", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<IdNameTypeGet>> serviceInstanceStatusGetAll() throws Exception {
     return serviceInstanceStatusController.getAll(null);
   }
 
-  @ApiOperation(value = "create new service instance status")
+  @ApiOperation(value = "create new service instance status option", nickname="app.create_service_instance_status_option")
   @RequestMapping(value = "/serviceinstancestatus", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> serviceInstanceStatusPost (
       @RequestBody IdNameTypePost newServiceInstanceStatus, HttpServletRequest request) throws Exception {
     return serviceInstanceStatusController.create(newServiceInstanceStatus, null, request);
   }
 
-  @ApiOperation(value = "get existing service instance status")
+  @ApiOperation(value = "get existing service instance status option", nickname="app.get_service_instance_status_option")
   @RequestMapping(value = "/serviceinstancestatus/{id}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<IdNameTypeGet> serviceInstanceStatusGet(@PathVariable Integer id) throws Exception {
     return serviceInstanceStatusController.get(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "remove existing service instance status")
+  @ApiOperation(value = "remove existing service instance status option", nickname="app.delete_service_instance_status_option")
   @RequestMapping(value = "/serviceinstancestatus/{id}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> serviceInstanceStatusDelete(@PathVariable Integer id) throws Exception {
     return serviceInstanceStatusController.delete(new MapUtil("id", id).create());
   }
 
-  @ApiOperation(value = "update existing service instance status")
+  @ApiOperation(value = "update existing service instance status option", nickname="app.update_service_instance_status_option")
   @RequestMapping(value = "/serviceinstancestatus/{id}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> serviceInstanceStatusPut(@PathVariable Integer id,
       @RequestBody IdNameTypePut serviceInstanceStatusUpdate) throws Exception {
