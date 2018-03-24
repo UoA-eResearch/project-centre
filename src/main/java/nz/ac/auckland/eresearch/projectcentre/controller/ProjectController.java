@@ -442,7 +442,7 @@ public class ProjectController extends ControllerExceptionHandler {
 
   //// project division
   
-  @ApiOperation(value = "add division to project", nickname="backend.project.get_project_divisions")
+  @ApiOperation(value = "add division to project", nickname="backend.project.create_project_division")
   @RequestMapping(value = "/{projectId}/division", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> divisionPost(@PathVariable Integer projectId,
       @RequestBody ProjectDivisionPost newDivision, HttpServletRequest request) throws Exception {
