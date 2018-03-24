@@ -27,7 +27,8 @@ public class PersonAffiliationValidator implements Validator {
   @Override
   public void validate(Object o, Errors errors) {
     PersonAffiliation tmp = (PersonAffiliation) o;
-    validationUtil.checkNotEmpty(errors, new String[]{"personId", "divisionId"});
+    validationUtil.checkNotEmpty(errors, new String[]{"personId"});
+    validationUtil.checkNotEmpty(errors, "divisionId", "division");
     validationUtil.checkNotEmpty(errors, "divisionalRoleId", "divisionalRole");
     if (!errors.hasFieldErrors()) {
       validationUtil.validatePersonId(tmp.getPersonId(), errors);
