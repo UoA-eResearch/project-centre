@@ -523,9 +523,9 @@ public class ProjectController extends ControllerExceptionHandler {
   }
 
   @ApiOperation(value = "get a wrapper object of a project by code", nickname="backend.project.find_project_wrapper_by_code")
-  @RequestMapping(value = "/wrapper/findByCode/{code}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<ProjectWrapper> wrapperGetByCode(@PathVariable String code) throws Exception {
-    Project p = this.projectService.findByCode(code);
+  @RequestMapping(value = "/wrapper/findByCode/{projectCode}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<ProjectWrapper> wrapperGetByCode(@PathVariable String projectCode) throws Exception {
+    Project p = this.projectService.findByCode(projectCode);
     if (p == null) {
       return new ResponseEntity<ProjectWrapper>(HttpStatus.NOT_FOUND);
     }
