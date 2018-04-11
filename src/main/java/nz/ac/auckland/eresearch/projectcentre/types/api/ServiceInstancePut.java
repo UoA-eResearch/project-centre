@@ -9,11 +9,11 @@ public class ServiceInstancePut {
 
   @ApiModelProperty(value = "service name", required = true)
   private String serviceName;
-  @ApiModelProperty(value = "schema version", required = true)
+  @ApiModelProperty(value = "schema version", required = false)
   private String schemaVersion;
   @ApiModelProperty(value = "service instance status", required = true)
   private String status;
-  @ApiModelProperty(value = "actual service instance. this can an arbitrary JSON object, but it must validate against the requested schema", required = true)
+  @ApiModelProperty(value = "actual service instance. this can an arbitrary JSON object, but it must validate against the requested schema", required = false)
   private JsonNode instance;
 
   public String getServiceName() {
