@@ -2,6 +2,7 @@ package nz.ac.auckland.eresearch.projectcentre.config;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,8 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.StringVendorExtension;
+import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -20,6 +23,7 @@ import springfox.documentation.service.ResponseMessage;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 
 @Configuration
 @EnableSwagger2
@@ -36,6 +40,8 @@ public class SwaggerConfig {
         ResponseMessage r500 = new ResponseMessageBuilder().code(500).message("Server Error").build();
         
         return new Docket(DocumentationType.SWAGGER_2)
+          .consumes(Sets.newHashSet("application/json"))
+          .produces(Sets.newHashSet("application/json"))
           .select()
           .apis(RequestHandlerSelectors.any())
           .paths(PathSelectors.any())
@@ -63,7 +69,8 @@ public class SwaggerConfig {
         "",
         new Contact("Centre for eResearch", null, "m.feller@auckland.ac.nz"),
         "Apache 2.0",
-        "http://www.apache.org/licenses/LICENSE-2.0.html");
+        "http://www.apache.org/licenses/LICENSE-2.0.html",
+        new LinkedList<VendorExtension>());
       return apiInfo;
   }
 }

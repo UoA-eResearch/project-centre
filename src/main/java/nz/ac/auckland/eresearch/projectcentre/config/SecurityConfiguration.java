@@ -39,6 +39,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Autowired
   UserDetailsService userDetailsService;
 
+  private static final String[] AUTH_WHITELIST = {
+    "/authenticate/api",
+    // -- swagger ui
+    "/swagger-resources/**",
+    "/swagger-ui.html",
+    "/v2/api-docs",
+    "/webjars/**"
+  };
+
   @Bean
   PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -73,9 +82,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     http.addFilter(shibbolethFilter);
     http.addFilter(proxyFilter);
-
+    
     http.httpBasic().and().authorizeRequests()
-            .antMatchers("/authenticate/api").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest().fullyAuthenticated()
             .and().csrf().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

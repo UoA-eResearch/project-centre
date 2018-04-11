@@ -110,14 +110,14 @@ public class PersonController extends ControllerExceptionHandler {
 
   //// person
   
-  @ApiOperation(value = "get list of persons", nickname="backend.person.get_persons")
+  @ApiOperation(value = "get list of persons", nickname="get_persons")
   @RequestMapping(method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<List<PersonGet>> personGetAll() throws Exception {
     return personController.getAll(null);
   }
 
   // TODO: Transaction
-  @ApiOperation(value = "create new person", nickname="backend.person.create_person")
+  @ApiOperation(value = "create new person", nickname="create_person")
   @RequestMapping(method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> personPost(@RequestBody PersonPost newPerson,
       HttpServletRequest request) throws Exception {
@@ -134,13 +134,13 @@ public class PersonController extends ControllerExceptionHandler {
     return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
   }
   
-  @ApiOperation(value = "get existing person", nickname="backend.person.get_person")
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public @ResponseBody ResponseEntity<PersonGet> personGet(@PathVariable Integer id) throws Exception {
-    return personController.get(new MapUtil("id", id).create());
+  @ApiOperation(value = "get existing person", nickname="get_person")
+  @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
+  public @ResponseBody ResponseEntity<PersonGet> personGet(@PathVariable Integer personId) throws Exception {
+    return personController.get(new MapUtil("id", personId).create());
   }
 
-  @ApiOperation(value = "get existing person by identity, e.g. UPI", nickname="backend.person.find_person_by_identity")
+  @ApiOperation(value = "get existing person by identity, e.g. UPI", nickname="find_person_by_identity")
   @RequestMapping(value = "/findByIdentity/{identity}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<PersonGet> personGetByIdentity(@PathVariable String identity) throws Exception {
     Identity i = this.identityService.findByUsername(identity);
@@ -153,36 +153,36 @@ public class PersonController extends ControllerExceptionHandler {
   }
 
 
-  @ApiOperation(value = "patch existing person. same fields like in PUT can be updated", nickname="backend.person.patch_person")
-  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-  public @ResponseBody ResponseEntity<Void> personPatch(@PathVariable Integer id,
+  @ApiOperation(value = "patch existing person. same fields like in PUT can be updated", nickname="patch_person")
+  @RequestMapping(value = "/{personId}", method = RequestMethod.PATCH)
+  public @ResponseBody ResponseEntity<Void> personPatch(@PathVariable Integer personId,
       @RequestBody PersonPut params) throws Exception {
-    return personController.patch(new MapUtil("id", id).create(), params);
+    return personController.patch(new MapUtil("id", personId).create(), params);
   }
 
-  @ApiOperation(value = "update existing person", nickname="backend.person.update_person")
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public @ResponseBody ResponseEntity<Void> personPut(@PathVariable Integer id,
+  @ApiOperation(value = "update existing person", nickname="update_person")
+  @RequestMapping(value = "/{personId}", method = RequestMethod.PUT)
+  public @ResponseBody ResponseEntity<Void> personPut(@PathVariable Integer personId,
       @RequestBody PersonPut projectUpdate) throws Exception {
-    return personController.put(new MapUtil("id", id).create(), projectUpdate);
+    return personController.put(new MapUtil("id", personId).create(), projectUpdate);
   }
 
-  @ApiOperation(value = "delete existing person", nickname="backend.person.delete_person")
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  public @ResponseBody ResponseEntity<Void> personDelete(@PathVariable Integer id) throws Exception {
-    return personController.delete(new MapUtil("id", id).create());
+  @ApiOperation(value = "delete existing person", nickname="delete_person")
+  @RequestMapping(value = "/{personId}", method = RequestMethod.DELETE)
+  public @ResponseBody ResponseEntity<Void> personDelete(@PathVariable Integer personId) throws Exception {
+    return personController.delete(new MapUtil("id", personId).create());
   }
   
   //// person affiliation
   
-  @ApiOperation(value = "get all affiliations of a person", nickname="backend.person.get_person_affiliations")
+  @ApiOperation(value = "get all affiliations of a person", nickname="get_person_affiliations")
   @RequestMapping(value = "/{personId}/affiliation", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<PersonAffiliationGet>> affiliationGetAll(@PathVariable Integer personId) throws Exception {
     return affiliationController.getAll(new MapUtil("personId", personId).create());
   }
 
-  @ApiOperation(value = "add affiliation to person", nickname="backend.person.create_person_affiliation")
+  @ApiOperation(value = "add affiliation to person", nickname="create_person_affiliation")
   @RequestMapping(value = "/{personId}/affiliation", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> affiliationPost(@PathVariable Integer personId,
       @RequestBody PersonAffiliationPost newAffiliation, HttpServletRequest request) throws Exception {
@@ -190,28 +190,28 @@ public class PersonController extends ControllerExceptionHandler {
     
   }
 
-  @ApiOperation(value = "get existing person affiliation", nickname="backend.person.get_person_affiliation")
+  @ApiOperation(value = "get existing person affiliation", nickname="get_person_affiliation")
   @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<PersonAffiliationGet> affiliationGet(@PathVariable Integer personId,
       @PathVariable Integer affiliationId) throws Exception {
     return affiliationController.get(new MapUtil("id", affiliationId).add("personId", personId).create());
   }
 
-  @ApiOperation(value = "remove existing person affiliation", nickname="backend.person.delete_person_affiliation")
+  @ApiOperation(value = "remove existing person affiliation", nickname="delete_person_affiliation")
   @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> affiliationDelete(@PathVariable Integer personId,
       @PathVariable Integer affiliationId) throws Exception {
     return affiliationController.delete(new MapUtil("id", affiliationId).add("personId", personId).create());
   }
 
-  @ApiOperation(value = "patch existing person affiliation. same input fields like in PUT can be updated", nickname="backend.person.patch_person_affiliation")
+  @ApiOperation(value = "patch existing person affiliation. same input fields like in PUT can be updated", nickname="patch_person_affiliation")
   @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> affiliationPatch(@PathVariable Integer personId,
       @PathVariable Integer affiliationId, @RequestBody PersonAffiliationPut params) throws Exception {
     return affiliationController.patch(new MapUtil("id", affiliationId).add("personId", personId).create(), params);
   }
 
-  @ApiOperation(value = "update existing person affiliation", nickname="backend.person.update_person_affiliation")
+  @ApiOperation(value = "update existing person affiliation", nickname="update_person_affiliation")
   @RequestMapping(value = "/{personId}/affiliation/{affiliationId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> affiliationPut(@PathVariable Integer personId,
       @PathVariable Integer affiliationId, @RequestBody PersonAffiliationPut personAffiliationUpdate) throws Exception {
@@ -220,14 +220,14 @@ public class PersonController extends ControllerExceptionHandler {
 
   //// person property
   
-  @ApiOperation(value = "get all properties of a person", nickname="backend.person.get_person_properties")
+  @ApiOperation(value = "get all properties of a person", nickname="get_person_properties")
   @RequestMapping(value = "/{personId}/property", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<PersonPropertyGet>> propertyGetAll(@PathVariable Integer personId) throws Exception {
     return propertyController.getAll(new MapUtil("personId", personId).create());
   }
 
-  @ApiOperation(value = "add property to person", nickname="backend.person.create_person_property")
+  @ApiOperation(value = "add property to person", nickname="create_person_property")
   @RequestMapping(value = "/{personId}/property", method = RequestMethod.POST)
   public @ResponseBody ResponseEntity<Void> propertyPost(@PathVariable Integer personId,
       @RequestBody PersonPropertyPost newProperty, HttpServletRequest request) throws Exception {
@@ -235,28 +235,28 @@ public class PersonController extends ControllerExceptionHandler {
     
   }
 
-  @ApiOperation(value = "get existing person property", nickname="backend.person.get_person_property")
+  @ApiOperation(value = "get existing person property", nickname="get_person_property")
   @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.GET)
   public @ResponseBody ResponseEntity<PersonPropertyGet> propertyGet(@PathVariable Integer personId,
       @PathVariable Integer propertyId) throws Exception {
     return propertyController.get(new MapUtil("id", propertyId).add("personId", personId).create());
   }
 
-  @ApiOperation(value = "remove existing person property", nickname="backend.person.delete_person_property")
+  @ApiOperation(value = "remove existing person property", nickname="delete_person_property")
   @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.DELETE)
   public @ResponseBody ResponseEntity<Void> propertyDelete(@PathVariable Integer personId,
       @PathVariable Integer propertyId) throws Exception {
     return propertyController.delete(new MapUtil("id", propertyId).add("personId", personId).create());
   }
 
-  @ApiOperation(value = "patch existing person property. same input fields like in PUT can be updated", nickname="backend.person.patch_person_property")
+  @ApiOperation(value = "patch existing person property. same input fields like in PUT can be updated", nickname="patch_person_property")
   @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.PATCH)
   public @ResponseBody ResponseEntity<Void> propertyPatch(@PathVariable Integer personId,
       @PathVariable Integer propertyId, @RequestBody PersonPropertyPut params) throws Exception {
     return propertyController.patch(new MapUtil("id", propertyId).add("personId", personId).create(), params);
   }
 
-  @ApiOperation(value = "update existing person property", nickname="backend.person.update_person_property")
+  @ApiOperation(value = "update existing person property", nickname="update_person_property")
   @RequestMapping(value = "/{personId}/property/{propertyId}", method = RequestMethod.PUT)
   public @ResponseBody ResponseEntity<Void> propertyPut(@PathVariable Integer personId,
       @PathVariable Integer propertyId, @RequestBody PersonPropertyPut propertyUpdate) throws Exception {
@@ -265,7 +265,7 @@ public class PersonController extends ControllerExceptionHandler {
 
   //// helper methods
   
-  @ApiOperation(value = "get all projects of a person", nickname="backend.person.get_person_projects")
+  @ApiOperation(value = "get all projects of a person", nickname="get_person_projects")
   @RequestMapping(value = "/{personId}/projects", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public @ResponseBody ResponseEntity<List<ProjectMemberGet>> getProjects(@PathVariable Integer personId) throws Exception {
